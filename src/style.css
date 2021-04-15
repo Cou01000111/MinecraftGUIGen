@@ -1,0 +1,11 @@
+* {
+    color: #f3f3f3;
+}
+body{
+    background-color: #1f1f1f;
+}
+#holder{
+    height: 200px;
+    color: #868686;
+    text-align: center;
+}
