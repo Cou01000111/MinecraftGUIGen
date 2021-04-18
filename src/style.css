@@ -9,3 +9,6 @@ body{
     color: #868686;
     text-align: center;
 }
+#errorMessage{
+    color: #851c1c;
+}
