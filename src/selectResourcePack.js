@@ -1,6 +1,7 @@
-const { ipcRenderer } = require('electron');
+const { remote,ipcRenderer } = require('electron');
 const $ = require('jquery');
 const fs = require('fs');
+const app = remote.app;
 
 const WIDGETS_CHARA_PATH = '..\\img\\widgetsChara.png';
 var RESOURCE_PACK_PATH;
@@ -38,11 +39,81 @@ function resourcePackSelectedInProcess() {
     // overwrite widgets.png のチェック
     setOutputPath();
     // game directory input の設定
-    setGameDirectoryPath();
+    setOptionPath();
     // pack.pngの設定
     setPackPng();
 }
 
+function setWidgetBasePath() {
+    // widgetBase exits
+    if (isWidgetsExists()) {
+        console.log('widgets発見');
+        $('#overwriteWidgets').removeAttr("disabled");
+    }
+    if (isWidgetsbaseExists()) {
+        $('#widgetsBasePathInput').val(getWidgetsBasePath());
+    } else {
+        $('#baseWarning').text($('#baseWarning').text() + 'widgetsBase.pngが見つかりませんでした。widgets.pngを代わりに使用します')
+        $('#widgetsBasePathInput').val(getWidgetsPath());
+    }
+}
+
+function setWidgetCharaPath() {
+    // widgetChara exits
+    if (isWidgetsCharaExists()) {
+        $('#widgetsCharaPathInput').val(getWidgetsCharaPath());
+    } else {
+        $('#charaWarning').text($('#charaWarning').text() + 'widgetsChara.pngが見つかりませんでした。App付属のwidgetsChara.pngを使用します')
+        $('#widgetsCharaPathInput').val(WIDGETS_CHARA_PATH);
+    }
+}
+
+function setOutputPathDoNotOverwrite() {
+    $('#outputPathInput').val(getOutputDirPath() + 'widgetsOutput.png');
+}
+
+function setOutputPathOverwrite() {
+    $('#outputPathInput').val(getOutputDirPath() + 'widgets.png');
+}
+
+function setOutputPath() {
+    if ($('#overwriteWidgets').prop('checked')) {
+        setOutputPathOverwrite();
+    } else {
+        setOutputPathDoNotOverwrite();
+    }
+}
+
+function setPackPng() {
+    if (fs.existsSync(RESOURCE_PACK_PATH + '\\pack.png')) {
+        $('#packPng').attr('src', RESOURCE_PACK_PATH + '\\pack.png');
+    } else {
+        $('#packPng').attr('src', '../img/pack.png');
+    }
+}
+
+function resetPackPng() {
+    $('#packPng').attr('src', '../img/pack.png');
+}
+
+$('#overwriteWidgets').change(() => {
+    setOutputPath();
+});
+
+
+function setOptionPath() {
+    var resPack = app.getPath('appData') + '\\.minecraft';
+    if (fs.existsSync(getOptionPath(resPack))) {
+        $('#gameOptionInput').val(getOptionPath(resPack));
+    } else {
+        $('#gameOptionError').text('ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoption.txtを指定してください');
+    }
+}
+
+function getOptionPath(path) {
+    console.log(`${path}\\options.txt`);
+    return `${path}\\options.txt`;
+}
 
 // select resource pack でリソースパック以外が選ばれた場合の処理
 function resourcePackExceptSelectedInProcess(errorCode) {
@@ -118,16 +189,4 @@ function resetWarning() {
 
 function resetOverwriteCheck() {
     $('#overwriteWidgets').attr('disabled', 'disabled')
-}
-
-function setPackPng() {
-    if (fs.existsSync(RESOURCE_PACK_PATH + '\\pack.png')) {
-        $('#packPng').attr('src', RESOURCE_PACK_PATH + '\\pack.png');
-    } else {
-        $('#packPng').attr('src', '../img/pack.png');
-    }
-}
-
-function resetPackPng() {
-    $('#packPng').attr('src', '../img/pack.png');
 }
