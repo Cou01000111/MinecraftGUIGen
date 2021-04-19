@@ -472,3 +472,33 @@ async function createWindow() {
 }
 ```
 でok
+
+# app.getPath()でエラーが出る
+[ここ](https://stackoverflow.com/questions/60444303/error-when-using-electron-app-getpathhome)でなんとかできta
+
+# dialogをキャンセルするたびにエラーが出る
+main.js
+```js
+ipcMain.on('open-resourcepack-dialog', (event) => {
+    dialog.showOpenDialog({
+        properties: ['openDirectory']
+    }).then((result) => {
+        if (result) {
+            event.sender.send('selected-directory', result.filePaths[0])
+        }
+    })
+})
+```
+↓
+```js
+ipcMain.on('open-resourcepack-dialog', (event) => {
+    dialog.showOpenDialog({
+        properties: ['openDirectory']
+    }).then((result) => {
+        if (result.canceled == false) {
+            event.sender.send('selected-directory', result.filePaths[0])
+        }
+    })
+})
+```
+むかしはresultだけで判断できていたのか、v11だとこうする必要がありました

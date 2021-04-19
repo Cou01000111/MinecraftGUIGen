@@ -2,7 +2,6 @@ const { app, Menu, BrowserWindow, ipcMain, dialog } = require('electron');
 const locals = {/* ...*/ }
 const setupPug = require('electron-pug')
 let mainWindow;
-console.log('main process');
 
 async function createWindow() {
     try {
@@ -12,8 +11,8 @@ async function createWindow() {
         // Could not initiate 'electron-pug'
     }
     mainWindow = new BrowserWindow({
-        width: 1000,
-        height: 600,
+        width: 800 + 1200,
+        height: 700,
         webPreferences: {
             preload: `${__dirname}/preload.js`,    // preloadを追加
             enableRemoteModule: true,               // warning対策
@@ -37,15 +36,54 @@ async function createWindow() {
 
 app.on('ready', () => {
     createWindow();
-    console.log('ren process');
 });
-
-ipcMain.on('open-file-dialog', (event) => {
+//TODO dialogをcancelしたときのエラーハンドリングができてなさそう
+ipcMain.on('open-resourcepack-dialog', (event) => {
     dialog.showOpenDialog({
         properties: ['openDirectory']
     }).then((result) => {
-        if (result) {
+        if (result.canceled == false) {
             event.sender.send('selected-directory', result.filePaths[0])
+        }
+    })
+})
+ipcMain.on('open-base-dialog', (event) => {
+    dialog.showOpenDialog({
+        filters: [{ name: 'Images', extensions: ['png'] }],
+        properties: ['openFile']
+    }).then((result) => {
+        if (result.canceled == false) {
+            event.sender.send('selected-base-path', result.filePaths[0])
+        }
+    })
+})
+ipcMain.on('open-chara-dialog', (event) => {
+    dialog.showOpenDialog({
+        filters: [{ name: 'Images', extensions: ['png'] }],
+        properties: ['openFile']
+    }).then((result) => {
+        if (result.canceled == false) {
+            event.sender.send('selected-chara-path', result.filePaths[0])
+        }
+    })
+})
+
+ipcMain.on('open-output-dialog', (event) => {
+    dialog.showOpenDialog({
+        properties: ['openDirectory']
+    }).then((result) => {
+        if (result.canceled == false) {
+            event.sender.send('selected-output-path', result.filePaths[0])
+        }
+    })
+})
+
+ipcMain.on('selected-game-directory', (event) => {
+    dialog.showOpenDialog({
+        properties: ['openDirectory']
+    }).then((result) => {
+        if (result.canceled == false) {
+            event.sender.send('selected-game-directory', result.filePaths[0])
         }
     })
 })

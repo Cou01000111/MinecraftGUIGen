@@ -9,6 +9,12 @@ body{
     color: #868686;
     text-align: center;
 }
-#errorMessage{
-    color: #851c1c;
+.error{
+    color: #ac3737;
+}
+.warning{
+    color: #ddbc51;
+}
+input{
+    color: #1f1f1f;
 }
