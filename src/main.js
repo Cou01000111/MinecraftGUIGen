@@ -37,7 +37,6 @@ async function createWindow() {
 app.on('ready', () => {
     createWindow();
 });
-//TODO dialogをcancelしたときのエラーハンドリングができてなさそう
 ipcMain.on('open-resourcepack-dialog', (event) => {
     dialog.showOpenDialog({
         properties: ['openDirectory']
@@ -67,7 +66,6 @@ ipcMain.on('open-chara-dialog', (event) => {
         }
     })
 })
-
 ipcMain.on('open-output-dialog', (event) => {
     dialog.showOpenDialog({
         properties: ['openDirectory']
@@ -77,7 +75,6 @@ ipcMain.on('open-output-dialog', (event) => {
         }
     })
 })
-
 ipcMain.on('selected-game-directory', (event) => {
     dialog.showOpenDialog({
         properties: ['openDirectory']

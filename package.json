@@ -11,7 +11,8 @@
     "electron": "11.4.3",
     "electron-pug": "^2.0.0",
     "jquery": "^3.6.0",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "sharp": "^0.28.1"
   },
   "license": "MIT"
 }
