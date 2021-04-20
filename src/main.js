@@ -1,6 +1,8 @@
 const { app, Menu, BrowserWindow, ipcMain, dialog } = require('electron');
 const locals = {/* ...*/ }
 const setupPug = require('electron-pug')
+const imageProcess = require('../lib/imageProcess');
+const sharp = require('sharp');
 let mainWindow;
 
 async function createWindow() {
