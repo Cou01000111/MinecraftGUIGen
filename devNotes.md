@@ -502,3 +502,121 @@ ipcMain.on('open-resourcepack-dialog', (event) => {
 })
 ```
 むかしはresultだけで判断できていたのか、v11だとこうする必要がありました
+
+# 自作のcjsモジュールで`Cannot find module '../../lib/linefeed.js`
+```
+├─lib
+│   └─linefeed.js
+└─src
+    ├─js
+    │  └─selectResoucePack.js
+    └─style
+```
+
+こんな感じの構成で
+
+linefeed.js
+```js
+function getLFCode(text) {
+    if (text.indexOf("\r\n") > -1) {
+        return "\r\n";
+    } else if (text.indexOf("\n") > -1) {
+        return "\n";
+    } else if (text.indexOf("\r") > -1) {
+        return "\r";
+    }
+}
+
+module.exports = { getLFCode };
+```
+
+selectResourcePack.js
+```js
+const lf = require('../../lib/linefeed.js');
+```
+という風に読み込んでいます
+
+で、エラー内容が開発者ツールのconsoleで
+
+```
+internal/modules/cjs/loader.js:972 Uncaught Error: Cannot find module '../../lib/linefeed.js'
+Require stack:
+- C:\Users\Cou\programing\MinecraftWidgetsAddChara\src\index.pug
+    at Module._resolveFilename (internal/modules/cjs/loader.js:972)
+    at Function.o._resolveFilename (electron/js2c/renderer_init.js:35)
+    at Module._load (internal/modules/cjs/loader.js:848)
+    at Function.f._load (electron/js2c/asar_bundle.js:5)
+    at Module.require (internal/modules/cjs/loader.js:1032)
+    at require (internal/modules/cjs/helpers.js:72)
+    at selectResourcePack.js:5
+```
+
+linefeed.jsにあるlfモジュールはcjsモジュールなのでそれを前提にいろいろ調べていきます
+
+https://qiita.com/DNA1980/items/11fdb7233fc288ac3502
+
+これみたところなんか`yarn add modulename`みたいなコマンドが必要だったような・・・？
+というわけで
+```sh
+yarn add .\lib\linefeed.js
+yarn add v1.22.10
+[1/4] Resolving packages...
+error An unexpected error occurred: "https://registry.yarnpkg.com/lib/linefeed.js: Request \"https://registry.yarnpkg.com/lib/linefeed.js\" returned a 405".
+info If you think this is a bug, please open a bug report with the information provided in "C:\\Users\\Cou\\programing\\MinecraftWidgetsAddChara\\yarn-error.log".
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
+```
+
+いやでもn予備校3-5で必要って書かれてるしなぁ・・・
+というわけでしっかりerrorをみてみる
+`an unexpected error occurred = 予期せぬエラーが発生しました`
+
+つっかえねぇ・・・
+
+スラッシュの向きでは？とおもい
+```sh
+yarn add ./lib/linefeed.js
+yarn add v1.22.10
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+error An unexpected error occurred: "EINVAL: invalid argument, mkdir 'C:\\Users\\Cou\\AppData\\Local\\Yarn\\Cache\\v6\\npm-sers-ou-programing-inecraft-idgets-dd-hara-lib-0.0.0-e123d8c6-02dd-46f6-b38d-fe79ec126fcd-1619104706297\\node_modules\\C:\\Users\\Cou\\programing\\MinecraftWidgetsAddChara\\lib'".
+info If you think this is a bug, please open a bug report with the information provided in "C:\\Users\\Cou\\programing\\MinecraftWidgetsAddChara\\yarn-error.log".
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
+```
+アタリな気がする
+
+なんかキャッシュが関係ありそうなのでキャッシュクリア
+```sh
+yarn cache clean --force
+yarn cache v1.22.10
+success Cleared cache.
+Done in 5.94s.
+PS C:\Users\Cou\programing\MinecraftWidgetsAddChara> yarn add ./lib/linefeed.js
+yarn add v1.22.10
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+error An unexpected error occurred: "EINVAL: invalid argument, mkdir 'C:\\Users\\Cou\\AppData\\Local\\Yarn\\Cache\\v6\\npm-sers-ou-programing-inecraft-idgets-dd-hara-lib-0.0.0-26ddd1a2-a828-4ccd-8d35-41627020c803-1619104790152\\node_modules\\C:\\Users\\Cou\\programing\\MinecraftWidgetsAddChara\\lib'".
+info If you think this is a bug, please open a bug report with the information provided in "C:\\Users\\Cou\\programing\\MinecraftWidgetsAddChara\\yarn-error.log".
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
+```
+
+https://blog.cloud-acct.com/posts/yarn-error-flatmap/
+
+関係がありそうなので
+1. node_modules削除
+2. yarn-lock削除
+3. `yarn install`
+
+が前と同じエラーが
+EINVALについて気になったのだがyahoo知恵袋でmicrosoftのページを見た感じC#火なんかのエラーっぽいけど
+> Invalid argument. An invalid value was given for one of the arguments to a function. For example, the value given for the origin when positioning a file pointer (by means of a call to fseek) is before the beginning of the file.
+
+> 無効な引数。関数の引数の1つに無効な値が与えられました。例えば，fseekの呼び出しによってファイルポインタを位置決めする際の原点に与えられた値は，ファイルの先頭よりも前にあります。
+
+という説明があった
+引数がダメそう・・・？
+
+よくよく考えたらlinefeed周りでyarn initとかやってなかった
+というわけでlibにlinefeedを作りその中にindex.jsを配置
+yarn init
+
+で解決

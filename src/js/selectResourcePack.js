@@ -1,9 +1,11 @@
-const { remote,ipcRenderer } = require('electron');
+const { remote, ipcRenderer } = require('electron');
 const $ = require('jquery');
 const fs = require('fs');
+const { error } = require('jquery');
+const lf = require('linefeed');
 const app = remote.app;
 
-const WIDGETS_CHARA_PATH = '..\\img\\widgetsChara.png';
+const WIDGETS_CHARA_PATH = '..\\img\\widgetsChars.png';
 var RESOURCE_PACK_PATH;
 
 const selectDirBtn = document.getElementById('selectResourcePack');
@@ -35,7 +37,7 @@ ipcRenderer.on('selected-directory', async (event, path) => {
 function resourcePackSelectedInProcess() {
     console.log('加工可能なresource pack が選択されました');
     setWidgetBasePath()
-    setWidgetCharaPath();
+    setWidgetCharsPath();
     // overwrite widgets.png のチェック
     setOutputPath();
     // game directory input の設定
@@ -58,13 +60,21 @@ function setWidgetBasePath() {
     }
 }
 
-function setWidgetCharaPath() {
-    // widgetChara exits
-    if (isWidgetsCharaExists()) {
-        $('#widgetsCharaPathInput').val(getWidgetsCharaPath());
+function setWidgetCharsPath() {
+    // widgetChars exits
+    if (isWidgetsCharsExists()) {
+        $('#widgetsCharsPathInput').val(getWidgetsCharsPath());
     } else {
-        $('#charaWarning').text($('#charaWarning').text() + 'widgetsChara.pngが見つかりませんでした。App付属のwidgetsChara.pngを使用します')
-        $('#widgetsCharaPathInput').val(WIDGETS_CHARA_PATH);
+        $('#charsWarning').text($('#charsWarning').text() + 'widgetsChars.pngが見つかりませんでした。App付属のwidgetsChars.pngを使用します')
+        $('#widgetsCharsPathInput').val(WIDGETS_CHARA_PATH);
+    }
+}
+
+function setOutputPath() {
+    if ($('#overwriteWidgets').prop('checked')) {
+        setOutputPathOverwrite();
+    } else {
+        setOutputPathDoNotOverwrite();
     }
 }
 
@@ -74,14 +84,6 @@ function setOutputPathDoNotOverwrite() {
 
 function setOutputPathOverwrite() {
     $('#outputPathInput').val(getOutputDirPath() + 'widgets.png');
-}
-
-function setOutputPath() {
-    if ($('#overwriteWidgets').prop('checked')) {
-        setOutputPathOverwrite();
-    } else {
-        setOutputPathDoNotOverwrite();
-    }
 }
 
 function setPackPng() {
@@ -105,14 +107,45 @@ function setOptionPath() {
     var resPack = app.getPath('appData') + '\\.minecraft';
     if (fs.existsSync(getOptionPath(resPack))) {
         $('#gameOptionInput').val(getOptionPath(resPack));
+        setOptionData();
     } else {
-        $('#gameOptionError').text('ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoption.txtを指定してください');
+        gameDirNotFound();
     }
 }
 
+function gameDirNotFound() {
+    $('#gameOptionError')
+        .text('ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoptions.txtを指定してください');
+}
+
+// option data table 関係を設定する
+function setOptionData() {
+    // optionから改行区切りで配列にしたものをlineDataListに格納
+    var options = new Map();
+    var text = fs.readFileSync(getOptionPath()).toString();
+    console.log(typeof text);
+    var lineDataList = new Array(text.split(lf.getLFCode(text)));
+    lineDataList.forEach((text) => {
+        console.log(text.);
+        options.set(text.split(":")[0], text.split(":")[1]);
+    });
+    console.log(options);
+}
+
+// 渡されたgame directoryのパスをもとにoptions.txtを返す
 function getOptionPath(path) {
     console.log(`${path}\\options.txt`);
     return `${path}\\options.txt`;
+}
+
+// 渡されたリソースパックのパスをもとにoptions.txtを返す
+function getOptionPath() {
+    if ($('#gameOptionInput').val()) {
+        return `${$('#gameOptionInput').val()}\\options.txt`;
+    }
+    else {
+        throw error();
+    }
 }
 
 // select resource pack でリソースパック以外が選ばれた場合の処理
@@ -154,9 +187,9 @@ function isWidgetsExists() {
 function isWidgetsbaseExists() {
     return fs.existsSync(getWidgetsBasePath());
 }
-// リソースパックにwidgetsChara.pngがあるか
-function isWidgetsCharaExists() {
-    return fs.existsSync(getWidgetsCharaPath());
+// リソースパックにwidgetsChars.pngがあるか
+function isWidgetsCharsExists() {
+    return fs.existsSync(getWidgetsCharsPath());
 }
 // get path to widgetsBase.png
 function getWidgetsPath() {
@@ -166,9 +199,9 @@ function getWidgetsPath() {
 function getWidgetsBasePath() {
     return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\widgetsBase.png');
 }
-// get path to widgetsChara.png
-function getWidgetsCharaPath() {
-    return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\widgetsChara.png');
+// get path to widgetsChars.png
+function getWidgetsCharsPath() {
+    return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\widgetsChars.png');
 }
 //get path to output directory
 function getOutputDirPath() {
@@ -178,13 +211,17 @@ function getOutputDirPath() {
 function resetError() {
     $('#errorMessage').text('');
     $('#baseError').text('');
-    $('#charaError').text('');
+    $('#charsError').text('');
+    $('#outputError').text('');
+    $('#gameOptionError').text('');
 }
 
 function resetWarning() {
     $('#warningMessage').text('');
     $('#baseWarning').text('');
-    $('#charaWarning').text('');
+    $('#charsWarning').text('');
+    $('#outputWarning').text('');
+    $('#gameOptionWarning').text('');
 }
 
 function resetOverwriteCheck() {

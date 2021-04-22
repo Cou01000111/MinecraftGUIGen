@@ -5,11 +5,11 @@ ipcRenderer.on('selected-output-path', async (event, path) => {
     $('#widgetsBasePathInput').val(path);
 });
 
-$('#widgetsCharaDialog').on('click', () => {
-    ipcRenderer.send('open-chara-dialog');
+$('#widgetsCharsDialog').on('click', () => {
+    ipcRenderer.send('open-chars-dialog');
 });
 ipcRenderer.on('selected-output-path', async (event, path) => {
-    $('#widgetsCharaPathInput').val(path);
+    $('#widgetsCharsPathInput').val(path);
 });
 
 $('#outputDialog').on('click', () => {
@@ -23,5 +23,20 @@ $('#gameOptionDialog').on('click', () => {
     ipcRenderer.send('selected-game-directory');
 });
 ipcRenderer.on('selected-game-directory', async (event, path) => {
-    $('#gameOptionInput').val(path);
+    if (optionsExists(path)) {
+        $('#gameOptionInput').val(path);
+        setOptionData();
+    } else {
+        dirIsNotGameDir();
+    }
 });
+
+function optionsExists(path) {
+    const fs = require('fs');
+    return (fs.existsSync(path + "\\options.txt"));
+}
+
+function dirIsNotGameDir(){
+    $('#gameOptionError')
+        .text('ゲームディレクトリを指定してください');
+}
