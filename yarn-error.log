@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files (x86)\Nodist\v-x64\14.15.1\node.exe C:\Program Files (x86)\Nodist\bin\node_modules\yarn\bin\yarn.js add ./lib/linefeed.js
+  C:\Program Files (x86)\Nodist\v-x64\14.15.1\node.exe C:\Program Files (x86)\Nodist\bin\node_modules\yarn\bin\yarn.js add imageProcess
 
 PATH: 
   C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Nodist\bin;C:\HashiCorp\Vagrant\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\WinMerge;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Ruby24-x64\bin;C:\Users\Cou\AppData\Local\Microsoft\WindowsApps;C:\Users\Cou\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Cou\AppData\Local\Pandoc\;C:\Users\Cou\Documents\programing\ori_command;C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;C:\Users\Cou\Application\commands\zip-3.0-bin\bin;C:\Users\Cou\Application\commands\bzip2-1.0.5-bin\bin;C:\Users\Cou\AppData\Local\Microsoft\WindowsApps;C:\Users\Cou\.dotnet\tools;C:\Users\YUUKI\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files (x86)\Nodist\bin\bin;C:\Program Files\heroku\bin;C:\Program Files\PostgreSQL\13\bin;
@@ -14,7 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EINVAL: invalid argument, mkdir 'C:\Users\Cou\AppData\Local\Yarn\Cache\v6\npm-sers-ou-programing-inecraft-idgets-dd-hara-lib-0.0.0-ee5df8a7-405e-4f99-a1e1-c57f6e1c1f83-1619105333460\node_modules\C:\Users\Cou\programing\MinecraftWidgetsAddChara\lib'
+  Error: https://registry.yarnpkg.com/imageProcess: Not found
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Nodist\bin\node_modules\yarn\lib\cli.js:66988:18)
+      at Request.self.callback (C:\Program Files (x86)\Nodist\bin\node_modules\yarn\lib\cli.js:140662:22)
+      at Request.emit (events.js:315:20)
+      at Request.<anonymous> (C:\Program Files (x86)\Nodist\bin\node_modules\yarn\lib\cli.js:141634:10)
+      at Request.emit (events.js:315:20)
+      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Nodist\bin\node_modules\yarn\lib\cli.js:141556:12)
+      at Object.onceWrapper (events.js:421:28)
+      at IncomingMessage.emit (events.js:327:22)
+      at endReadableNT (_stream_readable.js:1327:12)
+      at processTicksAndRejections (internal/process/task_queues.js:80:21)
 
 npm manifest: 
   {
@@ -30,6 +40,7 @@ npm manifest:
       "electron": "11.4.3",
       "electron-pug": "^2.0.0",
       "jquery": "^3.6.0",
+      "linefeed": "c:\\Users\\Cou\\programing\\MinecraftWidgetsAddChara\\lib\\linefeed",
       "pug": "^3.0.2",
       "sharp": "^0.28.1"
     },
@@ -813,6 +824,9 @@ Lockfile:
     version "1.0.4"
     resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
     integrity sha1-odePw6UEdMuAhF07O24dpJpEbo4=
+  
+  "linefeed@c:\\Users\\Cou\\programing\\MinecraftWidgetsAddChara\\lib\\linefeed":
+    version "1.0.0"
   
   lodash@^4.17.10, lodash@^4.17.4:
     version "4.17.21"

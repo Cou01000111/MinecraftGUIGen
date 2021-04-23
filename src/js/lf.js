@@ -11,5 +11,3 @@ function getLFCode(text) {
         return "\r";
     }
 }
-
-module.exports = { getLFCode };

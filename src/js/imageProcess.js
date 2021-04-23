@@ -1,8 +1,8 @@
 'use strict';
-const HOTBAR_COUNT = 10;
+global.HOTBAR_COUNT = 10;
 const fs = require("fs");
 const sharp = require("sharp");
-const lf = require("./linefeed");
+const lf = require("./lf");
 
 function convertProcess(basePath, charsPath, keyOption) {
     if (argsAsProblemExits(basePath, charsPath, keyOption)) {
@@ -17,13 +17,13 @@ function argsAsProblemExits(basePath, charsPath, keyOption) {
 
 //chars画像が加工をする上で問題がないか
 function charsAsProblemExists(charsPath) {
-    const chars = await sharp(charsPath);
+    const chars = sharp(charsPath);
 
     const {
         format: charsFormat,
         width: charsWidth,
         height: charsHeight
-    } = await chars.metadata();
+    } = chars.metadata();
     /*
     今のところ以下の条件のみ
     - png
@@ -35,13 +35,13 @@ function charsAsProblemExists(charsPath) {
 
 //base画像が加工をする上で問題がないか
 function baseAsProblemExits(basePath) {
-    const base = await sharp(charsPath);
+    const base = sharp(charsPath);
 
     const {
         format: baseFormat,
         width: baseWidth,
         height: baseHeight
-    } = await base.metadata();
+    } = base.metadata();
     /*
     今のところ以下の条件のみ
     - png
@@ -56,14 +56,14 @@ function convertChars(path, option) {
     var option;
     var chars = sharp(path);
     var hotbarList = new Array();
-    for (let count = 0; count < HOTBAR_COUNT; count++) {
+    for (let count = 0; count < global.HOTBAR_COUNT; count++) {
         hotbarList.push(option);
     }
 }
 
 function getCharsObjList(char, charsPath) {
     const list = new Array;
-    for (let i = 0; i < HOTBAR_COUNT; i++) {
+    for (let i = 0; i < global.HOTBAR_COUNT; i++) {
         list = getCharsObj(char, charsPath);
     }
     return list

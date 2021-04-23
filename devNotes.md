@@ -615,8 +615,16 @@ EINVALについて気になったのだがyahoo知恵袋でmicrosoftのページ
 という説明があった
 引数がダメそう・・・？
 
-よくよく考えたらlinefeed周りでyarn initとかやってなかった
+よくよく考えたら`linefeed`周りで`yarn init`とかやってなかった
 というわけでlibにlinefeedを作りその中にindex.jsを配置
-yarn init
+`yarn init`
 
 で解決
+
+してない
+
+`yarn init`でつくって`yarn install`するとライブラリの中身を更新してもいちいちインストールしなおさないといけない
+で試しに`main.js`で読み込んでみたが、特に問題なかったのでおそらくレンダラプロセスでアクセスできないのだろうか
+
+htmlのほうに`    script(src="./lib/lf.js") `
+を追加してみる

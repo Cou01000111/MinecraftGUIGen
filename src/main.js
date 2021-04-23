@@ -3,6 +3,7 @@ const locals = {/* ...*/ }
 const setupPug = require('electron-pug')
 //const imageProcess = require('../lib/imageProcess');
 const sharp = require('sharp');
+const lf = require('./js/lf');
 let mainWindow;
 async function createWindow() {
     try {
@@ -41,7 +42,8 @@ app.on('ready', () => {
 
 ipcMain.on('open-resourcepack-dialog', (event) => {
     dialog.showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory'],
+        defaultPath: app.getPath('appData')
     }).then((result) => {
         if (result.canceled == false) {
             event.sender.send('selected-directory', result.filePaths[0])
@@ -49,10 +51,11 @@ ipcMain.on('open-resourcepack-dialog', (event) => {
     })
 });
 
-ipcMain.on('open-base-dialog', (event) => {
+ipcMain.on('open-base-dialog', (event, dp) => {
     dialog.showOpenDialog({
         filters: [{ name: 'Images', extensions: ['png'] }],
-        properties: ['openFile']
+        properties: ['openFile'],
+        defaultPath: dp
     }).then((result) => {
         if (result.canceled == false) {
             event.sender.send('selected-base-path', result.filePaths[0])
@@ -60,10 +63,11 @@ ipcMain.on('open-base-dialog', (event) => {
     })
 });
 
-ipcMain.on('open-chars-dialog', (event) => {
+ipcMain.on('open-chars-dialog', (event, dp) => {
     dialog.showOpenDialog({
         filters: [{ name: 'Images', extensions: ['png'] }],
-        properties: ['openFile']
+        properties: ['openFile'],
+        defaultPath: dp
     }).then((result) => {
         if (result.canceled == false) {
             event.sender.send('selected-chars-path', result.filePaths[0])
@@ -71,9 +75,10 @@ ipcMain.on('open-chars-dialog', (event) => {
     })
 });
 
-ipcMain.on('open-output-dialog', (event) => {
+ipcMain.on('open-output-dialog', (event, dp) => {
     dialog.showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory'],
+        defaultPath: dp
     }).then((result) => {
         if (result.canceled == false) {
             event.sender.send('selected-output-path', result.filePaths[0])
@@ -81,9 +86,11 @@ ipcMain.on('open-output-dialog', (event) => {
     })
 });
 
-ipcMain.on('selected-game-directory', (event) => {
+ipcMain.on('selected-game-directory', (event, dp) => {
+
     dialog.showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openFile'],
+        defaultPath: dp
     }).then((result) => {
         if (result.canceled == false) {
             event.sender.send('selected-game-directory', result.filePaths[0])
@@ -92,11 +99,23 @@ ipcMain.on('selected-game-directory', (event) => {
 });
 
 
-ipcMain.on('set-up-option', (event) => {
+ipcMain.on('setup-option-directory', (event, dp) => {
     const fs = require('fs');
-    const rs = fs.readFileSync();
     dialog.showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory'],
+        defaultPath: dp
+    }).then((result) => {
+        if (result.canceled == false) {
+            event.sender.send('set-up-option', result.filePaths[0])
+        }
+    })
+});
+
+ipcMain.on('setup-option-file', (event, dp) => {
+    const fs = require('fs');
+    dialog.showOpenDialog({
+        properties: ['openFile'],
+        defaultPath: dp
     }).then((result) => {
         if (result.canceled == false) {
             event.sender.send('set-up-option', result.filePaths[0])

@@ -2,10 +2,9 @@ const { remote, ipcRenderer } = require('electron');
 const $ = require('jquery');
 const fs = require('fs');
 const { error } = require('jquery');
-const lf = require('linefeed');
 const app = remote.app;
 
-const WIDGETS_CHARA_PATH = '..\\img\\widgetsChars.png';
+const DEFAULT_WIDGETS_CHARA_PATH = '..\\img\\widgetsChars.png';
 var RESOURCE_PACK_PATH;
 
 const selectDirBtn = document.getElementById('selectResourcePack');
@@ -66,7 +65,7 @@ function setWidgetCharsPath() {
         $('#widgetsCharsPathInput').val(getWidgetsCharsPath());
     } else {
         $('#charsWarning').text($('#charsWarning').text() + 'widgetsChars.pngが見つかりませんでした。App付属のwidgetsChars.pngを使用します')
-        $('#widgetsCharsPathInput').val(WIDGETS_CHARA_PATH);
+        $('#widgetsCharsPathInput').val(DEFAULT_WIDGETS_CHARA_PATH);
     }
 }
 
@@ -104,9 +103,19 @@ $('#overwriteWidgets').change(() => {
 
 
 function setOptionPath() {
-    var resPack = app.getPath('appData') + '\\.minecraft';
-    if (fs.existsSync(getOptionPath(resPack))) {
-        $('#gameOptionInput').val(getOptionPath(resPack));
+    var gameDirPath;
+    console.log(RESOURCE_PACK_PATH && fs.existsSync(getDirName(RESOURCE_PACK_PATH, 2)));
+    if (RESOURCE_PACK_PATH && fs.existsSync(getDirName(RESOURCE_PACK_PATH, 2))) {
+        gameDirPath = getDirName(RESOURCE_PACK_PATH, 2);
+    } else {
+        gameDirPath = app.getPath('appData') + '\\.minecraft'
+    }
+    setOptionDataPreprocess(getOptionPathByArg(gameDirPath));
+}
+
+function setOptionDataPreprocess(path) {
+    if (fs.existsSync(path)) {
+        $('#gameOptionInput').val(path);
         setOptionData();
     } else {
         gameDirNotFound();
@@ -123,17 +132,79 @@ function setOptionData() {
     // optionから改行区切りで配列にしたものをlineDataListに格納
     var options = new Map();
     var text = fs.readFileSync(getOptionPath()).toString();
-    console.log(typeof text);
-    var lineDataList = new Array(text.split(lf.getLFCode(text)));
+    var lineDataList = text.split(getLFCode(text));
     lineDataList.forEach((text) => {
-        console.log(text.);
-        options.set(text.split(":")[0], text.split(":")[1]);
+        //console.log(text);
+        // version取得&描画
+        if (text.toString().split(":")[0] == 'version') {
+            setMinecraftVersion(getMinecraftVersionString(text.toString().split(":")[1]));
+            if(getMinecraftVersionString(text.toString().split(":")[1]) == 'none'){
+                SelectedOutOfSupportVersion();
+            }
+        }
+        if (text.toString().split(":")[0].match(/key_key\.hotbar.*/g) /*|| text.toString().split(":")[0].match(/key_key.swapOffhand/g)*/) {
+            options.set(text.toString().split(":")[0], text.toString().split(":")[1]);
+        }
     });
+    setKeyConfig(options, getMinecraftVersionString(text.toString().split(":")[1]));
     console.log(options);
 }
 
+//codeからminecraftのversionを返す(参照:https://minecraft.fandom.com/wiki/Data_version)
+function getMinecraftVersionString(code) {
+    var v;
+    console.log(code );
+    switch (code) {
+        case '2586':
+            v = '1.16.5'
+            break;
+        default:
+            v = 'none';
+            break;
+    }
+    return v;
+}
+
+function setMinecraftVersion(text){
+    $('#minecraftVersion').text(text);
+}
+
+// options{"keyConfig":"value"}をもとに'#minecraftKeyConfig'をいれる
+function setKeyConfig(options,version) {
+    var keyConfig;
+    var array = new Array();
+    options.forEach(element => {
+        array.push(element);
+    });
+    //console.log(ToStringFromKeyConfig(options,'1.16.5'));
+    $('#minecraftKeyConfig').text(ToStringFromKeyConfig(options,version));
+}
+
+//optionsを変換して返す
+function ToStringFromKeyConfig(options,version) {
+    var stringArr = new Array();
+    switch (version) {
+        case '1.16.5':
+            var keycode = getKeyCode1_16_5()
+            options.forEach(option=>{
+                console.log(option);
+                stringArr.push(keycode[option]);
+            });
+            break;
+        default:
+            SelectedOutOfSupportVersion();
+            break;
+    }
+    return stringArr.join(',');
+}
+
+//keycode1.16.5.jsonの内容を返す
+function getKeyCode1_16_5() {
+    return JSON.parse(fs.readFileSync('./keycode/keycode1.16.5.json'));
+}
+
 // 渡されたgame directoryのパスをもとにoptions.txtを返す
-function getOptionPath(path) {
+function getOptionPathByArg(path) {
     console.log(`${path}\\options.txt`);
     return `${path}\\options.txt`;
 }
@@ -141,7 +212,7 @@ function getOptionPath(path) {
 // 渡されたリソースパックのパスをもとにoptions.txtを返す
 function getOptionPath() {
     if ($('#gameOptionInput').val()) {
-        return `${$('#gameOptionInput').val()}\\options.txt`;
+        return $('#gameOptionInput').val();
     }
     else {
         throw error();
@@ -226,4 +297,8 @@ function resetWarning() {
 
 function resetOverwriteCheck() {
     $('#overwriteWidgets').attr('disabled', 'disabled')
+}
+
+function SelectedOutOfSupportVersion() {
+    $('#gameOptionWarning').text('未対応のバージョンのoptionが選ばれました');
 }
