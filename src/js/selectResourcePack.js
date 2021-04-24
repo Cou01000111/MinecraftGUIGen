@@ -122,32 +122,29 @@ function setOptionDataPreprocess(path) {
     }
 }
 
-function gameDirNotFound() {
-    $('#gameOptionError')
-        .text('ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoptions.txtを指定してください');
-}
-
 // option data table 関係を設定する
 function setOptionData() {
     // optionから改行区切りで配列にしたものをlineDataListに格納
     var options = new Map();
     var text = fs.readFileSync(getOptionPath()).toString();
     var lineDataList = text.split(getLFCode(text));
+    var version;
     lineDataList.forEach((text) => {
-        //console.log(text);
         // version取得&描画
         if (text.toString().split(":")[0] == 'version') {
-            setMinecraftVersion(getMinecraftVersionString(text.toString().split(":")[1]));
-            if(getMinecraftVersionString(text.toString().split(":")[1]) == 'none'){
-                SelectedOutOfSupportVersion();
+            version = getMinecraftVersionString(text.toString().split(":")[1]);
+            setMinecraftVersion(version);
+            console.log(version);
+            if(version == 'none'){
+                //console.log(version);
+                selectedOutOfSupportVersion();
             }
         }
         if (text.toString().split(":")[0].match(/key_key\.hotbar.*/g) /*|| text.toString().split(":")[0].match(/key_key.swapOffhand/g)*/) {
             options.set(text.toString().split(":")[0], text.toString().split(":")[1]);
         }
     });
-    setKeyConfig(options, getMinecraftVersionString(text.toString().split(":")[1]));
-    console.log(options);
+    setKeyConfig(options, version);
 }
 
 //codeからminecraftのversionを返す(参照:https://minecraft.fandom.com/wiki/Data_version)
@@ -192,7 +189,7 @@ function ToStringFromKeyConfig(options,version) {
             });
             break;
         default:
-            SelectedOutOfSupportVersion();
+            selectedOutOfSupportVersion();
             break;
     }
     return stringArr.join(',');
@@ -224,14 +221,15 @@ function resourcePackExceptSelectedInProcess(errorCode) {
     switch (errorCode) {
         // リソースパック以外が選択された場合
         case 1:
-            $('#errorMessage').text('minecraftのresource packを入れてください');
+            NonResourcePackHasBeenSelected();
             break;
         // 選択されたリソースパックにwidgets.png,widgetsBase.pngがなかった場合
         case 2:
-            $('#errorMessage').text('widgets.pngまたはwidgetsBase.pngが存在しないリソースパックは変換できません');
+            widgetsDoesNotFound();
             break;
     }
 }
+
 // resource packかどうか(ディレクトリの中にmcmetaがあるかどうか)
 function isResourcePack() {
     var fs = require('fs');
@@ -279,26 +277,7 @@ function getOutputDirPath() {
     return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\');
 }
 
-function resetError() {
-    $('#errorMessage').text('');
-    $('#baseError').text('');
-    $('#charsError').text('');
-    $('#outputError').text('');
-    $('#gameOptionError').text('');
-}
-
-function resetWarning() {
-    $('#warningMessage').text('');
-    $('#baseWarning').text('');
-    $('#charsWarning').text('');
-    $('#outputWarning').text('');
-    $('#gameOptionWarning').text('');
-}
 
 function resetOverwriteCheck() {
     $('#overwriteWidgets').attr('disabled', 'disabled')
-}
-
-function SelectedOutOfSupportVersion() {
-    $('#gameOptionWarning').text('未対応のバージョンのoptionが選ばれました');
 }

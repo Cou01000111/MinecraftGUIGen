@@ -55,7 +55,7 @@ ipcRenderer.on('set-up-option', async (event, p) => {
         } else if (stats.isDirectory()) {
             setOptionDataPreprocess(getOptionPathByArg(p));
         } else {
-            $('#gameOptionError').text('minecraftのゲームディレクトリか、ゲームディレクトリにあるoptions.txtを指定して下さい');
+            nonGameDirectoryHasBeenSelected();
         }
     });
 
@@ -85,10 +85,6 @@ function optionsExists(path) {
     return (fs.existsSync(path + "\\options.txt"));
 }
 
-function dirIsNotGameDir() {
-    $('#gameOptionError')
-        .text('ゲームディレクトリを指定してください');
-}
 
 // 渡されたpathのnum個上のまでのパスを返す
 function getDirName(p, num) {

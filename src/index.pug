@@ -57,13 +57,18 @@ html(lang="ja")
           td#minecraftKeyConfig.col-8.p-2 none
       p#gameOptionWarning.warning
       p#gameOptionError.error
+      //convert button
     .row.m-3
-      button#createWidgets.btn.btn-outline-light.w-100.mt-2 変換
+      button#convertWidgets.btn.btn-outline-light.w-100.mt-2 変換
+      p#convertWarning.warning
+      p#convertError.error
     script(src='https://code.jquery.com/jquery-3.6.0.js', integrity='sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=', crossorigin='anonymous')
     script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js', integrity='sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU', crossorigin='anonymous')
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js', integrity='sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj', crossorigin='anonymous')
     link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css', rel='stylesheet', integrity='sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1', crossorigin='anonymous')
     link(rel='stylesheet', href='./style/style.css')
+    script(src="./js/errorWarning.js")
     script(src="./js/lf.js")
     script(src='./js/selectResourcePack.js')
     script(src='./js/openDialog.js')
+    script(src="./js/imageProcess.js")
