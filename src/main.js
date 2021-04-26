@@ -14,7 +14,7 @@ async function createWindow() {
     }
     mainWindow = new BrowserWindow({
         width: 800 + 1200,
-        height: 800,
+        height: 900,
         webPreferences: {
             preload: `${__dirname}/preload.js`,    // preloadを追加
             enableRemoteModule: true,               // warning対策
@@ -71,6 +71,18 @@ ipcMain.on('open-chars-dialog', (event, dp) => {
     }).then((result) => {
         if (result.canceled == false) {
             event.sender.send('selected-chars-path', result.filePaths[0])
+        }
+    })
+});
+
+ipcMain.on('open-chars-json-dialog', (event, dp) => {
+    dialog.showOpenDialog({
+        filters: [{ name: 'Custom File Type', extensions: ['json'] }],
+        properties: ['openFile'],
+        defaultPath: dp
+    }).then((result) => {
+        if (result.canceled == false) {
+            event.sender.send('selected-chars-json-path', result.filePaths[0])
         }
     })
 });

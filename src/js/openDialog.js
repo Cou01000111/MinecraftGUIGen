@@ -12,15 +12,27 @@ function resetBaseDialog() {
 }
 
 $('#widgetsCharsDialog').on('click', () => {
-    resetCharDialog();
+    resetCharsDialog();
     ipcRenderer.send('open-chars-dialog');
 });
 ipcRenderer.on('selected-chars-path', async (event, path) => {
     $('#widgetsCharsPathInput').val(path);
 });
-function resetCharDialog() {
-    $('#charWarning').text('');
-    $('#charError').text('');
+function resetCharsDialog() {
+    $('#charsWarning').text('');
+    $('#charsError').text('');
+}
+
+$('#widgetsCharsJsonDialog').on('click', () => {
+    resetCharsJsonDialog();
+    ipcRenderer.send('open-chars-json-dialog');
+});
+ipcRenderer.on('selected-chars-json-path', async (event, path) => {
+    $('#widgetsCharsJsonPathInput').val(path);
+});
+function resetCharsJsonDialog() {
+    $('#charsJsonWarning').text('');
+    $('#charsJsonError').text('');
 }
 
 $('#outputDialog').on('click', () => {

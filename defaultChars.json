@@ -1,0 +1,514 @@
+{
+    "unit": {
+        "width": 6,
+        "height": 6
+    },
+    "Key is not bound": {
+        "top": 7,
+        "left": 7
+    },
+    "Middle Button": {
+        "top": 0,
+        "left": 2
+    },
+    "Mouse Button 4": {
+        "top": 0,
+        "left": 3
+    },
+    "Mouse Button 5": {
+        "top": 0,
+        "left": 4
+    },
+    "Mouse Button 6": {
+        "top": 0,
+        "left": 5
+    },
+    "Mouse Button 7": {
+        "top": 0,
+        "left": 6
+    },
+    "Mouse Button 8": {
+        "top": 0,
+        "left": 7
+    },
+    "0": {
+        "top": 1,
+        "left": 0
+    },
+    "1": {
+        "top": 1,
+        "left": 1
+    },
+    "2": {
+        "top": 1,
+        "left": 2
+    },
+    "3": {
+        "top": 1,
+        "left": 3
+    },
+    "4": {
+        "top": 1,
+        "left": 4
+    },
+    "5": {
+        "top": 1,
+        "left": 5
+    },
+    "6": {
+        "top": 1,
+        "left": 6
+    },
+    "7": {
+        "top": 1,
+        "left": 7
+    },
+    "8": {
+        "top": 2,
+        "left": 0
+    },
+    "9": {
+        "top": 2,
+        "left": 1
+    },
+    "a": {
+        "top": 2,
+        "left": 2
+    },
+    "b": {
+        "top": 2,
+        "left": 3
+    },
+    "c": {
+        "top": 2,
+        "left": 4
+    },
+    "d": {
+        "top": 2,
+        "left": 5
+    },
+    "e": {
+        "top": 2,
+        "left": 6
+    },
+    "f": {
+        "top": 2,
+        "left": 7
+    },
+    "g": {
+        "top": 3,
+        "left": 0
+    },
+    "h": {
+        "top": 3,
+        "left": 1
+    },
+    "i": {
+        "top": 3,
+        "left": 2
+    },
+    "j": {
+        "top": 3,
+        "left": 3
+    },
+    "k": {
+        "top": 3,
+        "left": 4
+    },
+    "l": {
+        "top": 3,
+        "left": 5
+    },
+    "m": {
+        "top": 3,
+        "left": 6
+    },
+    "n": {
+        "top": 3,
+        "left": 7
+    },
+    "o": {
+        "top": 4,
+        "left": 0
+    },
+    "p": {
+        "top": 4,
+        "left": 1
+    },
+    "q": {
+        "top": 4,
+        "left": 2
+    },
+    "r": {
+        "top": 4,
+        "left": 3
+    },
+    "s": {
+        "top": 4,
+        "left": 4
+    },
+    "t": {
+        "top": 4,
+        "left": 5
+    },
+    "u": {
+        "top": 4,
+        "left": 6
+    },
+    "v": {
+        "top": 4,
+        "left": 7
+    },
+    "w": {
+        "top": 5,
+        "left": 0
+    },
+    "x": {
+        "top": 5,
+        "left": 1
+    },
+    "y": {
+        "top": 5,
+        "left": 2
+    },
+    "z": {
+        "top": 5,
+        "left": 3
+    },
+    "F1": {
+        "top": 7,
+        "left": 7
+    },
+    "F2": {
+        "top": 7,
+        "left": 7
+    },
+    "F3": {
+        "top": 7,
+        "left": 7
+    },
+    "F4": {
+        "top": 7,
+        "left": 7
+    },
+    "F5": {
+        "top": 7,
+        "left": 7
+    },
+    "F6": {
+        "top": 7,
+        "left": 7
+    },
+    "F7": {
+        "top": 7,
+        "left": 7
+    },
+    "F8": {
+        "top": 7,
+        "left": 7
+    },
+    "F9": {
+        "top": 7,
+        "left": 7
+    },
+    "F10": {
+        "top": 7,
+        "left": 7
+    },
+    "F11": {
+        "top": 7,
+        "left": 7
+    },
+    "F12": {
+        "top": 7,
+        "left": 7
+    },
+    "F13": {
+        "top": 7,
+        "left": 7
+    },
+    "F14": {
+        "top": 7,
+        "left": 7
+    },
+    "F15": {
+        "top": 7,
+        "left": 7
+    },
+    "F16": {
+        "top": 7,
+        "left": 7
+    },
+    "F17": {
+        "top": 7,
+        "left": 7
+    },
+    "F18": {
+        "top": 7,
+        "left": 7
+    },
+    "F19": {
+        "top": 7,
+        "left": 7
+    },
+    "F20": {
+        "top": 7,
+        "left": 7
+    },
+    "F21": {
+        "top": 7,
+        "left": 7
+    },
+    "F22": {
+        "top": 7,
+        "left": 7
+    },
+    "F23": {
+        "top": 7,
+        "left": 7
+    },
+    "F24": {
+        "top": 7,
+        "left": 7
+    },
+    "F25": {
+        "top": 7,
+        "left": 7
+    },
+    "Num Lock": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 0": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 1": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 2": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 3": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 4": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 5": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 6": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 7": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 8": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad 9": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad +": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad Decimal": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad Enter": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad =": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad *": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad /": {
+        "top": 7,
+        "left": 7
+    },
+    "Keypad -": {
+        "top": 7,
+        "left": 7
+    },
+    "Down Arrow": {
+        "top": 7,
+        "left": 7
+    },
+    "Left Arrow": {
+        "top": 7,
+        "left": 7
+    },
+    "Right Arrow": {
+        "top": 7,
+        "left": 7
+    },
+    "Up Arrow": {
+        "top": 7,
+        "left": 7
+    },
+    "'": {
+        "top": 7,
+        "left": 7
+    },
+    "\\": {
+        "top": 7,
+        "left": 7
+    },
+    ",": {
+        "top": 7,
+        "left": 7
+    },
+    "=": {
+        "top": 7,
+        "left": 7
+    },
+    "`": {
+        "top": 7,
+        "left": 7
+    },
+    "(": {
+        "top": 7,
+        "left": 7
+    },
+    "-": {
+        "top": 7,
+        "left": 7
+    },
+    ".": {
+        "top": 7,
+        "left": 7
+    },
+    ")": {
+        "top": 7,
+        "left": 7
+    },
+    ";": {
+        "top": 7,
+        "left": 7
+    },
+    "/": {
+        "top": 7,
+        "left": 7
+    },
+    "Space": {
+        "top": 7,
+        "left": 7
+    },
+    "Tab": {
+        "top": 7,
+        "left": 7
+    },
+    "Left Alt": {
+        "top": 7,
+        "left": 7
+    },
+    "Left Control": {
+        "top": 7,
+        "left": 7
+    },
+    "Left Shift": {
+        "top": 7,
+        "left": 7
+    },
+    "Left Win": {
+        "top": 7,
+        "left": 7
+    },
+    "Right Alt": {
+        "top": 7,
+        "left": 7
+    },
+    "Right Control": {
+        "top": 7,
+        "left": 7
+    },
+    "Right Shift": {
+        "top": 7,
+        "left": 7
+    },
+    "Right Win": {
+        "top": 7,
+        "left": 7
+    },
+    "Enter": {
+        "top": 7,
+        "left": 7
+    },
+    "Escape": {
+        "top": 7,
+        "left": 7
+    },
+    "Backspace": {
+        "top": 7,
+        "left": 7
+    },
+    "Delete": {
+        "top": 7,
+        "left": 7
+    },
+    "End": {
+        "top": 7,
+        "left": 7
+    },
+    "Home": {
+        "top": 7,
+        "left": 7
+    },
+    "Insert": {
+        "top": 7,
+        "left": 7
+    },
+    "Page Down": {
+        "top": 7,
+        "left": 7
+    },
+    "Page Up": {
+        "top": 7,
+        "left": 7
+    },
+    "Caps Lock": {
+        "top": 7,
+        "left": 7
+    },
+    "Pause": {
+        "top": 7,
+        "left": 7
+    },
+    "Scroll Lock": {
+        "top": 7,
+        "left": 7
+    },
+    "Menu": {
+        "top": 7,
+        "left": 7
+    },
+    "Print Screen": {
+        "top": 7,
+        "left": 7
+    },
+    "World 1": {
+        "top": 7,
+        "left": 7
+    },
+    "World 2": {
+        "top": 7,
+        "left": 7
+    }
+}

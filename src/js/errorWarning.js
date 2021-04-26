@@ -26,25 +26,42 @@ function gameDirNotFound() {
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
-function InvalidPath(baseOrChars) {
-    if (baseOrChars == 'base' || baseOrChars == 'chars') {
+function InvalidPath(baseOrCharsOrJson) {
+    if (!(baseOrCharsOrJson == 'base' || baseOrCharsOrJson == 'chars' || baseOrCharsOrJson == 'json')) {
         throw error();
     }
-    $('#convertError').text(`${baseOrChars}のpathが無効です`);
+    $('#convertError').text(`${baseOrCharsOrJson}のpathが無効です`);
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
 function SelectedRightnessNotImage(baseOrChars) {
-    if (baseOrChars == 'base' || baseOrChars == 'chars') {
+    if (!(baseOrChars == 'base' || baseOrChars == 'chars')) {
         throw error();
     }
     $('#convertError').text(`${baseOrChars}の画像が適切ではありません`);
 }
 
+//chars.jsonが不正な時
+function illegalJSONPassed() {
+    $('#charsJsonError').text('JSONファイルの文法に誤りがあります');
+}
+
+//unitがない
+function noUnit() {
+    $('#charsJsonError').text('jsonからunitが見つかりません');
+}
+
+function unitPropertyIsIllegal() {
+    $('#charsJsonError').text('jsonのunitのプロパティに誤りがあります');
+}
+
+//unitのプロパティが不正
+
 function resetError() {
     $('#errorMessage').text('');
     $('#baseError').text('');
     $('#charsError').text('');
+    $('#charsJsonError').text('');
     $('#outputError').text('');
     $('#gameOptionError').text('');
 }
@@ -53,6 +70,7 @@ function resetWarning() {
     $('#warningMessage').text('');
     $('#baseWarning').text('');
     $('#charsWarning').text('');
+    $('#charsJsonWarning').text('');
     $('#outputWarning').text('');
     $('#gameOptionWarning').text('');
 }
