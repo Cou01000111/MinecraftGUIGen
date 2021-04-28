@@ -25,14 +25,7 @@ $('#convertWidgets').on('click', () => {
 //TODO chars.jsonにないものがkey configにあった場合の処理
 
 /**
- * 大まかな流れ
- * argsに問題がないかチェックする
- * IMAGE_MAGNIFICATIONの設定(かくtesting内で設定)
- * key configのextract object一覧取得
- * for HOTBAR_COUNT回
- *  option[i]の画像取得
- *  widgetsBaseに合成
- * widgets.png出力
+ * 出力
  */
 function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
     if (testingArgs(basePath, charsPath, charsJson, keyOption)) {

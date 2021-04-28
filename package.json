@@ -1,18 +1,56 @@
 {
   "name": "my-electron-app",
   "version": "0.1.0",
-  "author": "your name",
+  "author": "courange/cou",
   "description": "My Electron app",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "electron src"
+    "start": "electron-forge start src",
+    "package": "electron-forge package src",
+    "make": "electron-forge make"
   },
   "dependencies": {
-    "electron": "11.4.3",
+    "@electron-forge/cli": "^6.0.0-beta.54",
     "electron-pug": "^2.0.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "false": "^0.0.4",
     "jquery": "^3.6.0",
     "pug": "^3.0.2",
     "sharp": "^0.28.1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "electron": "11.4.3"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "my_electron_app"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
 }

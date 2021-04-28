@@ -1,6 +1,6 @@
 'use strict';
 /**
- * textから改行コードを返す関数
+ * textから改行コードを推測し返す関数
  */
 function getLFCode(text) {
     if (text.indexOf("\r\n") > -1) {

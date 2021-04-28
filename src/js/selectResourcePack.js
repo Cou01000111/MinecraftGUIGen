@@ -101,12 +101,12 @@ function setPackPng() {
     if (fs.existsSync(RESOURCE_PACK_PATH + '\\pack.png')) {
         $('#packPng').attr('src', RESOURCE_PACK_PATH + '\\pack.png');
     } else {
-        $('#packPng').attr('src', '../img/pack.png');
+        $('#packPng').attr('src', './img/pack.png');
     }
 }
 
 function resetPackPng() {
-    $('#packPng').attr('src', '../img/pack.png');
+    $('#packPng').attr('src', './img/pack.png');
 }
 
 $('#overwriteWidgets').change(() => {
@@ -169,7 +169,7 @@ function getMinecraftVersionString(code) {
     }else if(code <= 1343) {
         return '1.12.2';
     }else {
-        none
+        return 'none'
     }
 }
 
@@ -192,12 +192,12 @@ function setKeyConfig(options,version) {
     options.forEach(element => {
         array.push(element);
     });
-    //console.log(ToStringFromKeyConfig(options,'1.16.5'));
-    $('#minecraftKeyConfig').text(ToStringFromKeyConfig(options,version));
+    //console.log(toStringFromKeyConfig(options,'1.16.5'));
+    $('#minecraftKeyConfig').text(toStringFromKeyConfig(options,version));
 }
 
 //optionsを変換して返す
-function ToStringFromKeyConfig(options,version) {
+function toStringFromKeyConfig(options,version) {
     var stringArr = new Array();
     if(version == '1.13'){
         var keycode = getKeyCode1_13();
@@ -219,12 +219,12 @@ function ToStringFromKeyConfig(options,version) {
 
 //keycode1.13.jsonの内容を返す
 function getKeyCode1_13() {
-    return JSON.parse(fs.readFileSync('./keycode/keycode1.13.json'));
+    return JSON.parse(fs.readFileSync('./src/keycode/keycode1.13.json'));
 }
 
 //keycode1.12.2.jsonの内容を返す
 function getKeyCode1_12_2() {
-    return JSON.parse(fs.readFileSync('./keycode/keycode1.12.2.json'));
+    return JSON.parse(fs.readFileSync('./src/keycode/keycode1.12.2.json'));
 }
 
 // 渡されたgame directoryのパスをもとにoptions.txtを返す
