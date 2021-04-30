@@ -1,6 +1,6 @@
 {
   "name": "minecraft-widgets-gen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "courange",
   "description": "Add text to the minecraft hotbar.",
   "main": "./src/main.js",
