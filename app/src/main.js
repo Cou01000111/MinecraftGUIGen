@@ -1,8 +1,63 @@
 const { app, Menu, BrowserWindow, ipcMain, dialog } = require('electron');
 const locals = {/* ...*/ }
 const setupPug = require('electron-pug');
+const log = require('electron-log');
+const { autoUpdater } = require("electron-updater");
 const path = require('path');
 let mainWindow;
+
+//自動更新はhttps://github.com/iffy/electron-updater-example を参照
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
+//-------------------------------------------------------------------
+// Define the menu
+//
+// THIS SECTION IS NOT REQUIRED
+//-------------------------------------------------------------------
+let template = []
+if (process.platform === 'darwin') {
+    // OS X
+    const name = app.getName();
+    template.unshift({
+        label: name,
+        submenu: [
+            {
+                label: 'About ' + name,
+                role: 'about'
+            },
+            {
+                label: 'Quit',
+                accelerator: 'Command+Q',
+                click() { app.quit(); }
+            },
+        ]
+    })
+}
+
+autoUpdater.on('update-downloaded', ({ version, files, path, sha512, releaseName, releaseNotes, releaseDate }) => {
+    const detail = `${app.getName()} ${version} ${releaseDate}`
+
+    dialog.showMessageBox(
+        win, // new BrowserWindow
+        {
+            type: 'question',
+            buttons: ['再起動', 'あとで'],
+            defaultId: 0,
+            cancelId: 999,
+            message: '新しいバージョンをダウンロードしました。再起動しますか？',
+            detail
+        },
+        res => {
+            if (res === 0) {
+                autoUpdater.quitAndInstall()
+            }
+        }
+    )
+});
+
 async function createWindow() {
     try {
         let pug = await setupPug({ pretty: true }, locals)
@@ -11,7 +66,7 @@ async function createWindow() {
         // Could not initiate 'electron-pug'
     }
     mainWindow = new BrowserWindow({
-        width: 800 ,
+        width: 800,
         height: 900,
         center: true,
         icon: path.join(__dirname, './img/icon.ico'),
@@ -40,7 +95,10 @@ async function createWindow() {
     mainWindow.setResizable(false);
 }
 
+const min = 10;
 app.on('ready', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+    setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 1000 * 60 * min)
     createWindow();
 });
 

@@ -7,10 +7,13 @@
   "scripts": {
     "start": "electron src",
     "build:mac": "electron-builder --mac --x64",
-    "build:win": "electron-builder --win --x64"
+    "build:win": "electron-builder --win --x64",
+    "publish": "electron-builder"
   },
   "dependencies": {
+    "electron-log": "^4.3.5",
     "electron-pug": "^2.0.0",
+    "electron-updater": "^4.3.8",
     "jquery": "^3.6.0",
     "pug": "^3.0.2",
     "sharp": "^0.28.1"
@@ -20,18 +23,25 @@
     "electron": "11.4.3",
     "electron-builder": "^22.10.5"
   },
-  "build":{
-    "files":["src"],
-    "mac":{
+  "build": {
+    "files": [
+      "src"
+    ],
+    "mac": {
       "target": "dmg"
     },
     "win": {
       "icon": "../build/icon.ico",
       "target": "nsis"
     },
-    "nsis":{
+    "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "owner",
+      "repo": "reponame"
     }
   }
 }
