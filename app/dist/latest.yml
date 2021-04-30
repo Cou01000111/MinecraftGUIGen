@@ -1,8 +1,8 @@
-version: 0.1.1
+version: 0.1.2
 files:
-  - url: minecraft-widgets-gen-Setup-0.1.1.exe
-    sha512: xbFE+/kKxlDIvN/CUiaWl8EdqzJW5Miwzm3tHZwpfKVNgaLsXx+s6bZ9HQ4EwygeyhG/pOitBZCheeNIKiK5pw==
-    size: 73361655
-path: minecraft-widgets-gen-Setup-0.1.1.exe
-sha512: xbFE+/kKxlDIvN/CUiaWl8EdqzJW5Miwzm3tHZwpfKVNgaLsXx+s6bZ9HQ4EwygeyhG/pOitBZCheeNIKiK5pw==
-releaseDate: '2021-04-30T22:35:55.316Z'
+  - url: minecraft-widgets-gen-Setup-0.1.2.exe
+    sha512: FCPsqEBIAZ7N8OlMCBwenvnhPvVg7Kja5n9t/mOWkl93ZsciAgCIFwqRaxJ6UnAa528EVliHD5ix3cYa+FKGOg==
+    size: 73361595
+path: minecraft-widgets-gen-Setup-0.1.2.exe
+sha512: FCPsqEBIAZ7N8OlMCBwenvnhPvVg7Kja5n9t/mOWkl93ZsciAgCIFwqRaxJ6UnAa528EVliHD5ix3cYa+FKGOg==
+releaseDate: '2021-04-30T22:51:11.957Z'

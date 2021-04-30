@@ -4,6 +4,7 @@ const setupPug = require('electron-pug');
 const log = require('electron-log');
 const { autoUpdater } = require("electron-updater");
 const path = require('path');
+const packageJson = require('../package.json');
 let mainWindow;
 
 //自動更新はhttps://github.com/iffy/electron-updater-example を参照
