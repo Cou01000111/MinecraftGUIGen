@@ -1,4 +1,3 @@
 node_modules
-gui
-
-out/
+document/gui/
+app/dist/win-unpacked/
