@@ -172,7 +172,6 @@ ipcMain.on('selected-game-directory', (event, dp) => {
     })
 });
 
-
 ipcMain.on('setup-option-directory', (event, dp) => {
     const fs = require('fs');
     dialog.showOpenDialog({
