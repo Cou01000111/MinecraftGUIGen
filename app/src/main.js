@@ -33,26 +33,30 @@ if (process.platform === 'darwin') {
     })
 }
 
-autoUpdater.on('update-downloaded', ({ version, files, path, sha512, releaseName, releaseNotes, releaseDate }) => {
-    const detail = `${app.getName()} ${version} ${releaseDate}`
+//autoUpdater.on('update-downloaded', ({ version, files, path, sha512, releaseName, releaseNotes, releaseDate }) => {
+//    const detail = `${app.getName()} ${version} ${releaseDate}`
+//
+//    dialog.showMessageBox(
+//        win, // new BrowserWindow
+//        {
+//            type: 'question',
+//            buttons: ['再起動', 'あとで'],
+//            defaultId: 0,
+//            cancelId: 999,
+//            message: '新しいバージョンをダウンロードしました。再起動しますか？',
+//            detail
+//        },
+//        res => {
+//            if (res === 0) {
+//                autoUpdater.quitAndInstall()
+//            }
+//        }
+//    )
+//});
 
-    dialog.showMessageBox(
-        win, // new BrowserWindow
-        {
-            type: 'question',
-            buttons: ['再起動', 'あとで'],
-            defaultId: 0,
-            cancelId: 999,
-            message: '新しいバージョンをダウンロードしました。再起動しますか？',
-            detail
-        },
-        res => {
-            if (res === 0) {
-                autoUpdater.quitAndInstall()
-            }
-        }
-    )
-});
+autoUpdater.on('update-downloaded', ()=>{
+    console.log("Found the update");
+})
 
 async function createWindow() {
     try {
