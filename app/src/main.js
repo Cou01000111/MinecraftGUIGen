@@ -94,7 +94,6 @@ async function createWindow() {
 const min = 10;
 app.on('ready', () => {
     autoUpdater.checkForUpdatesAndNotify();
-    setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 1000 * 60 * min)
     createWindow();
 });
 
