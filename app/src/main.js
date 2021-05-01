@@ -91,7 +91,6 @@ async function createWindow() {
     mainWindow.setResizable(false);
 }
 
-const min = 10;
 app.on('ready', () => {
     autoUpdater.checkForUpdatesAndNotify();
     createWindow();
