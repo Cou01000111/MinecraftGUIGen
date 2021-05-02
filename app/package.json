@@ -42,6 +42,11 @@
       "provider": "github",
       "owner": "Cou01000111",
       "repo": "MinecraftWidgetsGen"
-    }
+    },
+    "directories":{
+      "output":"./output_${version}"
+    },
+    "artifactName":"${productName}-Setup-${version}.${ext}"
+
   }
 }
