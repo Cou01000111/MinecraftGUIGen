@@ -7,6 +7,8 @@ const path = require('path');
 const packageJson = require('../package.json');
 let mainWindow;
 
+process.env.NODE_OPTIONS = undefined
+
 //自動更新はhttps://github.com/iffy/electron-updater-example を参照
 
 autoUpdater.logger = log;
@@ -34,46 +36,54 @@ if (process.platform === 'darwin') {
 }
 
 //#region win用updater
-let win;
-
-function sendStatusToWindow(text) {
-    log.info(text);
-    win.webContents.send('message', text);
-}
-function createDefaultWindow() {
-    win = new BrowserWindow();
-    win.webContents.openDevTools();
-    win.on('closed', () => {
-        win = null;
-    });
-    win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
-    return win;
-}
-autoUpdater.on('checking-for-update', () => {
-    sendStatusToWindow('Checking for update...');
-})
-autoUpdater.on('update-available', (info) => {
-    sendStatusToWindow('Update available.');
-})
-autoUpdater.on('update-not-available', (info) => {
-    sendStatusToWindow('Update not available.');
-})
-autoUpdater.on('error', (err) => {
-    sendStatusToWindow('Error in auto-updater. ' + err);
-})
-autoUpdater.on('download-progress', (progressObj) => {
-    let log_message = "Download speed: " + progressObj.bytesPerSecond;
-    log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-    log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
-    sendStatusToWindow(log_message);
-})
+//let win;
+//
+//function sendStatusToWindow(text) {
+//    log.info(text);
+//    win.webContents.send('message', text);
+//}
+//function createDefaultWindow() {
+//    win = new BrowserWindow({
+//        webPreferences:{
+//            preload: `${__dirname}/preload.js`,    // preloadを追加
+//            enableRemoteModule: true,               // warning対策
+//            nodeIntegration: true,
+//            devTools: true,
+//            contextIsolation: false
+//        }
+//    });
+//    win.webContents.openDevTools();
+//    win.on('closed', () => {
+//        win = null;
+//    });
+//    win.nodeIntegration = true;
+//    win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
+//    return win;
+//}
+//autoUpdater.on('checking-for-update', () => {
+//    sendStatusToWindow('Checking for update...');
+//})
+//autoUpdater.on('update-available', (info) => {
+//    sendStatusToWindow('Update available.');
+//})
+//autoUpdater.on('update-not-available', (info) => {
+//    sendStatusToWindow('Update not available.');
+//})
+//autoUpdater.on('error', (err) => {
+//    sendStatusToWindow('Error in auto-updater. ' + err);
+//})
+//autoUpdater.on('download-progress', (progressObj) => {
+//    let log_message = "Download speed: " + progressObj.bytesPerSecond;
+//    log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+//    log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+//    sendStatusToWindow(log_message);
+//})
 
 autoUpdater.on('update-downloaded', ({ version, files, path, sha512, releaseName, releaseNotes, releaseDate }) => {
     const detail = `${app.getName()} ${version} ${releaseDate}`;
-    const win = new BrowserWindow({ width: 800, height: 600 });
 
     dialog.showMessageBox(
-        win, // new BrowserWindow
+        //win, // new BrowserWindow
         {
             type: 'question',
             buttons: ['再起動', 'あとで'],
@@ -81,24 +91,18 @@ autoUpdater.on('update-downloaded', ({ version, files, path, sha512, releaseName
             cancelId: 999,
             message: '新しいバージョンをダウンロードしました。再起動しますか？',
             detail
-        },
-        res => {
-            if (res === 0) {
+        }).then(res => {
+            console.log(res);
+            if (res.response === 0) {
                 autoUpdater.quitAndInstall()
             }
-        }
-    )
+        })
 });
 
-autoUpdater.on('update-downloaded', (info) => {
-    sendStatusToWindow('Update downloaded');
-});
 app.on('ready', function () {
     // Create the Menu
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
-
-    createDefaultWindow();
 });
 app.on('window-all-closed', () => {
     app.quit();
@@ -122,14 +126,13 @@ async function createWindow() {
             preload: `${__dirname}/preload.js`,    // preloadを追加
             enableRemoteModule: true,               // warning対策
             nodeIntegration: true,
-            devTools: true
+            devTools: true,
+            contextIsolation: false
         },
     });
 
     mainWindow.loadURL("file://" + __dirname + "/index.pug");
 
-    // 開発ツールを有効化
-    //mainWindow.webContents.openDevTools();
     if (!app.isPackaged) {
         mainWindow.webContents.openDevTools();
     }

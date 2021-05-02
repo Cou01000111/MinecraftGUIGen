@@ -760,3 +760,8 @@ info All dependencies
 Done in 227.91s.
 ```
 しかない
+
+諦めてelectron-builderを使うことにした
+
+# electron v12系で動かない理由
+[これ](https://laptrinhx.com/electron-de-require-is-not-defined-gadoushitemo-xiaoenaitoki-705136531/)関係ありそう
