@@ -4,8 +4,8 @@ const fs = require('fs');
 const { error } = require('jquery');
 const app = remote.app;
 
-const DEFAULT_WIDGETS_CHARA_PATH = '.\\img\\widgetsChars.png';
-const DEFAULT_WIDGETS_CHARA_JSON_PATH = '.\\defaultChars.json';
+const DEFAULT_WIDGETS_CHARA_PATH = './src/img/widgetsChars.png';
+const DEFAULT_WIDGETS_CHARA_JSON_PATH = './src/defaultChars.json';
 var RESOURCE_PACK_PATH;
 
 const selectDirBtn = document.getElementById('selectResourcePack');
@@ -98,15 +98,15 @@ function setOutputPathOverwrite() {
 }
 
 function setPackPng() {
-    if (fs.existsSync(RESOURCE_PACK_PATH + '\\pack.png')) {
-        $('#packPng').attr('src', RESOURCE_PACK_PATH + '\\pack.png');
+    if (fs.existsSync(RESOURCE_PACK_PATH + '/pack.png')) {
+        $('#packPng').attr('src', RESOURCE_PACK_PATH + '/pack.png');
     } else {
-        $('#packPng').attr('src', './img/pack.png');
+        $('#packPng').attr('src', './src/img/pack.png');
     }
 }
 
 function resetPackPng() {
-    $('#packPng').attr('src', './img/pack.png');
+    $('#packPng').attr('src', './src/img/pack.png');
 }
 
 $('#overwriteWidgets').change(() => {
@@ -120,7 +120,7 @@ function setOptionPath() {
     if (RESOURCE_PACK_PATH && fs.existsSync(getDirName(RESOURCE_PACK_PATH, 2))) {
         gameDirPath = getDirName(RESOURCE_PACK_PATH, 2);
     } else {
-        gameDirPath = app.getPath('appData') + '\\.minecraft'
+        gameDirPath = app.getPath('appData') + '/.minecraft'
     }
     setOptionDataPreprocess(getOptionPathByArg(gameDirPath));
 }
@@ -147,7 +147,7 @@ function setOptionData() {
             version = getMinecraftVersionString(text.toString().split(":")[1]);
             setMinecraftVersion();
             console.log(version);
-            if(version == 'none'){
+            if (version == 'none') {
                 //console.log(version);
                 selectedOutOfSupportVersion();
             }
@@ -161,57 +161,57 @@ function setOptionData() {
 
 //codeからminecraftのversionを返す(参照:https://minecraft.fandom.com/wiki/Data_version)
 function getMinecraftVersionString(code) {
-    console.log(code );
+    console.log(code);
     //1.13以降
-    if(code >= 1519){
+    if (code >= 1519) {
         return '1.13';
-    //1.12.2以前
-    }else if(code <= 1343) {
+        //1.12.2以前
+    } else if (code <= 1343) {
         return '1.12.2';
-    }else {
+    } else {
         return 'none'
     }
 }
 
-function setMinecraftVersion(version){
+function setMinecraftVersion(version) {
     var setText;
-    if(version == '1.13'){
+    if (version == '1.13') {
         setText = '1.13以降';
-    }else if(version == '1.12.2'){
+    } else if (version == '1.12.2') {
         setText = '1.12.2以前';
-    }else {
+    } else {
         setText = version;
     }
     $('#minecraftVersion').text(setText);
 }
 
 // options{"keyConfig":"value"}をもとに'#minecraftKeyConfig'をいれる
-function setKeyConfig(options,version) {
+function setKeyConfig(options, version) {
     var keyConfig;
     var array = new Array();
     options.forEach(element => {
         array.push(element);
     });
     //console.log(toStringFromKeyConfig(options,'1.16.5'));
-    $('#minecraftKeyConfig').text(toStringFromKeyConfig(options,version));
+    $('#minecraftKeyConfig').text(toStringFromKeyConfig(options, version));
 }
 
 //optionsを変換して返す
-function toStringFromKeyConfig(options,version) {
+function toStringFromKeyConfig(options, version) {
     var stringArr = new Array();
-    if(version == '1.13'){
+    if (version == '1.13') {
         var keycode = getKeyCode1_13();
-        options.forEach(option=>{
+        options.forEach(option => {
             console.log(option);
             stringArr.push(keycode[option]);
         });
-    }else if(version == '1.12.2'){
+    } else if (version == '1.12.2') {
         var keycode = getKeyCode1_12_2();
-        options.forEach(option=>{
+        options.forEach(option => {
             console.log(option);
             stringArr.push(keycode[option]);
         });
-    }else{
+    } else {
         selectedOutOfSupportVersion();
     }
     return stringArr.join(',');
@@ -229,8 +229,8 @@ function getKeyCode1_12_2() {
 
 // 渡されたgame directoryのパスをもとにoptions.txtを返す
 function getOptionPathByArg(path) {
-    console.log(`${path}\\options.txt`);
-    return `${path}\\options.txt`;
+    console.log(`${path}/options.txt`);
+    return `${path}/options.txt`;
 }
 
 // 渡されたリソースパックのパスをもとにoptions.txtを返す
@@ -293,23 +293,23 @@ function isWidgetsCharsJsonExists() {
 }
 // get path to widgetsBase.png
 function getWidgetsPath() {
-    return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\widgets.png');
+    return (RESOURCE_PACK_PATH + '/assets/minecraft/textures/gui/widgets.png');
 }
 // get path to widgetsBase.png
 function getWidgetsBasePath() {
-    return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\widgetsBase.png');
+    return (RESOURCE_PACK_PATH + '/assets/minecraft/textures/gui/widgetsBase.png');
 }
 // get path to widgetsChars.png
 function getWidgetsCharsPath() {
-    return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\widgetsChars.png');
+    return (RESOURCE_PACK_PATH + '/assets/minecraft/textures/gui/widgetsChars.png');
 }
 // get path to chars.json
 function getWidgetsCharsJsonPath() {
-    return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\chars.json');
+    return (RESOURCE_PACK_PATH + '/assets/minecraft/textures/gui/chars.json');
 }
 //get path to output directory
 function getOutputDirPath() {
-    return (RESOURCE_PACK_PATH + '\\assets\\minecraft\\textures\\gui\\');
+    return (RESOURCE_PACK_PATH + '/assets/minecraft/textures/gui/');
 }
 
 

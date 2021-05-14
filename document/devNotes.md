@@ -765,3 +765,163 @@ Done in 227.91s.
 
 # electron v12系で動かない理由
 [これ](https://laptrinhx.com/electron-de-require-is-not-defined-gadoushitemo-xiaoenaitoki-705136531/)関係ありそう
+
+# electron-builderでsrcだけを出力したい
+## jp
+フォルダ構成
+```
+root
+├ app
+│ ├ src
+│ │ ├ main.js
+│ │ └ package.json
+│ └ package.json
+└ build
+　 └ icon.ico
+```
+app/package.json
+```json
+{
+  "name": "minecraft-widgets-gen",
+  "version": "0.2.0",
+  "author": "courange",
+  "description": "Add text to the minecraft hotbar.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron src",
+    "build:mac": "electron-builder --mac --x64",
+    "build:win": "electron-builder --win --x64"
+  },
+  "dependencies": {
+    "electron-log": "^4.3.5",
+    "electron-pug": "^2.0.0",
+    "electron-updater": "^4.3.8",
+    "jquery": "^3.6.0",
+    "pug": "^3.0.2",
+    "sharp": "^0.28.1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "11.4.3",
+    "electron-builder": "^22.10.5"
+  },
+  "build": {
+
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "icon": "../build/icon.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Cou01000111",
+      "repo": "MinecraftWidgetsGen"
+    },
+    "directories":{
+      "output":"../output_${version}"
+    },
+    "artifactName":"${productName}-Setup-${version}.${ext}"
+
+  }
+}
+```
+app/src/package.json
+```json
+{
+    "main": "main.js"
+}
+```
+
+`yarn start`や`yarn build:win`などのコマンドはapp/でつかってます
+package.jsonが二つある理由はよくわかっていませんが、自分が参考にしたサイトではこうなっていたので、このまま使っています（もしよかったらその理由も教えていただけると嬉しいです）
+
+appにあるもののみをアプリケーションとして配布したのですが、このままだとroot全体がパッケージングされてしまいます
+いまいちelectron-builderのbuild>filesや、build>directories>appの使い方がわかっていないのでappのみをパッケージングする方法がわかりません
+それのやり方を教えてください
+[GitHub](https://github.com/Cou01000111/MinecraftWidgetsGen)
+
+## en
+Folder Structure
+```
+root
+├ app
+│ ├ src
+│ │ ├ main.js
+│ │ └ package.json
+│ └ package.json
+└ build
+　 └ icon.ico
+```
+app/package.json
+```json
+{
+  "name": "minecraft-widgets-gen",
+  "version": "0.2.0",
+  "author": "courange",
+  "description": "Add text to the minecraft hotbar.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron src",
+    "build:mac": "electron-builder --mac --x64",
+    "build:win": "electron-builder --win --x64"
+  },
+  "dependencies": {
+    "electron-log": "^4.3.5",
+    "electron-pug": "^2.0.0",
+    "electron-updater": "^4.3.8",
+    "jquery": "^3.6.0",
+    "pug": "^3.0.2",
+    "sharp": "^0.28.1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "11.4.3",
+    "electron-builder": "^22.10.5"
+  },
+  "build": {
+
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "icon": "../build/icon.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Cou01000111",
+      "repo": "MinecraftWidgetsGen"
+    },
+    "directories":{
+      "output":"../output_${version}"
+    },
+    "artifactName":"${productName}-Setup-${version}.${ext}"
+
+  }
+}
+```
+app/src/package.json
+```json
+{
+    "main": "main.js"
+}
+```
+
+Commands such as `yarn start` and `yarn build:win` are used in app/.
+I'm not sure why there are two package.json files, but that's how it is in the site I referred to, so I'm using it as is (I'd be happy to know the reason if you want).
+
+I've distributed only the app as an application, but if I don't, the whole root will be packaged.
+I don't know how to package only the app because I don't understand how to use build>files and build>directories>app in electron-builder.
+Please tell me how to do that.
+[GitHub](https://github.com/Cou01000111/MinecraftWidgetsGen)
+※Translated using deelp

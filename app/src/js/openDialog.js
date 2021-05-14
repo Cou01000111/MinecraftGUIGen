@@ -1,9 +1,9 @@
 const path = require('path');
 $('#widgetsBaseDialog').on('click', () => {
-    resetBaseDialog();
     ipcRenderer.send('open-base-dialog');
 });
 ipcRenderer.on('selected-base-path', async (event, path) => {
+    resetBaseDialog();
     $('#widgetsBasePathInput').val(path);
 });
 function resetBaseDialog() {
@@ -12,10 +12,10 @@ function resetBaseDialog() {
 }
 
 $('#widgetsCharsDialog').on('click', () => {
-    resetCharsDialog();
     ipcRenderer.send('open-chars-dialog');
 });
 ipcRenderer.on('selected-chars-path', async (event, path) => {
+    resetCharsDialog();
     $('#widgetsCharsPathInput').val(path);
 });
 function resetCharsDialog() {
@@ -24,10 +24,10 @@ function resetCharsDialog() {
 }
 
 $('#widgetsCharsJsonDialog').on('click', () => {
-    resetCharsJsonDialog();
     ipcRenderer.send('open-chars-json-dialog');
 });
 ipcRenderer.on('selected-chars-json-path', async (event, path) => {
+    resetCharsJsonDialog();
     $('#widgetsCharsJsonPathInput').val(path);
 });
 function resetCharsJsonDialog() {
@@ -36,10 +36,10 @@ function resetCharsJsonDialog() {
 }
 
 $('#outputDialog').on('click', () => {
-    resetOutputPathDialog();
     ipcRenderer.send('open-output-dialog');
 });
 ipcRenderer.on('selected-output-path', async (event, path) => {
+    resetOutputPathDialog();
     $('#outputPathInput').val(path);
 });
 function resetOutputPathDialog() {

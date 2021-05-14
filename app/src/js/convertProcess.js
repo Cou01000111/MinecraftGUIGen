@@ -34,7 +34,7 @@ function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
     //images作成
     var chars = new Array();
     for (let i = 0; i < HOTBAR_COUNT; i++) {
-        var path = `./img/${i}.png`
+        var path = `./src/img/${i}.png`
         console.log(path);
         console.log(fs.existsSync(path));
         console.log(1 + i * HOTBAR_WIDTH * IMAGE_MAGNIFICATION);
@@ -189,7 +189,7 @@ function makeCharPng(keyOptionList, charsPath, jsonPath) {
 
 function outputImagePromise(path, ex, i) {
     return new Promise((resolve) => {
-        sharp(path).extract(ex).png().toFile(`./img/${i}.png`, () => { resolve() });
+        sharp(path).extract(ex).png().toFile(`./src/img/${i}.png`, () => { resolve() });
     })
 }
 

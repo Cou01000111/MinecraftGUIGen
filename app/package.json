@@ -1,14 +1,13 @@
 {
   "name": "minecraft-widgets-gen",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "courange",
   "description": "Add text to the minecraft hotbar.",
-  "main": "./src/main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "electron src",
+    "start": "electron .",
     "build:mac": "electron-builder --mac --x64",
-    "build:win": "electron-builder --win --x64",
-    "publish": "electron-builder"
+    "build:win": "electron-builder --win --x64"
   },
   "dependencies": {
     "electron-log": "^4.3.5",
@@ -24,9 +23,7 @@
     "electron-builder": "^22.10.5"
   },
   "build": {
-    "files": [
-      "src"
-    ],
+
     "mac": {
       "target": "dmg"
     },
@@ -44,7 +41,7 @@
       "repo": "MinecraftWidgetsGen"
     },
     "directories":{
-      "output":"./output_${version}"
+      "output":"../output_${version}"
     },
     "artifactName":"${productName}-Setup-${version}.${ext}"
 
