@@ -41,7 +41,7 @@
       "repo": "MinecraftWidgetsGen"
     },
     "directories":{
-      "output":"../output_${version}"
+      "output":"../dist/output_${version}"
     },
     "artifactName":"${productName}-Setup-${version}.${ext}"
   }
