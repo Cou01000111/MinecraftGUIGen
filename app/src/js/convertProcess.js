@@ -64,12 +64,17 @@ async function testingArgs(basePath, charsPath, charsJson, keyOption) {
     console.log(`basePath:${basePath}`);
     console.log(`charsPath:${charsPath}`);
     console.log(`charsJson:${charsJson}`);
-    console.log(`keyOption:${keyOption}`);
+    console.log(keyOption);
     var charsPathTest = await testingCharsPath(charsPath);
     var basePathTest = await testingBasePath(basePath);
     var jsonPathTest = testingJsonPath(charsJson);
-    var keyOptionTest = keyOption.length == HOTBAR_COUNT;
+    var keyOptionTest = (keyOption.split(',').length == HOTBAR_COUNT);
     var ans = (charsPathTest && basePathTest && jsonPathTest && keyOptionTest);
+    //console.log(charsPathTest);
+    //console.log(basePathTest);
+    //console.log(jsonPathTest);
+    console.log(keyOptionTest);
+    console.log(keyOption.split(',').length);
     console.log(`testingArgs:${ans}`);
     return (ans);
 }
