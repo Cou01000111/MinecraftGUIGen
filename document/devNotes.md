@@ -608,7 +608,7 @@ https://blog.cloud-acct.com/posts/yarn-error-flatmap/
 
 が前と同じエラーが
 EINVALについて気になったのだがyahoo知恵袋でmicrosoftのページを見た感じC#火なんかのエラーっぽいけど
-> Invalid argument. An invalid value was given for one of the arguments to a function. For example, the value given for the origin when positioning a file pointer (by means of a call to fseek) is before the beginning of the file.
+> invalid argument. An invalid value was given for one of the arguments to a function. For example, the value given for the origin when positioning a file pointer (by means of a call to fseek) is before the beginning of the file.
 
 > 無効な引数。関数の引数の1つに無効な値が与えられました。例えば，fseekの呼び出しによってファイルポインタを位置決めする際の原点に与えられた値は，ファイルの先頭よりも前にあります。
 

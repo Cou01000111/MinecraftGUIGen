@@ -44,6 +44,5 @@
       "output":"../output_${version}"
     },
     "artifactName":"${productName}-Setup-${version}.${ext}"
-
   }
 }

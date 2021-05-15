@@ -25,20 +25,42 @@ function gameDirNotFound() {
         .text('ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoptions.txtを指定してください');
 }
 
-//widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
-function InvalidPath(baseOrCharsOrJson) {
+//widgetsBase.png,widgetsChars.pngが未入力な場合に呼び出されるエラー
+function emptyPath(baseOrCharsOrJson) {
     if (!(baseOrCharsOrJson == 'base' || baseOrCharsOrJson == 'chars' || baseOrCharsOrJson == 'json')) {
         throw error();
     }
-    $('#convertError').text(`${baseOrCharsOrJson}のpathが無効です`);
+    $('#convertError').append(`<br>${baseOrCharsOrJson}のpathが入力されていません`);
+}
+
+
+//widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
+function invalidPath(baseOrCharsOrJson) {
+    if (!(baseOrCharsOrJson == 'base' || baseOrCharsOrJson == 'chars' || baseOrCharsOrJson == 'json')) {
+        throw error();
+    }
+    $('#convertError').append(`<br>${baseOrCharsOrJson}のpathが無効です`);
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
-function SelectedRightnessNotImage(baseOrChars) {
-    if (!(baseOrChars == 'base' || baseOrChars == 'chars')) {
+function selectedRightnessNotImage(baseOrChars,conditions) {
+    if ((!(baseOrChars == 'base' || baseOrChars == 'chars'))||(!(conditions.length == 4))) {
         throw error();
     }
-    $('#convertError').text(`${baseOrChars}の画像が適切ではありません`);
+    $('#convertError').append(`<br>${baseOrChars}の画像が適切ではありません:`);
+    if(!conditions[0]){
+        $('#convertError').append(`${baseOrChars}の画像がpngではありません`);
+    }
+    if(!conditions[1]){
+        $('#convertError').append(`${baseOrChars}の横幅がデフォルトの倍数ではありません`);
+    }
+    if(!conditions[2]){
+        $('#convertError').append(`${baseOrChars}の縦幅がデフォルトの倍数ではありません`);
+    }
+    if(!conditions[3]){
+        $('#convertError').append(`${baseOrChars}の横幅と縦幅の比が1:1ではありません`);
+    }
+
 }
 
 //chars.jsonが不正な時
@@ -73,4 +95,10 @@ function resetWarning() {
     $('#charsJsonWarning').text('');
     $('#outputWarning').text('');
     $('#gameOptionWarning').text('');
+}
+
+function resetConvertMessage() {
+    $('#convertMessage').text('');
+    $('#convertError').text('');
+    $('#convertWarning').text('');
 }

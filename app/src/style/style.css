@@ -9,11 +9,14 @@ body{
     color: #868686;
     text-align: center;
 }
+.info{
+    color: #93ff89;
+}
 .error{
-    color: #ac3737;
+    color: #e26060;
 }
 .warning{
-    color: #ddbc51;
+    color: #f0d066;
 }
 input{
     color: #1f1f1f;

@@ -24,10 +24,16 @@ $('#convertWidgets').on('click', () => {
 /**
  * 出力
  */
-function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
-    if (testingArgs(basePath, charsPath, charsJson, keyOption)) {
+//なぜかtestingargsの返り値にPromiseがつくので適当にasync
+async function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
+    resetConvertMessage();
+    var test = await testingArgs(basePath, charsPath, charsJson, keyOption);
+    console.log(`testingArgs:${test} in convert process`);
+    if (test == false) {
+        console.log('引数に問題がありました');
         return;
     }
+    console.log('引数に問題がありませんでした');
     var options = keyOption.split(',');
     makeCharPng(options, charsPath, charsJson);
     var base = sharp(basePath);
@@ -35,47 +41,53 @@ function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
     var chars = new Array();
     for (let i = 0; i < HOTBAR_COUNT; i++) {
         var path = `./src/img/${i}.png`
-        console.log(path);
-        console.log(fs.existsSync(path));
-        console.log(1 + i * HOTBAR_WIDTH * IMAGE_MAGNIFICATION);
         var compositeObj = {
             "input": path,
             "top": 1 * IMAGE_MAGNIFICATION,
             "left": 1 + i * HOTBAR_WIDTH * IMAGE_MAGNIFICATION
         };
-        console.log(compositeObj);
+        //console.log(compositeObj);
         chars.push(compositeObj);
     }
-    console.log(chars);
-    base.composite(chars).toFile(outputPath, (err) => {
+    //console.log(chars);
+    base.composite(chars).toFile(outputPath, (err, info) => {
         if (err) console.log(err);
+        else $('#convertMessage').text('ファイル出力成功');
+        console.log(info);
     });
 }
 
 //chars画像,base画像,key optionそれぞれ問題がないか
-//問題があった場合=true
-function testingArgs(basePath, charsPath, charsJson, keyOption) {
-    console.log(basePath);
-    console.log(charsPath);
-    console.log(charsJson);
-    console.log(keyOption);
-    return (testingCharsPath(charsPath) == false && testingBasePath(basePath) == false && testingJsonPath(charsJson) && keyOption.length == HOTBAR_COUNT);
+//問題なし:true
+//なぜかtestingCharsPath,testingBasePathでPromiseが返されるので適当にasync
+async function testingArgs(basePath, charsPath, charsJson, keyOption) {
+    console.log(`basePath:${basePath}`);
+    console.log(`charsPath:${charsPath}`);
+    console.log(`charsJson:${charsJson}`);
+    console.log(`keyOption:${keyOption}`);
+    var charsPathTest = await testingCharsPath(charsPath);
+    var basePathTest = await testingBasePath(basePath);
+    var jsonPathTest = testingJsonPath(charsJson);
+    var keyOptionTest = keyOption.length == HOTBAR_COUNT;
+    var ans = (charsPathTest && basePathTest && jsonPathTest && keyOptionTest);
+    console.log(`testingArgs:${ans}`);
+    return (ans);
 }
 
 //chars画像が加工をする上で問題がないか
-function testingCharsPath(charsPath) {
-    if (!fs.existsSync(charsPath)) {
-        console.log(charsPath);
-        console.log(!fs.existsSync(charsPath));
-        InvalidPath('chars');
-        return false;
+//問題なし:true
+async function testingCharsPath(charsPath) {
+    if (charsPath == '') {
+        emptyPath('chars');
+    } else if (!fs.existsSync(charsPath)) {
+        invalidPath('chars');
     } else {
         const chars = sharp(charsPath);
         const {
             format: charsFormat,
             width: charsWidth,
             height: charsHeight
-        } = chars.metadata();
+        } = await chars.metadata();
         /*
         今のところ以下の条件のみ
         - png
@@ -86,26 +98,33 @@ function testingCharsPath(charsPath) {
         var isWidth256NTimes = charsWidth % CHARS_STANDARD_WIDTH == 0;
         var isHeight256NTimes = charsHeight % CHARS_STANDARD_HEIGHT == 0;
         var widthWithHeightSameIs = charsWidth == charsHeight;
+        console.log(charsWidth);
+        console.log(charsHeight);
         if (isPng && isWidth256NTimes && isHeight256NTimes && widthWithHeightSameIs) {
             IMAGE_MAGNIFICATION = (IMAGE_MAGNIFICATION < charsWidth / CHARS_STANDARD_WIDTH) ? IMAGE_MAGNIFICATION : charsWidth / CHARS_STANDARD_WIDTH;
             return true;
+        } else {
+            var conditions = [isPng,isWidth256NTimes,isHeight256NTimes,widthWithHeightSameIs];
+            selectedRightnessNotImage('chars',conditions);
         }
     }
     return false;
 }
 
 //base画像が加工をする上で問題がないか
-function testingBasePath(basePath) {
-    if (!fs.existsSync(basePath)) {
-        InvalidPath('base');
-        return false;
+//問題なし:true
+async function  testingBasePath(basePath) {
+    if(basePath == ''){
+        emptyPath('base');
+    } else if (!fs.existsSync(basePath)) {
+        invalidPath('base');
     } else {
-        const base = sharp(basePath);
+        const base = await sharp(basePath);
         const {
             format: baseFormat,
             width: baseWidth,
             height: baseHeight
-        } = base.metadata();
+        } = await base.metadata();
         /*
         今のところ以下の条件のみ
         - png
@@ -117,9 +136,15 @@ function testingBasePath(basePath) {
         var isWidth256NTimes = baseWidth % BASE_STANDARD_WIDTH == 0;
         var isHeight256NTimes = baseHeight % BASE_STANDARD_HEIGHT == 0;
         var widthWithHeightSameIs = baseWidth == baseHeight;
+        console.log(baseWidth);
+        console.log(baseHeight);
+        console.log(base);
         if (isPng && isWidth256NTimes && isHeight256NTimes && widthWithHeightSameIs) {
             IMAGE_MAGNIFICATION = (IMAGE_MAGNIFICATION < baseWidth / BASE_STANDARD_WIDTH) ? IMAGE_MAGNIFICATION : baseWidth / BASE_STANDARD_WIDTH;
             return true;
+        } else {
+            var conditions = [isPng,isWidth256NTimes,isHeight256NTimes,widthWithHeightSameIs];
+            selectedRightnessNotImage('base',conditions);
         }
     }
     return false;
@@ -127,11 +152,16 @@ function testingBasePath(basePath) {
 
 //chars jsonが加工をする上で問題ないか
 function testingJsonPath(jsonPath) {
-    var json = fs.readFileSync(jsonPath);
-    if (!fs.existsSync(jsonPath)) {
-        InvalidPath('json');
+    if(jsonPath == ''){
+        emptyPath('json');
         return false;
-    } else if (isValidJson(json) == false) {
+    }
+    if (!fs.existsSync(jsonPath)) {
+        invalidPath('json');
+        return false;
+    }
+    var json = fs.readFileSync(jsonPath);
+    if (isValidJson(json) == false) {
         illegalJSONPassed();
         return false;
     } else {

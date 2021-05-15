@@ -14,10 +14,7 @@ selectDirBtn.addEventListener('click', () => {
 });
 
 ipcRenderer.on('selected-directory', async (event, path) => {
-    resetOverwriteCheck();
-    resetError();
-    resetWarning();
-    resetPackPng();
+
     RESOURCE_PACK_PATH = path
     if (isConvertibleResourcePack()) {
         resourcePackSelectedInProcess();
@@ -35,6 +32,12 @@ ipcRenderer.on('selected-directory', async (event, path) => {
 
 // select resource pack でリソースパックが選ばれた場合の処理
 function resourcePackSelectedInProcess() {
+    //logのリセット
+    resetOverwriteCheck();
+    resetError();
+    resetWarning();
+    resetPackPng();
+    resetConvertMessage();
     console.log('加工可能なresource pack が選択されました');
     // pack.pngの設定
     setPackPng();
