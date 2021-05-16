@@ -48,7 +48,7 @@ jobs:
     - name: build application
       run: |
         cd app
-        yarn start
+        yarn build:win
     - name: create release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
