@@ -5,6 +5,7 @@ const log = require('electron-log');
 const { autoUpdater } = require("electron-updater");
 const path = require('path');
 const packageJson = require('../package.json');
+const $ = require('jquery');
 let mainWindow;
 
 process.env.NODE_OPTIONS = undefined
