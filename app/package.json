@@ -1,7 +1,7 @@
 {
   "name": "minecraft-widgets-gen",
   "version": "0.2.11",
-  "author": "courange",
+  "author": "kamiya cou",
   "description": "Add text to the minecraft hotbar.",
   "main": "src/main.js",
   "scripts": {
@@ -26,7 +26,7 @@
   },
   "build": {
     "files": [
-      "img/"
+      "**/*","./img/*","**/img/*","img/*"
     ],
     "mac": {
       "target": "dmg"
