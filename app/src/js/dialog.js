@@ -69,7 +69,3 @@ function resetGameOptionDialog() {
   $("#gameOptionWarning").text("");
   $("#gameOptionError").text("");
 }
-function optionsExists(path) {
-  const fs = require("fs");
-  return fs.existsSync(path + "\\options.txt");
-}
