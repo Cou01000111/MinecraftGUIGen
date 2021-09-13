@@ -517,7 +517,7 @@ ipcMain.on('open-resourcepack-dialog', (event) => {
 
 linefeed.js
 ```js
-function getLFCode(text) {
+function util.getLFCode(text) {
     if (text.indexOf("\r\n") > -1) {
         return "\r\n";
     } else if (text.indexOf("\n") > -1) {
@@ -527,7 +527,7 @@ function getLFCode(text) {
     }
 }
 
-module.exports = { getLFCode };
+module.exports = { util.getLFCode };
 ```
 
 selectResourcePack.js
