@@ -1,3 +1,4 @@
+const $ = require("jquery");
 // 何かしらのエラーを表示するときはここにある関数を通じて標示する
 function selectedOutOfSupportVersion() {
   $("#gameOptionError").text("未対応のバージョンのoptionが選ばれました");

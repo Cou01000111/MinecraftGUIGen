@@ -149,16 +149,12 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
-  mainWindow.webContents.openDevTools();
-
+  //mainWindow.webContents.openDevTools();
   mainWindow.loadURL("file://" + __dirname + "/index.pug");
-
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
-
   Menu.setApplicationMenu(null);
-
   mainWindow.on("closed", () => {
     mainWindow = null;
   });

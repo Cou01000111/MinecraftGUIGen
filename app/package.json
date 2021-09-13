@@ -6,12 +6,14 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
+    "debug": "electron . --enable-logging",
     "build:mac": "electron-builder --mac --x64",
     "build:win": "electron-builder --win --x64"
   },
   "dependencies": {
+    "@popperjs/core": "^2.9.3",
     "bootstrap": "^5.1.0",
-    "electron-log": "^4.3.5",
+    "electron-log": "^4.4.1",
     "electron-pug": "^2.0.0",
     "electron-updater": "^4.3.8",
     "jquery": "^3.6.0",
@@ -26,7 +28,10 @@
   },
   "build": {
     "files": [
-      "**/*","./img/*","**/img/*","img/*"
+      "**/*",
+      "./img/*",
+      "**/img/*",
+      "img/*"
     ],
     "mac": {
       "target": "dmg"

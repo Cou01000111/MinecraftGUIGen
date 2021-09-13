@@ -1,24 +1,17 @@
 const { remote, ipcRenderer } = require("electron");
-const $ = require("jquery");
 const fs = require("fs");
-const setOutputPath = require("./js/setOutputPath");
 const app = remote.app;
-const ew = require("./js/errorWarning");
-const util = require("./js/util.js");
+const setOutputPath = require("./js/setOutputPath.js");
+const resourcePackSelected = require("./js/resourcePackSelected.js");
 
-const DEFAULT_WIDGETS_CHARA_PATH = "./src/img/widgetsChars.png";
-const DEFAULT_WIDGETS_CHARA_JSON_PATH = "./src/defaultChars.json";
-var RESOURCE_PACK_PATH;
+const DEFAULT_WIDGETS_CHARA_PATH = "./img/widgetsChars.png";
 
-const selectDirBtn = document.getElementById("selectResourcePack");
-selectDirBtn.addEventListener("click", () => {
-  ipcRenderer.send("open-resourcepack-dialog");
-});
+var resourcePackPath;
 
 ipcRenderer.on("selected-directory", async (event, path) => {
-  RESOURCE_PACK_PATH = path;
+  resourcePackPath = path;
   if (isConvertibleResourcePack()) {
-    resourcePackSelectedInProcess();
+    resourcePackSelected(resourcePackPath);
   } else {
     console.log("加工不可なresource pack が選択されました");
     var errorCode;
@@ -30,102 +23,12 @@ ipcRenderer.on("selected-directory", async (event, path) => {
     resourcePackExceptSelectedInProcess(errorCode);
   }
 });
-
-// select resource pack でリソースパックが選ばれた場合の処理
-function resourcePackSelectedInProcess() {
-  //logのリセット
-  resetOverwriteCheck();
-  ew.resetError();
-  ew.resetWarning();
-  resetPackPng();
-  ew.resetConvertMessage();
-  console.log("加工可能なresource pack が選択されました");
-  // pack.pngの設定
-  setPackPng();
-  setWidgetBasePath();
-  setWidgetCharsPath();
-  setWidgetCharsJsonPath();
-  // overwrite widgets.png のチェック
-  setOutputPath();
-  // game directory input の設定
-  setOptionPath();
-}
-
-function setWidgetBasePath() {
-  // widgetBase exits
-  if (isWidgetsExists()) {
-    console.log("widgets発見");
-    $("#overwriteWidgets").removeAttr("disabled");
-  }
-  if (isWidgetsbaseExists()) {
-    $("#widgetsBasePathInput").val(getWidgetsBasePath());
-  } else {
-    $("#baseWarning").text(
-      $("#baseWarning").text() +
-        "widgetsBase.pngが見つかりませんでした。widgets.pngを代わりに使用します"
-    );
-    $("#widgetsBasePathInput").val(getWidgetsPath());
-  }
-}
-
-function setWidgetCharsPath() {
-  // widgetChars exits
-  if (isWidgetsCharsExists()) {
-    $("#widgetsCharsPathInput").val(getWidgetsCharsPath());
-  } else {
-    $("#charsWarning").text(
-      $("#charsWarning").text() +
-        "widgetsChars.pngが見つかりませんでした。App付属のwidgetsChars.pngを使用します"
-    );
-    $("#widgetsCharsPathInput").val(path.resolve(DEFAULT_WIDGETS_CHARA_PATH));
-  }
-}
-
-function setWidgetCharsJsonPath() {
-  // widgetCharsJson exits
-  if (isWidgetsCharsJsonExists()) {
-    $("#widgetsCharsJsonPathInput").val(getWidgetsCharsJsonPath());
-  } else {
-    $("#charsJsonWarning").text(
-      $("#charsJsonWarning").text() +
-        "chars.jsonが見つかりませんでした。App付属のchars.jsonを使用します"
-    );
-    $("#widgetsCharsJsonPathInput").val(
-      path.resolve(DEFAULT_WIDGETS_CHARA_JSON_PATH)
-    );
-  }
-}
-
-
-function setPackPng() {
-  if (fs.existsSync(RESOURCE_PACK_PATH + "/pack.png")) {
-    $("#packPng").attr("src", RESOURCE_PACK_PATH + "/pack.png");
-  } else {
-    $("#packPng").attr("src", "./src/img/pack.png");
-  }
-}
-
 function resetPackPng() {
-  $("#packPng").attr("src", "./src/img/pack.png");
+  $("#packPng").attr("src", "./img/pack.png");
 }
-
 $("#overwriteWidgets").change(() => {
   setOutputPath();
 });
-
-function setOptionPath() {
-  var gameDirPath;
-  console.log(
-    RESOURCE_PACK_PATH && fs.existsSync(util.getDirName(RESOURCE_PACK_PATH, 2))
-  );
-  if (RESOURCE_PACK_PATH && fs.existsSync(util.getDirName(RESOURCE_PACK_PATH, 2))) {
-    gameDirPath = util.getDirName(RESOURCE_PACK_PATH, 2);
-  } else {
-    gameDirPath = app.getPath("appData") + "/.minecraft";
-  }
-  setOptionDataPreprocess(getOptionPathByArg(gameDirPath));
-}
-
 function setOptionDataPreprocess(path) {
   if (fs.existsSync(path)) {
     $("#gameOptionInput").val(path);
@@ -227,12 +130,12 @@ function toStringFromKeyConfig(options, version) {
 
 //keycode1.13.jsonの内容を返す
 function getKeyCode1_13() {
-  return JSON.parse(fs.readFileSync("./src/keycode/keycode1.13.json"));
+  return require("./keycode/keycode1.13.json");
 }
 
 //keycode1.12.2.jsonの内容を返す
 function getKeyCode1_12_2() {
-  return JSON.parse(fs.readFileSync("./src/keycode/keycode1.12.2.json"));
+  return require("./keycode/keycode1.12.2.json");
 }
 
 // 渡されたgame directoryのパスをもとにoptions.txtを返す
@@ -267,7 +170,7 @@ function resourcePackExceptSelectedInProcess(errorCode) {
 // resource packかどうか(ディレクトリの中にmcmetaがあるかどうか)
 function isResourcePack() {
   var fs = require("fs");
-  var files = fs.readdirSync(RESOURCE_PACK_PATH);
+  var files = fs.readdirSync(resourcePackPath);
   var ans = false;
   files.forEach((file) => {
     //console.log(file);
@@ -300,25 +203,21 @@ function isWidgetsCharsJsonExists() {
 }
 // get path to widgetsBase.png
 function getWidgetsPath() {
-  return RESOURCE_PACK_PATH + "/assets/minecraft/textures/gui/widgets.png";
+  return resourcePackPath + "/assets/minecraft/textures/gui/widgets.png";
 }
 // get path to widgetsBase.png
 function getWidgetsBasePath() {
-  return RESOURCE_PACK_PATH + "/assets/minecraft/textures/gui/widgetsBase.png";
+  return resourcePackPath + "/assets/minecraft/textures/gui/widgetsBase.png";
 }
 // get path to widgetsChars.png
 function getWidgetsCharsPath() {
-  return RESOURCE_PACK_PATH + "/assets/minecraft/textures/gui/widgetsChars.png";
+  return resourcePackPath + "/assets/minecraft/textures/gui/widgetsChars.png";
 }
 // get path to chars.json
 function getWidgetsCharsJsonPath() {
-  return RESOURCE_PACK_PATH + "/assets/minecraft/textures/gui/chars.json";
+  return resourcePackPath + "/assets/minecraft/textures/gui/chars.json";
 }
 //get path to output directory
 function getOutputDirPath() {
-  return RESOURCE_PACK_PATH + "/assets/minecraft/textures/gui/";
-}
-
-function resetOverwriteCheck() {
-  $("#overwriteWidgets").attr("disabled", "disabled");
+  return resourcePackPath + "/assets/minecraft/textures/gui/";
 }

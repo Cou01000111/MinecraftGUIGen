@@ -1,3 +1,4 @@
+const $ = require("jquery");
 "use strict";
 module.exports = function setOutputPath() {
   if ($("#overwriteWidgets").prop("checked")) {

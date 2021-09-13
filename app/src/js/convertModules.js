@@ -1,5 +1,5 @@
 "use strict";
-const errors = require("./errorWarning.js");
+const ew = require("./errorWarning.js");
 const HOTBAR_COUNT = 9;
 const CHARS_STANDARD_WIDTH = 48;
 const CHARS_STANDARD_HEIGHT = 48;
@@ -11,13 +11,12 @@ const BASE_STANDARD_HEIGHT = 256;
 const sharp = require("sharp");
 var IMAGE_MAGNIFICATION = 1;
 
+const DEFAULT_WIDGETS_CHARA_JSON = require("../defaultChars.json");
 
 //TODO chars.jsonにないものがkey configにあった場合の処理
-
 /**
  * 出力
  */
-//なぜかtestingargsの返り値にPromiseがつくので適当にasync
 module.exports = async function convertProcess(
   basePath,
   charsPath,
@@ -27,54 +26,56 @@ module.exports = async function convertProcess(
 ) {
   ew.resetConvertMessage();
   var test = await testingArgs(basePath, charsPath, charsJson, keyOption);
-  console.log(`testingArgs:${test} in convert process`);
+  console.log(`testingArgs:`, test);
   if (test == false) {
     console.log("引数に問題がありました");
     return;
   }
   console.log("引数に問題がありませんでした");
   var options = keyOption.split(",");
-  makeCharPng(options, charsPath, charsJson);
+  //charsがデフォルトの時用にここでsharpオブジェクトを作っておく
+  var imgBuf = Buffer.from(DEFAULT_CHARS_IMG, "base64");
+  var charsSharpObj =
+    charsPath == "default_chars.img" ? sharp(imgBuf) : sharp(charsPath);
+  makeCharPng(options, charsSharpObj, charsJson);
+
   var base = sharp(basePath);
   //images作成
   var chars = new Array();
+
   for (let i = 0; i < HOTBAR_COUNT; i++) {
-    var path = `./src/img/${i}.png`;
+    var path = `./img/${i}.png`;
     var compositeObj = {
       input: path,
       top: 1 * IMAGE_MAGNIFICATION,
       left: 1 + i * HOTBAR_WIDTH * IMAGE_MAGNIFICATION,
     };
-    //console.log(compositeObj);
+    console.log(compositeObj);
     chars.push(compositeObj);
+    console.log(i);
   }
-  //console.log(chars);
+  console.log(chars);
   base.composite(chars).toFile(outputPath, (err, info) => {
     if (err) console.log(err);
-    else $("#convertMessage").text("ファイル出力成功");
-    console.log(info);
+    else {
+      $("#convertMessage").text("ファイル出力成功");
+      console.log(info);
+    }
   });
-}
+};
 
 //chars画像,base画像,key optionそれぞれ問題がないか
 //問題なし:true
-//なぜかtestingCharsPath,testingBasePathでPromiseが返されるので適当にasync
 async function testingArgs(basePath, charsPath, charsJson, keyOption) {
-  console.log(`basePath:${basePath}`);
-  console.log(`charsPath:${charsPath}`);
-  console.log(`charsJson:${charsJson}`);
-  console.log(keyOption);
+  //console.log(`basePath:${basePath}`);
+  //console.log(`charsPath:${charsPath}`);
+  //console.log(`charsJson:${charsJson}`);
+  //console.log(keyOption);
   var charsPathTest = await testingCharsPath(charsPath);
   var basePathTest = await testingBasePath(basePath);
   var jsonPathTest = testingJsonPath(charsJson);
   var keyOptionTest = keyOption.split(",").length == HOTBAR_COUNT;
   var ans = charsPathTest && basePathTest && jsonPathTest && keyOptionTest;
-  //console.log(charsPathTest);
-  //console.log(basePathTest);
-  //console.log(jsonPathTest);
-  console.log(keyOptionTest);
-  console.log(keyOption.split(",").length);
-  console.log(`testingArgs:${ans}`);
   return ans;
 }
 
@@ -83,10 +84,15 @@ async function testingArgs(basePath, charsPath, charsJson, keyOption) {
 async function testingCharsPath(charsPath) {
   if (charsPath == "") {
     ew.emptyPath("chars");
-  } else if (!fs.existsSync(charsPath)) {
+  } else if (!fs.existsSync(charsPath) && charsPath != "default_chars.img") {
     ew.invalidPath("chars");
   } else {
-    const chars = sharp(charsPath);
+    var imgBuf;
+    var chars;
+    if (charsPath == "default_chars.img") {
+      imgBuf = Buffer.from(DEFAULT_CHARS_IMG, "base64");
+      chars = await sharp(imgBuf);
+    } else chars = await sharp(charsPath);
     const {
       format: charsFormat,
       width: charsWidth,
@@ -153,9 +159,6 @@ async function testingBasePath(basePath) {
     var isWidth256NTimes = baseWidth % BASE_STANDARD_WIDTH == 0;
     var isHeight256NTimes = baseHeight % BASE_STANDARD_HEIGHT == 0;
     var widthWithHeightSameIs = baseWidth == baseHeight;
-    console.log(baseWidth);
-    console.log(baseHeight);
-    console.log(base);
     if (
       isPng &&
       isWidth256NTimes &&
@@ -186,11 +189,13 @@ function testingJsonPath(jsonPath) {
     ew.emptyPath("json");
     return false;
   }
-  if (!fs.existsSync(jsonPath)) {
+  if (!fs.existsSync(jsonPath) && jsonPath != "default_chars.json") {
     ew.invalidPath("json");
     return false;
   }
-  var json = fs.readFileSync(jsonPath);
+  var json;
+  if (jsonPath == "default_chars.json") return true;
+  json = fs.readFileSync(jsonPath);
   if (isValidJson(json) == false) {
     ew.illegalJSONPassed();
     return false;
@@ -199,7 +204,6 @@ function testingJsonPath(jsonPath) {
      * unitがある
      */
     var jsObj = JSON.parse(json);
-    console.log(jsObj);
     UNIT_OF_CHAR_WIDTH = jsObj.unit.width;
     UNIT_OF_CHAR_HEIGHT = jsObj.unit.height;
     var isUnitNormal = hasUnit(jsObj);
@@ -235,10 +239,13 @@ function isValidJson(value) {
 }
 
 //hotbarにつかうchar.pngを生成し、連番でimgに保存する
-function makeCharPng(keyOptionList, charsPath, jsonPath) {
+function makeCharPng(keyOptionList, charsSharpObj, jsonPath) {
+  console.log(keyOptionList, charsSharpObj, jsonPath);
   var extractList = getExtractList(keyOptionList, jsonPath);
-  var i = 0;
-  keyOptionList.forEach(async (option) => {
+  var promises = [];
+  if (!fs.existsSync("img")) fs.mkdirSync("img");
+  for (const [i, option] of keyOptionList.entries()) {
+    console.log(option);
     var exObj = {
       top:
         extractList.get(option).top * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
@@ -247,39 +254,29 @@ function makeCharPng(keyOptionList, charsPath, jsonPath) {
       width: UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
       height: UNIT_OF_CHAR_HEIGHT * IMAGE_MAGNIFICATION,
     };
-    outputImagePromise(charsPath, exObj, i);
-    i++;
-  });
+    promises.push(charsSharpObj.extract(exObj).png().toFile(`./img/${i}.png`));
+  }
+  Promise.all(promises)
+    .then(function (results) {
+      console.log(results);
+    })
+    .catch(function () {
+      console.log("error");
+    });
 }
-
-function outputImagePromise(path, ex, i) {
-  return new Promise((resolve) => {
-    sharp(path)
-      .extract(ex)
-      .png()
-      .toFile(`./src/img/${i}.png`, () => {
-        resolve();
-      });
-  });
-}
-
 //{ option: {top: n,left:n} }のリストを返す
 //key option list にない場合は{ option: "" }を返す
 function getExtractList(keyOptionList, jsonPath) {
-  const allExtractObjList = JSON.parse(fs.readFileSync(jsonPath));
+  var allExtractObjList;
+  if (jsonPath == "default_chars.json")
+    allExtractObjList = DEFAULT_WIDGETS_CHARA_JSON;
+  else allExtractObjList = JSON.parse(fs.readFileSync(jsonPath));
+  console.log(allExtractObjList);
   var extract = new Map();
   keyOptionList.forEach((option) => {
-    //console.log(option);
-    //console.log(allExtractObjList[option]);
-    //console.log(allExtractObjList.hasOwnProperty(option));
-    if (allExtractObjList.hasOwnProperty(option)) {
-      //console.log(true);
+    if (allExtractObjList.hasOwnProperty(option))
       extract.set(option, allExtractObjList[option]);
-    } else {
-      //console.log(false);
-      extract.set({ option: "" });
-    }
+    else extract.set({ option: "" });
   });
-  //console.log(extract);
   return extract;
 }
