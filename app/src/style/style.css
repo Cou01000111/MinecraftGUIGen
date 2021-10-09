@@ -1,23 +1,35 @@
 * {
-    color: #f3f3f3;
+  color: #f3f3f3;
 }
-body{
-    background-color: #1f1f1f;
+body {
+  background-color: #1f1f1f;
+  margin: 1rem;
 }
-#holder{
-    height: 200px;
-    color: #868686;
-    text-align: center;
+#holder {
+  height: 200px;
+  color: #868686;
+  text-align: center;
 }
-.info{
-    color: #93ff89;
+.info {
+  color: #93ff89;
 }
-.error{
-    color: #e26060;
+.error {
+  color: #e26060;
 }
-.warning{
-    color: #f0d066;
+.warning {
+  color: #f0d066;
 }
-input{
-    color: #1f1f1f;
+.row {
+  color: #1f1f1f;
+  margin: 0;
+}
+.message{
+    margin-bottom: 0.25rem;
+}
+#selectResourcePack {
+    margin-bottom: 1rem;
+}
+img{
+    image-rendering: pixelated;
+    height: 100%;
 }
