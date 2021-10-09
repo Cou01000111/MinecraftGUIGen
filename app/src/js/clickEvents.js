@@ -41,7 +41,6 @@ function gameOptionDialog() {
   if ($("#widgetsBasePathInput").val())
     dirPath = util.getDirName($("#widgetsBasePathInput").val(), 5);
   else dirPath = `${app.getPath("appData")}\\.minecraft\\resourcepacks`;
-  console.log(dirPath);
   if (fs.existsSync(dirPath)) dirPath = "";
   return dirPath;
 }

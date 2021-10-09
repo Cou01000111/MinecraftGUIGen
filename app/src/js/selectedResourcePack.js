@@ -2,7 +2,7 @@ const ew = require("./errorWarning");
 const setOutputPath = require("./setOutputPath");
 const $ = require("jquery");
 
-module.exports = function resourcePackSelectedInProcess(resourcePackPath) {
+function resourcePackSelectedInProcess(resourcePackPath) {
   //logのリセット
   resetOverwriteCheck();
   ew.resetError();
@@ -19,7 +19,7 @@ module.exports = function resourcePackSelectedInProcess(resourcePackPath) {
   setOutputPath();
   // game directory input の設定
   setOptionPath(resourcePackPath);
-};
+}
 function resetOverwriteCheck() {
   $("#overwriteWidgets").attr("disabled", "disabled");
 }
@@ -46,7 +46,6 @@ function setWidgetBasePath() {
     $("#widgetsBasePathInput").val(getWidgetsPath());
   }
 }
-
 function setWidgetCharsPath() {
   // widgetChars exits
   if (isWidgetsCharsExists()) {
@@ -59,7 +58,6 @@ function setWidgetCharsPath() {
     $("#widgetsCharsPathInput").val("default_chars.img");
   }
 }
-
 function setWidgetCharsJsonPath() {
   // widgetCharsJson exits
   if (isWidgetsCharsJsonExists()) {
@@ -72,19 +70,12 @@ function setWidgetCharsJsonPath() {
     $("#widgetsCharsJsonPathInput").val("default_chars.json");
   }
 }
-
 function setOptionPath(resourcePackPath) {
   var gameDirPath;
-  console.log(
-    resourcePackPath && fs.existsSync(util.getDirName(resourcePackPath, 2))
-  );
-  if (
-    resourcePackPath &&
-    fs.existsSync(util.getDirName(resourcePackPath, 2))
-  ) {
+  if (resourcePackPath && fs.existsSync(util.getDirName(resourcePackPath, 2)))
     gameDirPath = util.getDirName(resourcePackPath, 2);
-  } else {
-    gameDirPath = app.getPath("appData") + "/.minecraft";
-  }
+  else gameDirPath = app.getPath("appData") + "/.minecraft";
   setOptionDataPreprocess(getOptionPathByArg(gameDirPath));
 }
+
+module.exports = resourcePackSelectedInProcess;

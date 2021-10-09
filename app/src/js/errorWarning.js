@@ -18,7 +18,7 @@ function NonResourcePackHasBeenSelected() {
   $("#errorMessage").text("minecraftのresource packを入れてください");
 }
 
-function widgetsDoesNotFound(params) {
+function widgetsDoesNotFound() {
   $("#errorMessage").text(
     "widgets.pngまたはwidgetsBase.pngが存在しないリソースパックは変換できません"
   );

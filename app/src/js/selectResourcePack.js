@@ -2,7 +2,7 @@ const { remote, ipcRenderer } = require("electron");
 const fs = require("fs");
 const app = remote.app;
 const setOutputPath = require("./js/setOutputPath.js");
-const resourcePackSelected = require("./js/resourcePackSelected.js");
+const selectedResourcePack = require("./js/selectedResourcePack.js");
 
 const DEFAULT_WIDGETS_CHARA_PATH = "./img/widgetsChars.png";
 
@@ -11,7 +11,7 @@ var resourcePackPath;
 ipcRenderer.on("selected-directory", async (event, path) => {
   resourcePackPath = path;
   if (isConvertibleResourcePack()) {
-    resourcePackSelected(resourcePackPath);
+    selectedResourcePack(resourcePackPath);
   } else {
     console.log("加工不可なresource pack が選択されました");
     var errorCode;
