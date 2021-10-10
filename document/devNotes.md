@@ -1,7 +1,47 @@
 electronでアプリ作りたい！！！
 
-# 公式クイックスタートを参考にする
+# まとめ
 
+## package.jsonの件
+>注意: author と description のフィールドはパッケージ化に必要です。これが無ければ、npm run make の実行でエラーが発生します。
+
+## yarn
+`yarn add -dev electron`
+ではなく
+`yarn add electron`
+
+## windowサイズ固定
+```js
+✖ mainWindow.setresizeble = false;
+〇 mainWindow.setresizeble(false);
+```
+
+## 外部ファイルの使用
+`nodeIntegration:true`にして`require`で読み込む
+
+## 画像の使用
+htmlで使ってる=>そのまま一緒にビルドされる
+htmlで使ってない=>Base64に変換して文字列として保持する
+
+## ファイル選択後にいろいろする
+thenの後にいろいろ書く
+
+```js
+ipcMain.on('open-file-dialog', (event) => {
+    console.log('1');
+    dialog.showOpenDialog({
+        properties: ['openDirectory']
+    }).then((result)=>{
+        console.log('2');
+        if (result) {
+            console.log(`selected :${result}`);
+            event.sender.send('selected-directory' , result)
+        }
+    })
+})
+```
+
+# 公式クイックスタートを参考にする
 ## そのままパクる
 
 [公式クイックスタート](https://www.electronjs.org/docs/tutorial/quick-start)を参考にとりあえずやってみる
@@ -74,7 +114,6 @@ package.json見た感じその二項目は空白になっていたので適当�
 >注意: author と description のフィールドはパッケージ化に必要です。これが無ければ、npm run make の実行でエラーが発生します。
 
 というか公式でちゃんと書いてて草
-
 ## yarn を使ってみる
 [npmとyarnのコマンド早見表](https://qiita.com/rubytomato@github/items/1696530bb9fd59aa28d8)を参考にいろいろ
 ```sh
@@ -116,7 +155,6 @@ yarn版のコマンドもあるしよさそう
 したら解決した
 
 とりあえず[ここ](https://qiita.com/y-tsutsu/items/179717ecbdcc27509e5a)を参考に頑張る
-
 # ウィンドウサイズが変更できないようにしたい
 ```js
 mainWindow.setresizeble = false;
@@ -126,7 +164,6 @@ mainWindow.setresizeble = false;
 mainWindow.setresizeble(false);
 ```
 だったわ
-
 # importがｲﾐﾜｶﾗﾝ
 ```js
 import { ipcRenderer } from "electron";
@@ -293,7 +330,6 @@ Uncaught ReferenceError: require is not defined
 これは別のwebサーバーに接続して他人のコードを使うとnodeの機能を使われて危ないので脆弱性問題的にoffになっているらしいが自分で作った物ならいいんじゃないかと外人ニキが言ってた
 
 というわけで解決
-
 # x.y is not a function
 
 こういう時はxに問題があることが多い（気がする）
@@ -312,7 +348,6 @@ selectDirBtn.addEventListener('click',(e)=>{
 });
 ```
 これで解決
-
 # console log なんもわからん
 これはメインプロセスのコードなのですが、なぜか全てのlogが表示されません
 

@@ -10,17 +10,17 @@ html(lang="ja")
     link(rel='stylesheet', href='./style/style.css')
   body.p-3
     // select resourcepack button
-    div.row
-      img#packPng.responsive-img.col.s2(src='./img/pack.png')
-      a#selectResourcePack.waves-effect.col.s10.btn-large Select Resource Pack
+    div.row.select-btn
+      img#packPng.col(src='./img/pack.png')
+      a#selectResourcePack.waves-effect.waves-teal.col.s9.btn Select Resource Pack
       p#errorMessage.error.message
       p#warningMessage.warning.message
     // widgets base path
     .row
       p.col.s4.col.l3 widgets base path
       input#widgetsBasePathInput.col.s7(type='text')
-      a#widgetsBaseDialog.waves-effect.btn.col.s1
-        img(src="img/folder.svg",width="18px",height="18px")
+      a#widgetsBaseDialog.waves-effect.waves-teal.btn-flat.col.s1
+        img(src="img/folder.svg",width="15px",height="15px")
     .row
       p#baseWarning.warning.message
       p#baseError.error.message
@@ -28,8 +28,8 @@ html(lang="ja")
     .row
       p.col.s4.col.l3 widgets chars path
       input#widgetsCharsPathInput.col.s7(type='text')
-      a#widgetsCharsDialog.waves-effect.btn.col.s1
-        img(src="img/folder.svg",width="18px",height="18px")
+      a#widgetsCharsDialog.waves-effect.waves-teal.btn-flat.col.s1
+        img(src="img/folder.svg",width="15px",height="15px")
     .row
       p#charsWarning.warning.message
       p#charsError.error.message
@@ -37,8 +37,8 @@ html(lang="ja")
     .row
       p.col.s4.col.l3 widgets charsJson path
       input#widgetsCharsJsonPathInput.col.s7(type='text')
-      a#widgetsCharsJsonDialog.waves-effect.btn.col.s1
-        img(src="img/folder.svg",width="18px",height="18px")
+      a#widgetsCharsJsonDialog.waves-effect.waves-teal.btn-flat.col.s1
+        img(src="img/folder.svg",width="15px",height="15px")
     .row
       p#charsJsonWarning.warning.message
       p#charsJsonError.error.message
@@ -46,8 +46,8 @@ html(lang="ja")
     .row
       p.col.s4.col.l3 output Path
       input#outputPathInput.col.s7(type='text')
-      a#outputDialog.waves-effect.btn.col.s1
-        img(src="img/folder.svg",width="18px",height="18px")
+      a#outputDialog.waves-effect.waves-teal.btn-flat.col.s1
+        img(src="img/folder.svg",width="15px",height="15px")
     div
       p#outputWarning.warning.message
       p#outputError.error.message
@@ -60,10 +60,10 @@ html(lang="ja")
     .row.border.p-2
       p.col.s4.col.l3 options.txt
       input#gameOptionInput.col.s6(type='text')
-      a#gameOptionDialogDirectory.waves-effect.btn.col.s1
-        img(src="img/folder.svg",width="18px",height="18px")
-      a#gameOptionDialogFile.waves-effect.btn.col.s1
-        img(src="img/file.svg",width="18px",height="18px")
+      a#gameOptionDialogDirectory.waves-effect.waves-teal.btn-flat.col.s1
+        img(src="img/folder.svg",width="15px",height="15px")
+      a#gameOptionDialogFile.waves-effect.waves-teal.btn-flat.col.s1
+        img(src="img/file.svg",width="15px",height="15px")
       table.mt-2.table
         tr
           td#minecraftVersionLabel.col.s4.p-2 minecraft version
@@ -75,10 +75,10 @@ html(lang="ja")
       p#gameOptionError.error.message
       //convert button
     .row
-      a#convertWidgets.waves-effect.btn.btn-outline-light.w-100.mt-2 変換
-      p#convertMessage.info.message
-      p#convertWarning.warning.message
-      p#convertError.error.message
+      a#convertWidgets.waves-effect.waves-teal.btn.col.s12 変換
+      p#convertMessage.info.message.col.s12
+      p#convertWarning.warning.message.col.s12
+      p#convertError.error.message.col.s12
     script(src="js/materialize.js")
     script(src="./js/requires.js")
     script(src="./js/clickEvents.js")

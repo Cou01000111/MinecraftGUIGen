@@ -138,7 +138,7 @@ async function createWindow() {
   }
   mainWindow = new BrowserWindow({
     width: 500,
-    height: 600,
+    height: app.isPackaged?600:900,
     center: true,
     icon: path.join(__dirname, "./img/icon.ico"),
     webPreferences: {

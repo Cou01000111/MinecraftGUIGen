@@ -23,16 +23,30 @@ body {
   color: #1f1f1f;
   margin: 0;
 }
-.message{
-    margin-bottom: 0.25rem;
+.message {
+  margin-bottom: 0.25rem;
 }
 #selectResourcePack {
-    margin-bottom: 1rem;
+  padding-top: 1.3rem;
 }
-img{
-    image-rendering: pixelated;
-    height: 100%;
+img {
+  image-rendering: pixelated;
 }
-p{
-    margin-bottom: 0px;
+p {
+  margin-bottom: 0px;
+}
+#selectResourcePack {
+  height: 5rem;
+}
+.select-btn{
+  margin-bottom: 1rem;
+}
+a{
+  padding: 0;
+}
+.btn{
+  padding:0px 8px;
+}
+tr{
+  border-bottom-color: #f3f3f3;
 }
