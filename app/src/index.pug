@@ -7,21 +7,20 @@ html(lang="ja")
     title Minecraft Widgets Gen
 
     link(rel='stylesheet', href='style/materialize.css')
-    link(href="https://fonts.googleapis.com/icon?family=Material+Icons",rel="stylesheet")
     link(rel='stylesheet', href='./style/style.css')
   body.p-3
     // select resourcepack button
     div.row
       img#packPng.responsive-img.col.s2(src='./img/pack.png')
-      button#selectResourcePack.col.s10.btn-large Select Resource Pack
+      a#selectResourcePack.waves-effect.col.s10.btn-large Select Resource Pack
       p#errorMessage.error.message
       p#warningMessage.warning.message
     // widgets base path
     .row
       p.col.s4.col.l3 widgets base path
       input#widgetsBasePathInput.col.s7(type='text')
-      button#widgetsBaseDialog.btn.col.s1
-        i.material-icons folder
+      a#widgetsBaseDialog.waves-effect.btn.col.s1
+        img(src="img/folder.svg",width="18px",height="18px")
     .row
       p#baseWarning.warning.message
       p#baseError.error.message
@@ -29,8 +28,8 @@ html(lang="ja")
     .row
       p.col.s4.col.l3 widgets chars path
       input#widgetsCharsPathInput.col.s7(type='text')
-      button#widgetsCharsDialog.btn.col.s1
-        i.material-icons folder
+      a#widgetsCharsDialog.waves-effect.btn.col.s1
+        img(src="img/folder.svg",width="18px",height="18px")
     .row
       p#charsWarning.warning.message
       p#charsError.error.message
@@ -38,8 +37,8 @@ html(lang="ja")
     .row
       p.col.s4.col.l3 widgets charsJson path
       input#widgetsCharsJsonPathInput.col.s7(type='text')
-      button#widgetsCharsJsonDialog.btn.col.s1
-        i.material-icons folder
+      a#widgetsCharsJsonDialog.waves-effect.btn.col.s1
+        img(src="img/folder.svg",width="18px",height="18px")
     .row
       p#charsJsonWarning.warning.message
       p#charsJsonError.error.message
@@ -47,8 +46,8 @@ html(lang="ja")
     .row
       p.col.s4.col.l3 output Path
       input#outputPathInput.col.s7(type='text')
-      button#outputDialog.btn.col.s1
-        i.material-icons folder
+      a#outputDialog.waves-effect.btn.col.s1
+        img(src="img/folder.svg",width="18px",height="18px")
     div
       p#outputWarning.warning.message
       p#outputError.error.message
@@ -61,10 +60,10 @@ html(lang="ja")
     .row.border.p-2
       p.col.s4.col.l3 options.txt
       input#gameOptionInput.col.s6(type='text')
-      button#gameOptionDialogDirectory.btn.col.s1
-        i.material-icons folder
-      button#gameOptionDialogFile.btn.col.s1
-        i.material-icons file
+      a#gameOptionDialogDirectory.waves-effect.btn.col.s1
+        img(src="img/folder.svg",width="18px",height="18px")
+      a#gameOptionDialogFile.waves-effect.btn.col.s1
+        img(src="img/file.svg",width="18px",height="18px")
       table.mt-2.table
         tr
           td#minecraftVersionLabel.col.s4.p-2 minecraft version
@@ -76,13 +75,10 @@ html(lang="ja")
       p#gameOptionError.error.message
       //convert button
     .row
-      button#convertWidgets.btn.btn-outline-light.w-100.mt-2 変換
+      a#convertWidgets.waves-effect.btn.btn-outline-light.w-100.mt-2 変換
       p#convertMessage.info.message
       p#convertWarning.warning.message
       p#convertError.error.message
-    //script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js', integrity='sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU', crossorigin='anonymous')
-    //script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js', integrity='sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj', crossorigin='anonymous')
-    //link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css', rel='stylesheet', integrity='sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1', crossorigin='anonymous')
     script(src="js/materialize.js")
     script(src="./js/requires.js")
     script(src="./js/clickEvents.js")

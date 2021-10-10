@@ -33,3 +33,6 @@ img{
     image-rendering: pixelated;
     height: 100%;
 }
+p{
+    margin-bottom: 0px;
+}
