@@ -1,7 +1,0 @@
-"use strict";
-const $ = require("jquery");
-const ew = require("./js/errorWarning.js");
-const util = require("./js/util.js");
-const path = require("path");
-const reset = require("./js/resetDialog.js");
-const DEFAULT_CHARS_IMG = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAB4UlEQVR4nO1XAW7CQAw79qo9r6/ZN7shaOVGdi653tEyinRiCm7OjpPAyjzPJXnm7595eW3ia7CUWyDe5bQ8RAVA7PwCkFONqCPsPQQ48UvAI+Vf0uWYD27sMxU/6pRpmr7u1bm/P/9eiS5VYxVF7JKDVRrybp7x8OwOhS8ApA9YAUgIY4ALExJOrsW0BWX5N8oiDjCxiwDlWKZAWT7yghohJoBVyCOk8Bk+cgbwYkXIusLwtRnY7QD2G6uQmgHlgIfP5o/gQ72uKmFjHl452eL8Jj8AQ72IeEvSw2eGO7mdfAfYBVgkW+UeAhgfzB1ywBu+t3BAKfYE0Ap1nAEpoHUbYGz0tpH42le9qhw6UPsi69VarFOkNUqA91Oil4BMQauKewjwCA0VkHFA4VscyPDpOgNIKkJoTbJXQOs2sAKGbpvsbyF0he11u0axotFKZ51nzqQfQLwVkOl1xJ5GgCLEHHiJgBqhiANqvbYIQE6Qv/6vI5uBqIAWBzL4XdsAY6O3jcR7ltXiwhWLH3q6CVC9fpgANRsK68zSeAHCehqPiD2FAxFnbEwUYqwANfWRuML+KwHZ+OkEmMsuAacXwHJ5eV8uIEDowwS09l5jv3Zft4eQvgQc1UJDCnQ0gY8X8AstyTSRWjs+KQAAAABJRU5ErkJggg==";

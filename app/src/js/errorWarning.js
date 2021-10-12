@@ -1,11 +1,11 @@
 const $ = require("jquery");
 // 何かしらのエラーを表示するときはここにある関数を通じて標示する
 function selectedOutOfSupportVersion() {
-  $("#gameOptionError").text("未対応のバージョンのoptionが選ばれました");
+  $("#gameOptionError").text("未対応のバージョンのoptionが選ばれました<br>");
 }
 
 function dirIsNotGameDir() {
-  $("#gameOptionError").text("ゲームディレクトリを指定してください");
+  $("#gameOptionError").text("ゲームディレクトリを指定してください<br>");
 }
 
 function nonGameDirectoryHasBeenSelected() {
@@ -15,18 +15,18 @@ function nonGameDirectoryHasBeenSelected() {
 }
 
 function NonResourcePackHasBeenSelected() {
-  $("#errorMessage").text("minecraftのresource packを入れてください");
+  $("#errorMessage").text("minecraftのresource packを入れてください<br>");
 }
 
 function widgetsDoesNotFound() {
   $("#errorMessage").text(
-    "widgets.pngまたはwidgetsBase.pngが存在しないリソースパックは変換できません"
+    "widgets.pngまたはwidgetsBase.pngが存在しないリソースパックは変換できません<br>"
   );
 }
 
 function gameDirNotFound() {
   $("#gameOptionError").text(
-    "ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoptions.txtを指定してください"
+    "ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoptions.txtを指定してください<br>"
   );
 }
 
@@ -42,7 +42,7 @@ function emptyPath(baseOrCharsOrJson) {
     throw error();
   }
   $("#convertError").append(
-    `<br>${baseOrCharsOrJson}のpathが入力されていません`
+    `${baseOrCharsOrJson}のpathが入力されていません<br>`
   );
 }
 
@@ -57,7 +57,7 @@ function invalidPath(baseOrCharsOrJson) {
   ) {
     throw error();
   }
-  $("#convertError").append(`<br>${baseOrCharsOrJson}のpathが無効です`);
+  $("#convertError").append(`${baseOrCharsOrJson}のpathが無効です<br>`);
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
@@ -68,42 +68,63 @@ function selectedRightnessNotImage(baseOrChars, conditions) {
   ) {
     throw error();
   }
-  $("#convertError").append(`<br>${baseOrChars}の画像が適切ではありません:`);
+  $("#convertError").append(`${baseOrChars}の画像が適切ではありません<br>`);
   if (!conditions[0]) {
-    $("#convertError").append(`${baseOrChars}の画像がpngではありません`);
+    $("#convertError").append(`  ${baseOrChars}の画像がpngではありません<br>`);
   }
   if (!conditions[1]) {
     $("#convertError").append(
-      `${baseOrChars}の横幅がデフォルトの倍数ではありません`
+      `- ${baseOrChars}の横幅がデフォルトの倍数ではありません<br>`
     );
   }
   if (!conditions[2]) {
     $("#convertError").append(
-      `${baseOrChars}の縦幅がデフォルトの倍数ではありません`
+      `- ${baseOrChars}の縦幅がデフォルトの倍数ではありません<br>`
     );
   }
   if (!conditions[3]) {
     $("#convertError").append(
-      `${baseOrChars}の横幅と縦幅の比が1:1ではありません`
+      `- ${baseOrChars}の横幅と縦幅の比が1:1ではありません<br>`
     );
   }
 }
 
 //chars.jsonが不正な時
 function illegalJSONPassed() {
-  $("#charsJsonError").text("JSONファイルの文法に誤りがあります");
+  $("#charsJsonError").text("JSONファイルの文法に誤りがあります<br>");
 }
 
-//unitがない
 function noUnit() {
-  $("#charsJsonError").text("jsonからunitが見つかりません");
+  $("#charsJsonError").text("jsonからunitが見つかりません<br>");
 }
 
 function unitPropertyIsIllegal() {
-  $("#charsJsonError").text("jsonのunitのプロパティに誤りがあります");
+  $("#charsJsonError").text("jsonのunitのプロパティに誤りがあります<br>");
 }
 
-//unitのプロパティが不正
+function noSupportKey() {
+  $("#charsJsonError").text("jsonからsupportKeyが見つかりません<br>");
+}
+
+function supportKeyIsNotArray() {
+  $("#charsJsonError").text("jsonのsupportKeyが配列ではありません<br>");
+}
+
+function supportKeyValueIsNotString() {
+  $("#charsJsonError").text(
+    "jsonのsupportKeyが文字列ではありません（\"または'で囲われていません）<br>"
+  );
+}
+
+function supportKeyLengthIsZero() {
+  $("#charsJsonError").text(
+    "jsonのsupportKeyのプロパティに要素がありません<br>"
+  );
+}
+
+function charsJsonPngMismatch() {
+  $("#charsWarning").text("charsのjsonとpngが一致していない可能性があります");
+}
 
 function resetError() {
   $("#errorMessage").text("");
@@ -145,4 +166,8 @@ module.exports = {
   resetError,
   resetWarning,
   resetConvertMessage,
+  noSupportKey,
+  supportKeyLengthIsZero,
+  supportKeyIsNotArray,
+  supportKeyValueIsNotString,
 };

@@ -1,4 +1,8 @@
-exports.module=function setDialogListener() {
+const util = require("./util");
+const setOptionData = require("./setOptionData");
+const $ = require("jquery");
+
+module.exports = function setDialogListener() {
   ipcRenderer.on("selected-base-path", async (event, path) => {
     reset.baseDialog();
     $("#widgetsBasePathInput").val(path);
@@ -19,16 +23,16 @@ exports.module=function setDialogListener() {
     //選択されたものがdirectoryの場合=>game directoryとして処理
     //選択されたものがfileの場合=>option.txtとして処理
     fs.stat(p, function (err, stats) {
-      console.log(p);
-      console.log(path.extname(p));
       if (path.extname(p) == ".txt") {
-        setOptionDataPreprocess(p);
+        setOptionData.setOptionData(p, resourcePackPath);
       } else if (stats.isDirectory()) {
-        setOptionDataPreprocess(getOptionPathByArg(p));
+        setOptionData.setOptionData(
+          util.getOptionPathByArg(p),
+          resourcePackPath
+        );
       } else {
         ew.nonGameDirectoryHasBeenSelected();
       }
     });
   });
-
-}
+};

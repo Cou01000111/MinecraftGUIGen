@@ -1,15 +1,16 @@
 const $ = require("jquery");
-"use strict";
-module.exports = function setOutputPath() {
+const gp = require("./getFilePath");
+
+module.exports = function setOutputPath(resourcePackPath) {
   if ($("#overwriteWidgets").prop("checked")) {
-    setOutputPathOverwrite();
+    setOutputPathOverwrite(resourcePackPath);
   } else {
-    setOutputPathDoNotOverwrite();
+    setOutputPathDoNotOverwrite(resourcePackPath);
   }
 };
-function setOutputPathDoNotOverwrite() {
-  $("#outputPathInput").val(getOutputDirPath() + "widgetsOutput.png");
+function setOutputPathDoNotOverwrite(resourcePackPath) {
+  $("#outputPathInput").val(gp.getOutputDirPath(resourcePackPath) + "widgetsOutput.png");
 }
-function setOutputPathOverwrite() {
-  $("#outputPathInput").val(getOutputDirPath() + "widgets.png");
+function setOutputPathOverwrite(resourcePackPath) {
+  $("#outputPathInput").val(gp.getOutputDirPath(resourcePackPath) + "widgets.png");
 }

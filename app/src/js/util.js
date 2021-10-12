@@ -1,4 +1,5 @@
 "use strict";
+const path = require("path");
 /**
  * textから改行コードを推測し返す関数
  */
@@ -19,4 +20,10 @@ function getDirName(p, num) {
   return returnPath;
 }
 
-module.exports = { getLFCode, getDirName };
+// 渡されたgame directoryのパスをもとにoptions.txtを返す
+function getOptionPathByArg(path) {
+  console.log(`${path}/options.txt`);
+  return `${path}/options.txt`;
+}
+
+module.exports = { getLFCode, getDirName, getOptionPathByArg };

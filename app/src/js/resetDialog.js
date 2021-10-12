@@ -20,7 +20,6 @@ function gameOptionDialog() {
   $("#gameOptionError").text("");
 }
 
-
 module.exports = {
   outputPathDialog,
   charsJsonDialog,

@@ -11,8 +11,9 @@ html(lang="ja")
   body.p-3
     // select resourcepack button
     div.row.select-btn
-      img#packPng.col(src='./img/pack.png')
-      a#selectResourcePack.waves-effect.waves-teal.col.s9.btn Select Resource Pack
+      span.col.s2
+        img#packPng(src='./img/pack.png')
+      a#selectResourcePack.waves-effect.waves-teal.col.s10.btn Select Resource Pack
       p#errorMessage.error.message
       p#warningMessage.warning.message
     // widgets base path
@@ -80,8 +81,4 @@ html(lang="ja")
       p#convertWarning.warning.message.col.s12
       p#convertError.error.message.col.s12
     script(src="js/materialize.js")
-    script(src="./js/requires.js")
-    script(src="./js/clickEvents.js")
-    script(src="./js/selectResourcePack.js")
-    script(src="./js/setVersion.js")
-    script(src="./js/dialogListener.js")
+    script(src="./js/index.js")

@@ -137,7 +137,7 @@ async function createWindow() {
     // Could not initiate 'electron-pug'
   }
   mainWindow = new BrowserWindow({
-    width: 500,
+    width: app.isPackaged?500:800,
     height: app.isPackaged?600:900,
     center: true,
     icon: path.join(__dirname, "./img/icon.ico"),

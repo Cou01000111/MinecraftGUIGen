@@ -1,5 +1,13 @@
 "use strict";
 const ew = require("./errorWarning.js");
+const sharp = require("sharp");
+var IMAGE_MAGNIFICATION = 1;
+const $ = require("jquery");
+const fs = require("fs");
+const gjd=require("./getJsonData");
+
+const DEFAULT_CHARS_IMG =
+  "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAB4UlEQVR4nO1XAW7CQAw79qo9r6/ZN7shaOVGdi653tEyinRiCm7OjpPAyjzPJXnm7595eW3ia7CUWyDe5bQ8RAVA7PwCkFONqCPsPQQ48UvAI+Vf0uWYD27sMxU/6pRpmr7u1bm/P/9eiS5VYxVF7JKDVRrybp7x8OwOhS8ApA9YAUgIY4ALExJOrsW0BWX5N8oiDjCxiwDlWKZAWT7yghohJoBVyCOk8Bk+cgbwYkXIusLwtRnY7QD2G6uQmgHlgIfP5o/gQ72uKmFjHl452eL8Jj8AQ72IeEvSw2eGO7mdfAfYBVgkW+UeAhgfzB1ywBu+t3BAKfYE0Ap1nAEpoHUbYGz0tpH42le9qhw6UPsi69VarFOkNUqA91Oil4BMQauKewjwCA0VkHFA4VscyPDpOgNIKkJoTbJXQOs2sAKGbpvsbyF0he11u0axotFKZ51nzqQfQLwVkOl1xJ5GgCLEHHiJgBqhiANqvbYIQE6Qv/6vI5uBqIAWBzL4XdsAY6O3jcR7ltXiwhWLH3q6CVC9fpgANRsK68zSeAHCehqPiD2FAxFnbEwUYqwANfWRuML+KwHZ+OkEmMsuAacXwHJ5eV8uIEDowwS09l5jv3Zft4eQvgQc1UJDCnQ0gY8X8AstyTSRWjs+KQAAAABJRU5ErkJggg==";
 const HOTBAR_COUNT = 9;
 const CHARS_STANDARD_WIDTH = 48;
 const CHARS_STANDARD_HEIGHT = 48;
@@ -8,10 +16,8 @@ var UNIT_OF_CHAR_HEIGHT = 6;
 const HOTBAR_WIDTH = 20;
 const BASE_STANDARD_WIDTH = 256;
 const BASE_STANDARD_HEIGHT = 256;
-const sharp = require("sharp");
-var IMAGE_MAGNIFICATION = 1;
-
 const DEFAULT_WIDGETS_CHARA_JSON = require("../defaultChars.json");
+const { request } = require("http");
 
 //TODO chars.jsonにないものがkey configにあった場合の処理
 /**
@@ -33,16 +39,15 @@ module.exports = async function convertProcess(
   }
   console.log("引数に問題がありませんでした");
   var options = keyOption.split(",");
+  //文字のサイズをjsonから取得
   //charsがデフォルトの時用にここでsharpオブジェクトを作っておく
   var imgBuf = Buffer.from(DEFAULT_CHARS_IMG, "base64");
   var charsSharpObj =
-    charsPath == "default_chars.img" ? sharp(imgBuf) : sharp(charsPath);
+    charsPath == "default_widgetsChars.png" ? sharp(imgBuf) : sharp(charsPath);
   makeCharPng(options, charsSharpObj, charsJson);
-
   var base = sharp(basePath);
   //images作成
   var chars = new Array();
-
   for (let i = 0; i < HOTBAR_COUNT; i++) {
     var path = `./img/${i}.png`;
     var compositeObj = {
@@ -75,6 +80,8 @@ async function testingArgs(basePath, charsPath, charsJson, keyOption) {
   var basePathTest = await testingBasePath(basePath);
   var jsonPathTest = testingJsonPath(charsJson);
   var keyOptionTest = keyOption.split(",").length == HOTBAR_COUNT;
+  if(charsPathTest==false&&charsJson==="default_widgetsChars.json")
+    ew.
   var ans = charsPathTest && basePathTest && jsonPathTest && keyOptionTest;
   return ans;
 }
@@ -84,12 +91,15 @@ async function testingArgs(basePath, charsPath, charsJson, keyOption) {
 async function testingCharsPath(charsPath) {
   if (charsPath == "") {
     ew.emptyPath("chars");
-  } else if (!fs.existsSync(charsPath) && charsPath != "default_chars.img") {
+  } else if (
+    !fs.existsSync(charsPath) &&
+    charsPath != "default_widgetsChars.png"
+  ) {
     ew.invalidPath("chars");
   } else {
     var imgBuf;
     var chars;
-    if (charsPath == "default_chars.img") {
+    if (charsPath == "default_widgetsChars.png") {
       imgBuf = Buffer.from(DEFAULT_CHARS_IMG, "base64");
       chars = await sharp(imgBuf);
     } else chars = await sharp(charsPath);
@@ -101,8 +111,8 @@ async function testingCharsPath(charsPath) {
     /*
         今のところ以下の条件のみ
         - png
-        - widthが32のn倍
-        - heightが36のn倍
+        - widthがUNIT_OF_CHAR_WIDTHの倍数
+        - heigthがUNIT_OF_CHAR_HEIGTHの倍数
         */
     var isPng = charsFormat == "png";
     var isWidth256NTimes = charsWidth % CHARS_STANDARD_WIDTH == 0;
@@ -189,30 +199,34 @@ function testingJsonPath(jsonPath) {
     ew.emptyPath("json");
     return false;
   }
-  if (!fs.existsSync(jsonPath) && jsonPath != "default_chars.json") {
+  if (!fs.existsSync(jsonPath) && jsonPath != "default_widgetsChars.json") {
     ew.invalidPath("json");
     return false;
   }
   var json;
-  if (jsonPath == "default_chars.json") return true;
+  //デフォルトのjsonが指定されていた場合は絶対に問題がないため即trueを返す
+  if (jsonPath == "default_widgetsChars.json") return true;
   json = fs.readFileSync(jsonPath);
   if (isValidJson(json) == false) {
     ew.illegalJSONPassed();
     return false;
-  } else {
-    /**jsonファイルの条件
-     * unitがある
-     */
-    var jsObj = JSON.parse(json);
-    UNIT_OF_CHAR_WIDTH = jsObj.unit.width;
-    UNIT_OF_CHAR_HEIGHT = jsObj.unit.height;
-    var isUnitNormal = hasUnit(jsObj);
-    return isUnitNormal;
   }
+  /**jsonファイルの条件
+   * unitがある
+   * unitの中にwidthとheigthがある
+   * support_keyがある
+   * support_keyには文字列の配列がある
+   */
+  var jsonObject = JSON.parse(json);
+  UNIT_OF_CHAR_WIDTH = jsonObject.unit.width;
+  UNIT_OF_CHAR_HEIGHT = jsonObject.unit.height;
+  var isUnitNormal = unitPropertyTest(jsonObject);
+  var isSupportKeyNormal = supportKeyPropertyTest(jsonObject);
+  return isUnitNormal && isSupportKeyNormal;
 }
 
 //jsonObjにunitがあり、それが正しいかどうか
-function hasUnit(jsonObj) {
+function unitPropertyTest(jsonObj) {
   if (jsonObj.hasOwnProperty("unit") == false) {
     //unitがない
     ew.noUnit();
@@ -225,6 +239,28 @@ function hasUnit(jsonObj) {
     ew.unitPropertyIsIllegal();
     return false;
   }
+  return true;
+}
+
+//jsonObjにsupport keyがあり、それが正しいかどうか
+function supportKeyPropertyTest(jsonObj) {
+  if (jsonObj.hasOwnProperty("support_key") == false) {
+    ew.noSupportKey();
+    return false;
+  }
+   if (!(jsonObj.support_key instanceof Array)) {
+    ew.supportKeyIsNotArray();
+    return false;
+  }
+   if (!(typeof jsonObj.support_key[0] === 'string')) {
+    ew.supportKeyValueIsNotString();
+    return false;
+  }
+   if (jsonObj.support_key.length == 0) {
+    ew.supportKeyLengthIsZero();
+    return false;
+  }
+  jsonObj.support_key.forEach((key_name)=>{gjd.getSupportKeyList.includes(key_name)});
   return true;
 }
 
@@ -243,7 +279,7 @@ function makeCharPng(keyOptionList, charsSharpObj, jsonPath) {
   console.log(keyOptionList, charsSharpObj, jsonPath);
   var extractList = getExtractList(keyOptionList, jsonPath);
   var promises = [];
-  if (!fs.existsSync("img")) fs.mkdirSync("img");
+  //if (!fs.existsSync("img")) fs.mkdirSync("img");
   for (const [i, option] of keyOptionList.entries()) {
     console.log(option);
     var exObj = {
@@ -261,14 +297,14 @@ function makeCharPng(keyOptionList, charsSharpObj, jsonPath) {
       console.log(results);
     })
     .catch(function () {
-      console.log("error");
+      console.log("make char png error");
     });
 }
 //{ option: {top: n,left:n} }のリストを返す
 //key option list にない場合は{ option: "" }を返す
 function getExtractList(keyOptionList, jsonPath) {
   var allExtractObjList;
-  if (jsonPath == "default_chars.json")
+  if (jsonPath == "default_widgetsChars.json")
     allExtractObjList = DEFAULT_WIDGETS_CHARA_JSON;
   else allExtractObjList = JSON.parse(fs.readFileSync(jsonPath));
   console.log(allExtractObjList);

@@ -1,5 +1,6 @@
 "use strict";
-const convertProcess = require("./js/convertModules.js");
+const convertProcess = require("./convertModules.js");
+const $ = require("jquery");
 
 module.exports = function setClickEvents() {
   $("#convertWidgets").on("click", async () => {
@@ -35,7 +36,7 @@ module.exports = function setClickEvents() {
     var dirPath = gameOptionDialog();
     ipcRenderer.send("setup-option-file", dirPath);
   });
-}
+};
 
 function gameOptionDialog() {
   reset.gameOptionDialog();
