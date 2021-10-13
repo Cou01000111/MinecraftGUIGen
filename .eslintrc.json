@@ -1,0 +1,12 @@
+{
+  "extends": ["eslint:recommended", "prettier"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": "./tsconfig.json",
+    "ecmaVersion": 8
+  },
+  "env": { "browser": true, "node": true, "es6": true },
+  "rules": {
+    // 個別に設定するESLintルールを記述
+  }
+}

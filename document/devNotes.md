@@ -41,6 +41,10 @@ ipcMain.on('open-file-dialog', (event) => {
 })
 ```
 
+## es-lintを使いたい
+
+[ここにすべてが書いてある](https://zuma-lab.com/posts/eslint-prettier-settings)
+
 # 公式クイックスタートを参考にする
 ## そのままパクる
 

@@ -1,35 +1,37 @@
-const util = require("./util");
-const setOptionData = require("./setOptionData");
-const $ = require("jquery");
+const util = require('./util');
+const setOptionData = require('./setOptionData');
+const $ = require('jquery');
+const reset = require('./resetDialog');
+const { ipcRenderer } = require('electron');
+const ew = require('./errorWarning');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = function setDialogListener() {
-  ipcRenderer.on("selected-base-path", async (event, path) => {
+  ipcRenderer.on('selected-base-path', async (event, path) => {
     reset.baseDialog();
-    $("#widgetsBasePathInput").val(path);
+    $('#widgetsBasePathInput').val(path);
   });
-  ipcRenderer.on("selected-chars-path", async (event, path) => {
+  ipcRenderer.on('selected-chars-path', async (event, path) => {
     reset.charsDialog();
-    $("#widgetsCharsPathInput").val(path);
+    $('#widgetsCharsPathInput').val(path);
   });
-  ipcRenderer.on("selected-chars-json-path", async (event, path) => {
+  ipcRenderer.on('selected-chars-json-path', async (event, path) => {
     reset.charsJsonDialog();
-    $("#widgetsCharsJsonPathInput").val(path);
+    $('#widgetsCharsJsonPathInput').val(path);
   });
-  ipcRenderer.on("selected-output-path", async (event, path) => {
+  ipcRenderer.on('selected-output-path', async (event, path) => {
     reset.outputPathDialog();
-    $("#outputPathInput").val(path);
+    $('#outputPathInput').val(path);
   });
-  ipcRenderer.on("set-up-option", async (event, p) => {
+  ipcRenderer.on('set-up-option', async (event, p) => {
     //選択されたものがdirectoryの場合=>game directoryとして処理
     //選択されたものがfileの場合=>option.txtとして処理
     fs.stat(p, function (err, stats) {
-      if (path.extname(p) == ".txt") {
-        setOptionData.setOptionData(p, resourcePackPath);
+      if (path.extname(p) == '.txt') {
+        setOptionData.setOptionData(p);
       } else if (stats.isDirectory()) {
-        setOptionData.setOptionData(
-          util.getOptionPathByArg(p),
-          resourcePackPath
-        );
+        setOptionData.setOptionData(util.getOptionPathByArg(p));
       } else {
         ew.nonGameDirectoryHasBeenSelected();
       }

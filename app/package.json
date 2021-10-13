@@ -8,8 +8,7 @@
     "start": "electron .",
     "debug": "electron . --enable-logging",
     "build:mac": "electron-builder --mac --x64",
-    "build:win": "electron-builder --win --x64",
-    "lint":"eslint src"
+    "build:win": "electron-builder --win --x64"
   },
   "dependencies": {
     "@popperjs/core": "^2.9.3",
