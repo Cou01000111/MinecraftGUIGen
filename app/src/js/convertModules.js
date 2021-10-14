@@ -5,12 +5,12 @@ var IMAGE_MAGNIFICATION = 1;
 const $ = require('jquery');
 const fs = require('fs');
 const gjd = require('./getJsonData');
+const path = require('path');
+var { shell } = require('electron');
 
 const DEFAULT_CHARS_IMG =
   'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAB4UlEQVR4nO1XAW7CQAw79qo9r6/ZN7shaOVGdi653tEyinRiCm7OjpPAyjzPJXnm7595eW3ia7CUWyDe5bQ8RAVA7PwCkFONqCPsPQQ48UvAI+Vf0uWYD27sMxU/6pRpmr7u1bm/P/9eiS5VYxVF7JKDVRrybp7x8OwOhS8ApA9YAUgIY4ALExJOrsW0BWX5N8oiDjCxiwDlWKZAWT7yghohJoBVyCOk8Bk+cgbwYkXIusLwtRnY7QD2G6uQmgHlgIfP5o/gQ72uKmFjHl452eL8Jj8AQ72IeEvSw2eGO7mdfAfYBVgkW+UeAhgfzB1ywBu+t3BAKfYE0Ap1nAEpoHUbYGz0tpH42le9qhw6UPsi69VarFOkNUqA91Oil4BMQauKewjwCA0VkHFA4VscyPDpOgNIKkJoTbJXQOs2sAKGbpvsbyF0he11u0axotFKZ51nzqQfQLwVkOl1xJ5GgCLEHHiJgBqhiANqvbYIQE6Qv/6vI5uBqIAWBzL4XdsAY6O3jcR7ltXiwhWLH3q6CVC9fpgANRsK68zSeAHCehqPiD2FAxFnbEwUYqwANfWRuML+KwHZ+OkEmMsuAacXwHJ5eV8uIEDowwS09l5jv3Zft4eQvgQc1UJDCnQ0gY8X8AstyTSRWjs+KQAAAABJRU5ErkJggg==';
 const HOTBAR_COUNT = 9;
-const CHARS_STANDARD_WIDTH = 48;
-const CHARS_STANDARD_HEIGHT = 48;
 var UNIT_OF_CHAR_WIDTH = 6;
 var UNIT_OF_CHAR_HEIGHT = 6;
 const HOTBAR_WIDTH = 20;
@@ -19,13 +19,10 @@ const BASE_STANDARD_HEIGHT = 256;
 const DEFAULT_WIDGETS_CHARA_JSON = require('../defaultChars.json');
 
 //TODO chars.jsonにないものがkey configにあった場合の処理
-/**
- * 出力
- */
 module.exports = async function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
   ew.resetConvertMessage();
   var test = await testingArgs(basePath, charsPath, charsJson, keyOption);
-  console.log(`testingArgs:`, test);
+  console.log(`args testing:`, test);
   if (test == false) {
     console.log('引数に問題がありました');
     return;
@@ -36,41 +33,55 @@ module.exports = async function convertProcess(basePath, charsPath, charsJson, k
   //charsがデフォルトの時用にここでsharpオブジェクトを作っておく
   var imgBuf = Buffer.from(DEFAULT_CHARS_IMG, 'base64');
   var charsSharpObj = charsPath == 'default_widgetsChars.png' ? sharp(imgBuf) : sharp(charsPath);
-  makeCharPng(options, charsSharpObj, charsJson);
-  var base = sharp(basePath);
-  //images作成
-  var chars = new Array();
-  for (let i = 0; i < HOTBAR_COUNT; i++) {
-    var path = `./img/${i}.png`;
-    var compositeObj = {
-      input: path,
-      top: 1 * IMAGE_MAGNIFICATION,
-      left: 1 + i * HOTBAR_WIDTH * IMAGE_MAGNIFICATION,
-    };
-    console.log(compositeObj);
-    chars.push(compositeObj);
-    console.log(i);
-  }
-  console.log(chars);
-  base.composite(chars).toFile(outputPath, (err, info) => {
-    if (err) console.log(err);
-    else {
-      $('#convertMessage').text('ファイル出力成功');
-      console.log(info);
+  makeCharBuffer(options, charsSharpObj, charsJson).then((results) => {
+    var base = sharp(basePath);
+    //images作成
+    var chars = new Array();
+    for (let index = 0; index < HOTBAR_COUNT; index++) {
+      console.log(results[index]);
+      var compositeObj = {
+        input: results[index],
+        top: 1 * IMAGE_MAGNIFICATION,
+        left: 1 + index * HOTBAR_WIDTH * IMAGE_MAGNIFICATION,
+      };
+      chars.push(compositeObj);
     }
+    console.log('composite object:', chars);
+    base.composite(chars).toFile(outputPath, (err, info) => {
+      if (err) {
+        $('#convertError').text(
+          'ファイル出力失敗（特にエラーメッセージが出ていない場合はバグなのでgithub issueにて報告していただけると助かります）'
+        );
+        console.log(err);
+      } else {
+        setSuccessMessage(outputPath);
+        console.log(info);
+      }
+    });
   });
 };
+
+function setSuccessMessage(outputPath) {
+  $('#convertMessage').append(`ファイル出力成功(<a id="fileOutputSuccessPath">${path.basename(outputPath)}</a>)`);
+  $('#fileOutputSuccessPath').on('click', () => {
+    console.log(outputPath);
+    shell.openExternal(outputPath);
+    shell.openExternal(outputPath.replace('/', '\\'));
+  });
+}
 
 //chars画像,base画像,key optionそれぞれ問題がないか
 //問題なし:true
 async function testingArgs(basePath, charsPath, charsJson, keyOption) {
-  //console.log(`basePath:${basePath}`);
-  //console.log(`charsPath:${charsPath}`);
-  //console.log(`charsJson:${charsJson}`);
-  //console.log(keyOption);
+  var jsonPathTest = testingJsonPath(charsJson);
+  if (!jsonPathTest) return false;
+  if (charsJson != 'default_widgetsChars.json') {
+    var json = JSON.parse(fs.readFileSync(charsJson));
+    UNIT_OF_CHAR_WIDTH = json.unit.width;
+    UNIT_OF_CHAR_HEIGHT = json.unit.height;
+  }
   var charsPathTest = await testingCharsPath(charsPath);
   var basePathTest = await testingBasePath(basePath);
-  var jsonPathTest = testingJsonPath(charsJson);
   var keyOptionTest = keyOption.split(',').length == HOTBAR_COUNT;
   if (charsPathTest == false && charsJson === 'default_widgetsChars.json') ew.charsJsonPngMismatch();
   var ans = charsPathTest && basePathTest && jsonPathTest && keyOptionTest;
@@ -92,26 +103,16 @@ async function testingCharsPath(charsPath) {
       chars = await sharp(imgBuf);
     } else chars = await sharp(charsPath);
     const { format: charsFormat, width: charsWidth, height: charsHeight } = await chars.metadata();
-    /*
-        今のところ以下の条件のみ
-        - png
-        - widthがUNIT_OF_CHAR_WIDTHの倍数
-        - heigthがUNIT_OF_CHAR_HEIGTHの倍数
-        */
     var isPng = charsFormat == 'png';
-    var isWidth256NTimes = charsWidth % CHARS_STANDARD_WIDTH == 0;
-    var isHeight256NTimes = charsHeight % CHARS_STANDARD_HEIGHT == 0;
-    console.log(charsWidth);
-    console.log(charsHeight);
-    if (isPng && isWidth256NTimes && isHeight256NTimes) {
+    var isWidthUnitTimes = charsWidth % UNIT_OF_CHAR_WIDTH == 0;
+    var isHeightUnitTimes = charsHeight % UNIT_OF_CHAR_HEIGHT == 0;
+    if (isPng && isWidthUnitTimes && isHeightUnitTimes) {
       IMAGE_MAGNIFICATION =
-        IMAGE_MAGNIFICATION < charsWidth / CHARS_STANDARD_WIDTH
-          ? IMAGE_MAGNIFICATION
-          : charsWidth / CHARS_STANDARD_WIDTH;
+        IMAGE_MAGNIFICATION < charsWidth / UNIT_OF_CHAR_WIDTH ? IMAGE_MAGNIFICATION : charsWidth / UNIT_OF_CHAR_WIDTH;
       return true;
     } else {
-      var conditions = [isPng, isWidth256NTimes, isHeight256NTimes];
-      ew.selectedRightnessNotImage('chars', conditions);
+      var conditions = [isPng, isWidthUnitTimes, isHeightUnitTimes];
+      ew.selectedRightnessNotImageChars(conditions);
     }
   }
   return false;
@@ -127,13 +128,6 @@ async function testingBasePath(basePath) {
   } else {
     const base = await sharp(basePath);
     const { format: baseFormat, width: baseWidth, height: baseHeight } = await base.metadata();
-    /*
-        今のところ以下の条件のみ
-        - png
-        - widthが256のm倍
-        - heightが256のm倍
-        - width = height
-        */
     var isPng = baseFormat == 'png';
     var isWidth256NTimes = baseWidth % BASE_STANDARD_WIDTH == 0;
     var isHeight256NTimes = baseHeight % BASE_STANDARD_HEIGHT == 0;
@@ -144,7 +138,7 @@ async function testingBasePath(basePath) {
       return true;
     } else {
       var conditions = [isPng, isWidth256NTimes, isHeight256NTimes, widthWithHeightSameIs];
-      ew.selectedRightnessNotImage('base', conditions);
+      ew.selectedRightnessNotImageBase(conditions);
     }
   }
   return false;
@@ -168,15 +162,7 @@ function testingJsonPath(jsonPath) {
     ew.illegalJSONPassed();
     return false;
   }
-  /**jsonファイルの条件
-   * unitがある
-   * unitの中にwidthとheigthがある
-   * support_key_listがある
-   * support_key_listには文字列の配列がある
-   */
   var jsonObject = JSON.parse(json);
-  UNIT_OF_CHAR_WIDTH = jsonObject.unit.width;
-  UNIT_OF_CHAR_HEIGHT = jsonObject.unit.height;
   var isUnitNormal = unitPropertyTest(jsonObject);
   var isSupportKeyNormal = supportKeyPropertyTest(jsonObject);
   return isUnitNormal && isSupportKeyNormal;
@@ -201,6 +187,7 @@ function unitPropertyTest(jsonObj) {
     ew.unitHeightIsInvalid();
     return false;
   }
+  console.log('width:', jsonObj.unit.width, ',height:', jsonObj.unit.height);
   return true;
 }
 
@@ -229,44 +216,45 @@ function isValidJson(value) {
   return true;
 }
 
-//hotbarにつかうchar.pngを生成し、連番でimgに保存する
-function makeCharPng(keyOptionList, charsSharpObj, jsonPath) {
+//hotbarにつかうchar.pngを生成しBufferの配列を返す
+function makeCharBuffer(keyOptionList, charsSharpObj, jsonPath) {
   console.log(keyOptionList, charsSharpObj, jsonPath);
   var extractList = getExtractList(keyOptionList, jsonPath);
   var promises = [];
-  //if (!fs.existsSync("img")) fs.mkdirSync("img");
-  for (const [i, option] of keyOptionList.entries()) {
-    console.log(option);
-    if (option)
-      var exObj = {
-        top: extractList.get(option).top * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
-        left: extractList.get(option).left * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
-        width: UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
-        height: UNIT_OF_CHAR_HEIGHT * IMAGE_MAGNIFICATION,
-      };
-    promises.push(charsSharpObj.extract(exObj).png().toFile(`./img/${i}.png`));
+  for (const option of keyOptionList.entries()) {
+    var extractObject = {
+      top: extractList.get(option).top * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
+      left: extractList.get(option).left * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
+      width: UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
+      height: UNIT_OF_CHAR_HEIGHT * IMAGE_MAGNIFICATION,
+    };
+    if (!(isNaN(extractObject.top) || isNaN(extractObject.left))) {
+      console.log('output char png:', extractObject);
+      promises.push(charsSharpObj.extract(extractObject).png().toBuffer());
+    }
   }
-  Promise.all(promises)
+  return Promise.all(promises)
     .then(function (results) {
       console.log(results);
     })
     .catch(function () {
-      console.log('make char png error');
+      throw Error('make char buf error');
     });
 }
+
 //{ option: {top: n,left:n} }のリストを返す
-//key option list にない場合は{ option: "" }を返す
+//key option list にない場合は''を返す
 function getExtractList(keyOptionList, jsonPath) {
+  console.log(`getExtractList(${keyOptionList},${jsonPath})`);
   var allExtractObjList;
   if (jsonPath == 'default_widgetsChars.json') allExtractObjList = DEFAULT_WIDGETS_CHARA_JSON.support_key_list;
-  else allExtractObjList = JSON.parse(fs.readFileSync(jsonPath));
-  console.log(allExtractObjList);
+  else allExtractObjList = JSON.parse(fs.readFileSync(jsonPath)).support_key_list;
   var extract = new Map();
   keyOptionList.forEach((option) => {
     if (Object.prototype.hasOwnProperty.call(allExtractObjList, option)) extract.set(option, allExtractObjList[option]);
     else {
       ew.charsByNotSupportedKeySelected();
-      extract.set({ option: '' });
+      extract.set(option, '');
     }
   });
   return extract;

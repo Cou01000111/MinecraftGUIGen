@@ -39,7 +39,7 @@ function setPackPng(resourcePackPath) {
 function setWidgetBasePath(resourcePackPath) {
   // widgetBase exits
   if (fe.isWidgetsExists(resourcePackPath)) {
-    console.log('widgets発見');
+    console.log('widgetsを認識');
     $('#overwriteWidgets').removeAttr('disabled');
   }
   if (fe.isWidgetsbaseExists(resourcePackPath)) {

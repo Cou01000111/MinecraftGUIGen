@@ -1,15 +1,15 @@
-"use strict";
-const path = require("path");
+'use strict';
+const path = require('path');
 /**
  * textから改行コードを推測し返す関数
  */
 function getLFCode(text) {
-  if (text.indexOf("\r\n") > -1) {
-    return "\r\n";
-  } else if (text.indexOf("\n") > -1) {
-    return "\n";
-  } else if (text.indexOf("\r") > -1) {
-    return "\r";
+  if (text.indexOf('\r\n') > -1) {
+    return '\r\n';
+  } else if (text.indexOf('\n') > -1) {
+    return '\n';
+  } else if (text.indexOf('\r') > -1) {
+    return '\r';
   }
 }
 
@@ -22,7 +22,7 @@ function getDirName(p, num) {
 
 // 渡されたgame directoryのパスをもとにoptions.txtを返す
 function getOptionPathByArg(path) {
-  console.log(`${path}/options.txt`);
+  //console.log(`${path}/options.txt`);
   return `${path}/options.txt`;
 }
 

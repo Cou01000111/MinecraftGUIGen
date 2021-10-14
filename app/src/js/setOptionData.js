@@ -26,7 +26,7 @@ function setOptionDataMain() {
     if (text.toString().split(':')[0] == 'version') {
       version = getMinecraftVersionString(text.toString().split(':')[1]);
       setMinecraftVersion();
-      console.log(version);
+      console.log('options.txtバージョン:', version);
       if (version == 'none') {
         //console.log(version);
         ew.selectedOutOfSupportVersion();
@@ -96,7 +96,6 @@ function toStringFromKeyConfig(options, version) {
   if (version == '1.13') {
     keycode = gjd.getKeyCode1_13();
     options.forEach((option) => {
-      console.log(option);
       stringArr.push(keycode[option]);
     });
   } else if (version == '1.12.2') {

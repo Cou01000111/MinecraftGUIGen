@@ -43,22 +43,33 @@ function invalidPath(baseOrCharsOrJson) {
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
-function selectedRightnessNotImage(baseOrChars, conditions) {
-  if (!(baseOrChars == 'base' || baseOrChars == 'chars') || !(conditions.length == 4 || conditions.length == 3)) {
-    throw Error();
-  }
-  $('#convertError').append(`${baseOrChars}の画像が適切ではありません<br>`);
+function selectedRightnessNotImageBase(conditions) {
+  $('#convertError').append(`widgetsBase.png(widgets.png)の画像が適切ではありません<br>`);
   if (!conditions[0]) {
-    $('#convertError').append(`  ${baseOrChars}の画像がpngではありません<br>`);
+    $('#convertError').append(`  widgetsBase.png(widgets.png)の画像がpngではありません<br>`);
   }
   if (!conditions[1]) {
-    $('#convertError').append(`- ${baseOrChars}の横幅がデフォルトの倍数ではありません<br>`);
+    $('#convertError').append(`- widgetsBase.png(widgets.png)の横幅がデフォルトの倍数ではありません<br>`);
   }
   if (!conditions[2]) {
-    $('#convertError').append(`- ${baseOrChars}の縦幅がデフォルトの倍数ではありません<br>`);
+    $('#convertError').append(`- widgetsBase.png(widgets.png)の縦幅がデフォルトの倍数ではありません<br>`);
   }
-  if (!conditions[3] && baseOrChars == 'base') {
-    $('#convertError').append(`- ${baseOrChars}の横幅と縦幅の比が1:1ではありません<br>`);
+  if (!conditions[3]) {
+    $('#convertError').append(`- widgetsBase.png(widgets.png)の横幅と縦幅の比が1:1ではありません<br>`);
+  }
+}
+
+//widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
+function selectedRightnessNotImageChars(conditions) {
+  $('#convertError').append(`widgetsChars.pngの画像が適切ではありません<br>`);
+  if (!conditions[0]) {
+    $('#convertError').append(`  widgetsChars.pngの画像がpngではありません<br>`);
+  }
+  if (!conditions[1]) {
+    $('#convertError').append(`- widgetsChars.pngの横幅がjsonファイルのunit.widthの倍数ではありません<br>`);
+  }
+  if (!conditions[2]) {
+    $('#convertError').append(`- widgetsChars.pngの縦幅がjsonファイルのunit.heightの倍数ではありません<br>`);
   }
 }
 
@@ -147,7 +158,8 @@ module.exports = {
   gameDirNotFound,
   emptyPath,
   invalidPath,
-  selectedRightnessNotImage,
+  selectedRightnessNotImageBase,
+  selectedRightnessNotImageChars,
   illegalJSONPassed,
   noUnit,
   unitPropertyIsIllegal,
