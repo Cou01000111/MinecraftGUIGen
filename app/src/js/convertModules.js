@@ -37,6 +37,7 @@ module.exports = async function convertProcess(basePath, charsPath, charsJson, k
     var base = sharp(basePath);
     //images作成
     var chars = new Array();
+    console.log('make char buf results:', results);
     for (let index = 0; index < HOTBAR_COUNT; index++) {
       console.log(results[index]);
       var compositeObj = {
@@ -65,8 +66,9 @@ function setSuccessMessage(outputPath) {
   $('#convertMessage').append(`ファイル出力成功(<a id="fileOutputSuccessPath">${path.basename(outputPath)}</a>)`);
   $('#fileOutputSuccessPath').on('click', () => {
     console.log(outputPath);
-    shell.openExternal(outputPath);
-    shell.openExternal(outputPath.replace('/', '\\'));
+    //shell.openExternal('D:\\.gitconfig');
+    shell.showItemInFolder(outputPath);
+    shell.showItemInFolder(outputPath.replace('/', '\\'));
   });
 }
 
@@ -222,9 +224,11 @@ function makeCharBuffer(keyOptionList, charsSharpObj, jsonPath) {
   var extractList = getExtractList(keyOptionList, jsonPath);
   var promises = [];
   for (const option of keyOptionList.entries()) {
+    console.log(option[1]);
+    console.log(extractList);
     var extractObject = {
-      top: extractList.get(option).top * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
-      left: extractList.get(option).left * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
+      top: extractList.get(option[1]).top * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
+      left: extractList.get(option[1]).left * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
       width: UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
       height: UNIT_OF_CHAR_HEIGHT * IMAGE_MAGNIFICATION,
     };
@@ -235,7 +239,7 @@ function makeCharBuffer(keyOptionList, charsSharpObj, jsonPath) {
   }
   return Promise.all(promises)
     .then(function (results) {
-      console.log(results);
+      return results;
     })
     .catch(function () {
       throw Error('make char buf error');
