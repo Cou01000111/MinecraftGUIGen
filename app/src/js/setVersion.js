@@ -4,5 +4,5 @@ const version = packageJson.version;
 const $ = require("jquery");
 
 module.exports = function setVersion() {
-  $("title").text(`Minecraft Widgets Gen v${version}`);
+  $("title").text(`Minecraft ATTH v${version}`);
 };

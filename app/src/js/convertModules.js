@@ -66,9 +66,7 @@ function setSuccessMessage(outputPath) {
   $('#convertMessage').append(`ファイル出力成功(<a id="fileOutputSuccessPath">${path.basename(outputPath)}</a>)`);
   $('#fileOutputSuccessPath').on('click', () => {
     console.log(outputPath);
-    //shell.openExternal('D:\\.gitconfig');
     shell.showItemInFolder(outputPath);
-    shell.showItemInFolder(outputPath.replace('/', '\\'));
   });
 }
 

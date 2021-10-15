@@ -1,5 +1,5 @@
 const ew = require('./errorWarning');
-const setOutputPath = require('./setOutputPath');
+const sop = require('./setOutputPath');
 const $ = require('jquery');
 const util = require('./util');
 const setOptionData = require('./setOptionData');
@@ -10,7 +10,7 @@ const { app } = require('electron');
 
 //リソースパックが選択された時に実行する関数
 function resourcePackSelectedInProcess(resourcePackPath) {
-  //logのリセット
+  $('#overwriteWidgets').removeAttr('disabled');
   resetOverwriteCheck();
   ew.resetError();
   ew.resetWarning();
@@ -22,12 +22,14 @@ function resourcePackSelectedInProcess(resourcePackPath) {
   setWidgetCharsPath(resourcePackPath);
   setWidgetCharsJsonPath(resourcePackPath);
   // overwrite widgets.png のチェック
-  setOutputPath(resourcePackPath);
+  if (fs.existsSync(gp.getOutputDirPath(resourcePackPath) + 'widgets.png'))
+    sop.setOutputPathOverwrite(resourcePackPath);
+  else sop.setOutputPath(resourcePackPath);
   // game directory input の設定
   setOptionPath(resourcePackPath);
 }
 function resetOverwriteCheck() {
-  $('#overwriteWidgets').attr('disabled', 'disabled');
+  //$('#overwriteWidgets').attr('disabled', 'disabled');
 }
 function setPackPng(resourcePackPath) {
   if (fs.existsSync(resourcePackPath + '/pack.png')) {

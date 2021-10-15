@@ -1,29 +1,27 @@
-const { ipcRenderer } = require("electron");
-const fe = require("./fileExits");
-const setOutputPath = require("./setOutputPath.js");
-const selectedResourcePack = require("./selectedResourcePack.js");
-const $ = require("jquery");
-const ew = require("./errorWarning");
-var resourcePackPath
+const { ipcRenderer } = require('electron');
+const fe = require('./fileExits');
+const sop = require('./setOutputPath.js');
+const selectedResourcePack = require('./selectedResourcePack.js');
+const $ = require('jquery');
+const ew = require('./errorWarning');
+var resourcePackPath;
 
 module.exports = function setForSelectResourcePack() {
-  ipcRenderer.on("selected-directory", async (event, path) => {
+  ipcRenderer.on('selected-directory', async (event, path) => {
     resourcePackPath = path;
     if (fe.isConvertibleResourcePack(resourcePackPath)) {
       selectedResourcePack(resourcePackPath);
     } else {
-      console.log("加工不可なresource pack が選択されました");
+      console.log('加工不可なresource pack が選択されました');
       var errorCode;
       if (fe.isResourcePack(resourcePackPath) == false) {
         errorCode = 1;
-      } else if (fe.isWidgetsbaseExists(resourcePackPath))
-        errorCode = 2;
+      } else if (fe.isWidgetsbaseExists(resourcePackPath)) errorCode = 2;
       resourcePackExceptSelectedInProcess(errorCode);
     }
   });
-
-  $("#overwriteWidgets").change(() => {
-    setOutputPath(resourcePackPath);
+  $('#overwriteWidgets').on('change', () => {
+    sop.setOutputPath(resourcePackPath);
   });
 };
 

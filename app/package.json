@@ -1,8 +1,8 @@
 {
-  "name": "minecraft-widgets-gen",
+  "name": "minecraft-add-text-to-hotbar",
   "version": "0.4.0",
   "author": "kamiya cou",
-  "description": "Add text to the minecraft hotbar.",
+  "description": "Draw a shortcut key in the resource pack with the minecraft hotbar.",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
