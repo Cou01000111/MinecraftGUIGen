@@ -38,50 +38,6 @@ if (process.platform === 'darwin') {
   });
 }
 
-//#region win用updater
-//let win;
-//
-//function sendStatusToWindow(text) {
-//    log.info(text);
-//    win.webContents.send('message', text);
-//}
-//function createDefaultWindow() {
-//    win = new BrowserWindow({
-//        webPreferences:{
-//            preload: `${__dirname}/preload.js`,    // preloadを追加
-//            enableRemoteModule: true,               // warning対策
-//            nodeIntegration: true,
-//            devTools: true,
-//            contextIsolation: false
-//        }
-//    });
-//    win.webContents.openDevTools();
-//    win.on('closed', () => {
-//        win = null;
-//    });
-//    win.nodeIntegration = true;
-//    win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
-//    return win;
-//}
-//autoUpdater.on('checking-for-update', () => {
-//    sendStatusToWindow('Checking for update...');
-//})
-//autoUpdater.on('update-available', (info) => {
-//    sendStatusToWindow('Update available.');
-//})
-//autoUpdater.on('update-not-available', (info) => {
-//    sendStatusToWindow('Update not available.');
-//})
-//autoUpdater.on('error', (err) => {
-//    sendStatusToWindow('Error in auto-updater. ' + err);
-//})
-//autoUpdater.on('download-progress', (progressObj) => {
-//    let log_message = "Download speed: " + progressObj.bytesPerSecond;
-//    log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-//    log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
-//    sendStatusToWindow(log_message);
-//})
-
 autoUpdater.on('update-downloaded', ({ version, files, path, sha512, releaseName, releaseNotes, releaseDate }) => {
   const detail = `${app.getName()} ${version} ${releaseDate}`;
   dialog
@@ -235,7 +191,6 @@ ipcMain.on('selected-game-directory', (event, dp) => {
 });
 
 ipcMain.on('setup-option-directory', (event, dp) => {
-  const fs = require('fs');
   dialog
     .showOpenDialog({
       properties: ['openDirectory'],
@@ -249,7 +204,6 @@ ipcMain.on('setup-option-directory', (event, dp) => {
 });
 
 ipcMain.on('setup-option-file', (event, dp) => {
-  const fs = require('fs');
   dialog
     .showOpenDialog({
       properties: ['openFile'],
