@@ -1,8 +1,8 @@
-"use strict";
-const packageJson = require("../../package.json");
+'use strict';
+const packageJson = require('../../package.json');
 const version = packageJson.version;
-const $ = require("jquery");
+const $ = require('jquery');
 
 module.exports = function setVersion() {
-  $("title").text(`Minecraft ATTH v${version}`);
+  $('title').text(`Minecraft texted hotbar v${version}`);
 };
