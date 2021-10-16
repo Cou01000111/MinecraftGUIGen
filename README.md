@@ -4,7 +4,9 @@ Minecraft のリソースパックを読み込ませるとキーコンフィグ�
 
 ## このアプリケーションでできること
 
-minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png」と文字データがある「widgetsChars.png」、widgetsChars.pngの構造について書いてある「widgetsChars.json」とホットバーに使われているショートカットキーが書いてある「options.txt」から文字付ホットバーを生成します。(下記画像はホットバーのショートカットに「Mouse Button 4, Mouse Button 5, 3, 4, f, g, v, b, r」が使われている場合の出力例)
+minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png」と文字データがある「widgetsChars.png」、widgetsChars.pngの構造について書いてある「widgetsChars.json」とホットバーに使われているショートカットキーが書いてある「options.txt」から文字付ホットバーを生成します。
+
+THGSampleResourcepackをホットバーのショートカットキー`Mouse Button 4, Mouse Button 5, 3, 4, f, g, v, b, r`で当アプリケーションで生成した場合
 
 ![「widgetsBase.png」+「widgetsChars.png」+「widgetsChars.json」+「options.txt」=>「widgets.png」](https://github.com/Cou01000111/minecraft-texted-hotbar-gen/blob/main/MCTHG_doc.png)
 
