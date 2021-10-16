@@ -18,6 +18,7 @@ THGSampleResourcepackをホットバーのショートカットキー`Mouse Butt
 
 ### 1. 最上段の「SELECT RESOURCE PACK」からリソースパックを選択
 
+選択するリソースパックは読み込みたいキーコンフィグに設定しているゲームディレクトリの`resourcepack`内にあるものを読み込むことを推奨します。
 `widgets base path`、`widgets chars path`、`widgets charsJson path`、`output Path`、`options.txt`が自動入力されます
 
 ### 2. それぞれのオプションが正しいことを確認
