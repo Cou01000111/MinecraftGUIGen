@@ -25,31 +25,31 @@ THGSampleResourcepackをホットバーのショートカットキー`Mouse Butt
 
 #### 2-1. widgets base pathの確認
 
-`widgets base path`には`widgetsBase.png`がある場合は`resourcepack\assets\minecraft\textures\gui\widgetsBase.png`が自動で入力され、`widgetsBase.png`が見つからなかった場合は`resourcepack\assets\minecraft\textures\gui\widgets.png`が選択されます。<br>
+**widgets base path**には`widgetsBase.png`がある場合は`resourcepack\assets\minecraft\textures\gui\widgetsBase.png`が自動で入力され、`widgetsBase.png`が見つからなかった場合は`resourcepack\assets\minecraft\textures\gui\widgets.png`が選択されます。<br>
 右側のファイルアイコンのボタンで手動でファイルを選択することができます。
 
 #### 2-2. widgets chars pathの確認
 
 ![](https://github.com/Cou01000111/minecraft-texted-hotbar-gen/blob/main/default_widgetsChars.png)
 
-`widgets chars path`には`resourcepack\assets\minecraft\textures\gui\widgetsChars.png`が自動で入力され、`widgetsChars.png`が見つからなかった場合はアプリケーション付属のwidgetsChars.png(`default_widgetsChars.png`(上記画像))が選択されます。<br>
+**widgets chars path**には`resourcepack\assets\minecraft\textures\gui\widgetsChars.png`が自動で入力され、`widgetsChars.png`が見つからなかった場合はアプリケーション付属のwidgetsChars.png(`default_widgetsChars.png`(上記画像))が選択されます。<br>
 右側のファイルアイコンのボタンで手動でファイルを選択することができます。
 
 #### 2-3. widgets charsJson pathの確認
 
-`widgets charsJson path`には`resourcepack\assets\minecraft\textures\gui\widgetsChars.Json`が自動で入力され、`widgetsChars.json`が見つからなかった場合はアプリケーション付属のwidgetsChars.json(`default_widgetsChars.json`(上記画像))が選択されます。<br>
+**widgets charsJson path**には`resourcepack\assets\minecraft\textures\gui\widgetsChars.Json`が自動で入力され、`widgetsChars.json`が見つからなかった場合はアプリケーション付属のwidgetsChars.json(`default_widgetsChars.json`(上記画像))が選択されます。<br>
 右側のファイルアイコンのボタンで手動でファイルを選択することができます。
 
 #### 2-4. output Pathの確認
 
-`output Path`には`resourcepack\assets\minecraft\textures\gui\widgets.png`が存在しない場合はそのpathが自動入力されます。<br>
+**output Path**には`resourcepack\assets\minecraft\textures\gui\widgets.png`が存在しない場合はそのpathが自動入力されます。<br>
 `resourcepack\assets\minecraft\textures\gui\widgets.png`が存在する場合は上書きしないために、`resourcepack\assets\minecraft\textures\gui\widgetsOutput.png`が自動入力されます。<br>
 右側のフォルダアイコンで出力先を手動で設定できます。<br>
 下の「widgets.pngを上書きする」にチェックを入れると`widgets.png`の存在の可否を問わず`resourcepack\assets\minecraft\textures\gui\widgets.png`が自動入力されます。
 
 #### 2-5. options.txtの確認
 
-`options.txt`には選択したリソースパックが存在するゲームディレクトリに存在する`options.txt`へのパスが自動入力されます。<br>
+**options.txt**には選択したリソースパックが存在するゲームディレクトリに存在する`options.txt`へのパスが自動入力されます。<br>
 右から二番目のファイルアイコンで`options.txt`を直接指定できます。フォルダアイコンからはゲームディレクトリを選択でき、そのゲームディレクトリ内の`options.txt`へのパスが入力されます。
 
 ### 3. 変換を押下
