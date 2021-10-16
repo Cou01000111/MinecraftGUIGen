@@ -19,7 +19,16 @@ minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png
 
 ## リソースパック作成者へ
 
-当アプリケーション（Minecraft Texted Hotbar Gen）は当アプリケーション対応リソースパックではなくても使うことができますが、当アプリケーション用にリソースパックの`resourcepack\assets\minecraft\textures\gui`内に「widgetsChars.png」と「widgetsChars.json」を置いていただくとホットバーにオリジナルの文字を配置できます
+当アプリケーション（Minecraft Texted Hotbar Gen）は当アプリケーション対応リソースパックではなくても使うことができますが、当アプリケーション用にリソースパックの`resourcepack\assets\minecraft\textures\gui`内に「widgetsChars.png」と「widgetsChars.json」を置いていただくとホットバーにオリジナルの文字を配置できます。
+
+サンプルをGitHubに上げているので見て頂ければ幸いです。
+
+### widgetsBase.pngの描き方
+書き途中
+### widgetsChars.pngの描き方
+書き途中
+### widgetsChars.jsonの描き方
+書き途中
 
 ## FAQ
 
