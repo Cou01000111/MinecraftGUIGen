@@ -11,6 +11,7 @@ minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png
 ## 操作手順
 
 アプリケーション画面
+
 ![](https://github.com/Cou01000111/minecraft-texted-hotbar-gen/blob/main/appUI.png)
 
 ### 1. 最上段の「SELECT RESOURCE PACK」からリソースパックを選択
@@ -22,7 +23,6 @@ minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png
 #### 2-1. widgets base pathの確認
 
 `widgets base path`には`widgetsBase.png`がある場合は`resourcepack\assets\minecraft\textures\gui\widgetsBase.png`が自動で入力され、`widgetsBase.png`が見つからなかった場合は`resourcepack\assets\minecraft\textures\gui\widgets.png`が選択されます。
-
 右側のファイルアイコンのボタンで手動でファイルを選択することができます。
 
 #### 2-2. widgets chars pathの確認
@@ -36,31 +36,24 @@ minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png
 #### 2-3. widgets charsJson pathの確認
 
 `widgets charsJson path`には`resourcepack\assets\minecraft\textures\gui\widgetsChars.Json`が自動で入力され、`widgetsChars.json`が見つからなかった場合はアプリケーション付属のwidgetsChars.json(`default_widgetsChars.json`(上記画像))が選択されます。
-
 右側のファイルアイコンのボタンで手動でファイルを選択することができます。
 
 #### 2-4. output Pathの確認
 
 `output Path`には`resourcepack\assets\minecraft\textures\gui\widgets.png`が存在しない場合はそのpathが自動入力されます。
-
 `resourcepack\assets\minecraft\textures\gui\widgets.png`が存在する場合は上書きしないために、`resourcepack\assets\minecraft\textures\gui\widgetsOutput.png`が自動入力されます。
-
 右側のフォルダアイコンで出力先を手動で設定できます。
-
 下の「widgets.pngを上書きする」にチェックを入れると`widgets.png`の存在の可否を問わず`resourcepack\assets\minecraft\textures\gui\widgets.png`が自動入力されます。
 
 #### 2-5. options.txtの確認
 
 `options.txt`には選択したリソースパックが存在するゲームディレクトリに存在する`options.txt`へのパスが自動入力されます。
-
 右から二番目のファイルアイコンで`options.txt`を直接指定できます。フォルダアイコンからはゲームディレクトリを選択でき、そのゲームディレクトリ内の`options.txt`へのパスが入力されます。
 
 ### 3. 変換を押下
 
 ファイル出力成功した場合に限り「ファイル出力成功(widgets.png)」又は「ファイル出力成功(widgetsOutput.png)」というメッセージが表示されます。
-
 この出力メッセージのファイル名をクリックすると出力したファイルがエクスプローラーで表示されます。
-
 ファイル出力に失敗した場合は失敗した旨のメッセージが表示されますが、バグで表示されないことがあります。その際はお手数をおかけしますがissueなどで報告していただけると嬉しいです。
 
 ## リソースパック利用者へ
