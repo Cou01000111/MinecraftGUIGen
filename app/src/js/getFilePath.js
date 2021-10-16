@@ -12,7 +12,7 @@ function getWidgetsCharsPath(resourcePackPath) {
 }
 // get path to chars.json
 function getWidgetsCharsJsonPath(resourcePackPath) {
-  return resourcePackPath + "\\assets\\minecraft\\textures\\gui\\chars.json";
+  return resourcePackPath + "\\assets\\minecraft\\textures\\gui\\widgetsChars.json";
 }
 //get path to output directory
 function getOutputDirPath(resourcePackPath) {

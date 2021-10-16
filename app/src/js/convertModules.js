@@ -33,7 +33,9 @@ module.exports = async function convertProcess(basePath, charsPath, charsJson, k
   //charsがデフォルトの時用にここでsharpオブジェクトを作っておく
   var imgBuf = Buffer.from(DEFAULT_CHARS_IMG, 'base64');
   var charsSharpObj = charsPath == 'default_widgetsChars.png' ? sharp(imgBuf) : sharp(charsPath);
-  makeCharBuffer(options, charsSharpObj, charsJson).then((results) => {
+  var jsonObject = charsJson == 'default_widgetsChars.json' ? DEFAULT_WIDGETS_CHARA_JSON : require(charsJson);
+  console.log(jsonObject, jsonObject.unit.width, jsonObject.unit.height);
+  makeCharBuffer(options, charsSharpObj, charsJson, jsonObject.unit.width, jsonObject.unit.height).then((results) => {
     var base = sharp(basePath);
     //images作成
     var chars = new Array();
@@ -217,7 +219,7 @@ function isValidJson(value) {
 }
 
 //hotbarにつかうchar.pngを生成しBufferの配列を返す
-function makeCharBuffer(keyOptionList, charsSharpObj, jsonPath) {
+function makeCharBuffer(keyOptionList, charsSharpObj, jsonPath, unitWidth, unitHeight) {
   console.log(keyOptionList, charsSharpObj, jsonPath);
   var extractList = getExtractList(keyOptionList, jsonPath);
   var promises = [];
@@ -225,10 +227,10 @@ function makeCharBuffer(keyOptionList, charsSharpObj, jsonPath) {
     console.log(option[1]);
     console.log(extractList);
     var extractObject = {
-      top: extractList.get(option[1]).top * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
-      left: extractList.get(option[1]).left * UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
-      width: UNIT_OF_CHAR_WIDTH * IMAGE_MAGNIFICATION,
-      height: UNIT_OF_CHAR_HEIGHT * IMAGE_MAGNIFICATION,
+      top: extractList.get(option[1]).top * unitHeight * IMAGE_MAGNIFICATION,
+      left: extractList.get(option[1]).left * unitWidth * IMAGE_MAGNIFICATION,
+      width: unitWidth * IMAGE_MAGNIFICATION,
+      height: unitHeight * IMAGE_MAGNIFICATION,
     };
     if (!(isNaN(extractObject.top) || isNaN(extractObject.left))) {
       console.log('output char png:', extractObject);
