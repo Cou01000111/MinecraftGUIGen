@@ -4,12 +4,14 @@ Minecraft のリソースパックを読み込ませるとキーコンフィグ�
 
 ## このアプリケーションでできること
 
-minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png」と文字データがある「widgetsChars.png」、widgetsChars.pngの構造について書いてある「widgetsChars.json」とホットバーに使われているショートカットキーが書いてある「options.txt」から文字付ホットバーを生成します。
+minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png」と文字データがある「widgetsChars.png」、widgetsChars.pngの構造について書いてある「widgetsChars.json」とホットバーに使われているショートカットキーが書いてある「options.txt」から文字付ホットバーを生成します。(下記画像はホットバーのショートカットに「Mouse Button 4, Mouse Button 5, 3, 4, f, g, v, b, r」)
+
+![「widgetsBase.png」+「widgetsChars.png」+「widgetsChars.json」+「options.txt」=>「widgets.png」](https://github.com/Cou01000111/minecraft-texted-hotbar-gen/blob/main/MCTHG_doc.png)
 
 
 ## リソースパック利用者へ
 
-このツールは無からリソースパックを生み出すものではなく、当アプリケーション対応リソースパックを読み込ませて使うものです。
+このツールは無からリソースパックを生み出すものではなく、当アプリケーション対応リソースパック又はリソースパック内に`resourcepack\assets\minecraft\textures\gui\widgets.png`を含むリソースパックを読み込ませて使うものです。
 
 今のところ当アプリケーション対応リソースパックは確認できておりません。そのため、一般的に配付されているリソースパックに当アプリケーションデフォルトの文字を追加するか、Couが当アプリケーション対応リソースパックを制作するまでお待ちください。
 
@@ -17,4 +19,15 @@ minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png
 
 ## リソースパック作成者へ
 
-当アプリケーション（Minecraft Texted Hotbar Gen）は当アプリケーション対応リソースパックではなくても使うことができますが、当アプリケーション用にリソースパックの`\assets\minecraft\textures\gui`内に「widgetsChars.png」と「widgetsChars.json」を置いていただくとホットバーにオリジナルの文字を配置できます
+当アプリケーション（Minecraft Texted Hotbar Gen）は当アプリケーション対応リソースパックではなくても使うことができますが、当アプリケーション用にリソースパックの`resourcepack\assets\minecraft\textures\gui`内に「widgetsChars.png」と「widgetsChars.json」を置いていただくとホットバーにオリジナルの文字を配置できます
+
+## FAQ
+
+### THG対応リソースパックとは？
+`resourcepack\assets\minecraft\textures\gui\`に以下三つのファイルがあるリソースパックのことを指します
+
+- widgetsBase.png(ない場合はwidgets.pngが使われます)
+- widgetsChars.png(ない場合はアプリケーション付属のwidgetsChars.pngが使われます)
+- widgetsChars.json(ない場合はアプリケーション付属のwidgetsChars.jsonが使われます)
+
+ただし上記画像が全てなくても`widgets.png`さえあればホットバーに文字を追加することは可能です。
