@@ -38,7 +38,7 @@ if (process.platform === 'darwin') {
   });
 }
 
-autoUpdater.on('update-downloaded', ({ version, files, path, sha512, releaseName, releaseNotes, releaseDate }) => {
+autoUpdater.on('update-downloaded', ({ version, releaseDate }) => {
   const detail = `${app.getName()} ${version} ${releaseDate}`;
   dialog
     .showMessageBox(
