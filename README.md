@@ -1,4 +1,4 @@
-﻿# Minecraft Texted Hotbar Gen
+﻿# Minecraft Texted Hotbar Gen(MC_THG)
 
 Minecraft のリソースパックを読み込ませるとキーコンフィグを参照してホットバーにショートカットキーを追加するアプリケーションです。
 
@@ -23,11 +23,19 @@ minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png
 
 サンプルをGitHubに上げているので見て頂ければ幸いです。
 
-### widgetsBase.pngの描き方
-書き途中
-### widgetsChars.pngの描き方
-書き途中
-### widgetsChars.jsonの描き方
+### widgetsBase.pngについて
+いまのところ一般的なリソースパックや標準のテクスチャである`resourcepack\assets\minecraft\textures\gui\widgets.png`と特に変わりません
+
+ただし、このアプリケーションはの場合はそれぞれ左上に文字を追加するのでそれを前提にデザインしていただければなと思います。
+
+sample
+![]()
+
+### widgetsChars.pngについて
+これは当アプリケーション向けにリソースパック制作者が作る中で二つ目に難解な要素になっています。
+制作者はどのキーをサポートするか、一文字の大きさをどれくらいにするかを自由に決めることができ
+
+### widgetsChars.jsonについて
 書き途中
 
 ## FAQ

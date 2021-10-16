@@ -1,0 +1,30 @@
+{
+  "unit": {
+    "width": 6,
+    "height": 7
+  },
+  "support_key_list": {
+    "Mouse Button 4": { "top": 0, "left": 0 },
+    "Mouse Button 5": { "top": 0, "left": 1 },
+    "1": { "top": 0, "left": 2 },
+    "2": { "top": 0, "left": 3 },
+    "3": { "top": 0, "left": 4 },
+    "4": { "top": 0, "left": 5 },
+    "5": { "top": 1, "left": 0 },
+    "6": { "top": 1, "left": 1 },
+    "7": { "top": 1, "left": 2 },
+    "8": { "top": 1, "left": 3 },
+    "9": { "top": 1, "left": 4 },
+    "q": { "top": 1, "left": 5 },
+    "t": { "top": 2, "left": 0 },
+    "v": { "top": 2, "left": 1 },
+    "r": { "top": 2, "left": 2 },
+    "f": { "top": 2, "left": 3 },
+    "b": { "top": 2, "left": 4 },
+    "n": { "top": 2, "left": 5 },
+    "c": { "top": 3, "left": 0 },
+    "g": { "top": 3, "left": 1 },
+    "z": { "top": 3, "left": 2 },
+    "x": { "top": 3, "left": 3 }
+  }
+}
