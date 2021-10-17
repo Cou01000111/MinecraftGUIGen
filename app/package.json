@@ -1,7 +1,7 @@
 {
   "name": "minecraft-texted-hotbar-gen",
   "version": "0.5.2",
-  "author": "kamiya cou",
+  "author": "cou723",
   "description": "Draw a shortcut key in the resource pack with the minecraft hotbar.",
   "main": "src/main.js",
   "scripts": {
