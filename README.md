@@ -6,7 +6,7 @@ Minecraft のリソースパックを読み込ませるとキーコンフィグ�
 
 minecraftのホットバーがあるwidgets.pngの元である「widgetsBase.png」と文字データがある「widgetsChars.png」、widgetsChars.pngの構造について書いてある「widgetsChars.json」とホットバーに使われているショートカットキーが書いてある「options.txt」から文字付ホットバーを生成します。
 
-THGSampleResourcepackをホットバーのショートカットキー`Mouse Button 4, Mouse Button 5, 3, 4, f, g, v, b, r`で当アプリケーションを用いて`widgets.png`生成した場合
+THGSampleResourcepackをホットバーのショートカットキー`Mouse Button 4, Mouse Button 5, 3, 4, f, g, v, b, r`で当アプリケーションを用いて`widgets.png`生成している図
 
 ![「widgetsBase.png」+「widgetsChars.png」+「widgetsChars.json」+「options.txt」=>「widgets.png」](https://github.com/Cou01000111/minecraft-texted-hotbar-gen/blob/main/MCTHG_doc.png)
 
@@ -29,6 +29,8 @@ THGSampleResourcepackをホットバーのショートカットキー`Mouse Butt
 右側のファイルアイコンのボタンで手動でファイルを選択することができます。
 
 #### 2-2. widgets chars pathの確認
+
+アプリケーション付属の`widgetsChars.png`
 
 ![](https://github.com/Cou01000111/minecraft-texted-hotbar-gen/blob/main/default_widgetsChars.png)
 
@@ -83,12 +85,9 @@ sample
 
 ### widgetsChars.pngについて
 この画像には実際に追加されるテキストのテクスチャの集合です。
-
-基本的にはマス目上に文字を設置し、どこの画像がどのキーをサポートするかは後述のjsonファイルに記述します。
-
-ユーザーがMinecraftで使用可能な全てのキーをサポートする必要ありません。なぜなら、ホットバーへのショートカットキーとしてPやO,Lなど明らかに左手で押せないキーは基本使われないためです。
-
-制作者調べでは以下のリストのキーが対応していれば基本的には問題ないと思います。
+基本的にはマス目上に文字を設置し、どこの画像がどのキーをサポートするかは後述のjsonファイルに記述します。<br>
+ユーザーがMinecraftで使用可能な全てのキーをサポートする必要ありません。(なぜなら、ホットバーへのショートカットキーとしてPやO,Lなど明らかに左手で押せないキーは基本使われないためです。)<br>
+制作者調べでは以下のリストのキーが対応していれば基本的には問題ないと思います。<br>
 
 - 数字(1~7)
 - Mouse Button 4(サムボタン)

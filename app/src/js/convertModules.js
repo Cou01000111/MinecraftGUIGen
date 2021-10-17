@@ -75,6 +75,7 @@ function setSuccessMessage(outputPath) {
 //chars画像,base画像,key optionそれぞれ問題がないか
 //問題なし:true
 async function testingArgs(basePath, charsPath, charsJson, keyOption) {
+  if (!inputCheck(basePath, charsPath, charsJson, keyOption)) return false;
   var jsonPathTest = testingJsonPath(charsJson);
   if (!jsonPathTest) return false;
   if (charsJson != 'default_widgetsChars.json') {
@@ -90,12 +91,22 @@ async function testingArgs(basePath, charsPath, charsJson, keyOption) {
   return ans;
 }
 
+function inputCheck(basePath, charsPath, charsJson, keyOption) {
+  var isBaseEmpty = basePath == '';
+  if (isBaseEmpty) ew.emptyPath('base');
+  var isChrasPathEmpty = charsPath == '';
+  if (isChrasPathEmpty) ew.emptyPath('chars');
+  var isCharsJsonEmpty = charsJson == '';
+  if (isCharsJsonEmpty) ew.emptyPath('json');
+  var isKeyOptionEmpty = keyOption == '';
+  if (isKeyOptionEmpty) ew.emptyPath('options');
+  return isBaseEmpty && isChrasPathEmpty && isCharsJsonEmpty && isKeyOptionEmpty;
+}
+
 //chars画像が加工をする上で問題がないか
 //問題なし:true
 async function testingCharsPath(charsPath) {
-  if (charsPath == '') {
-    ew.emptyPath('chars');
-  } else if (!fs.existsSync(charsPath) && charsPath != 'default_widgetsChars.png') {
+  if (!fs.existsSync(charsPath) && charsPath != 'default_widgetsChars.png') {
     ew.invalidPath('chars');
   } else {
     var imgBuf;
@@ -123,9 +134,7 @@ async function testingCharsPath(charsPath) {
 //base画像が加工をする上で問題がないか
 //問題なし:true
 async function testingBasePath(basePath) {
-  if (basePath == '') {
-    ew.emptyPath('base');
-  } else if (!fs.existsSync(basePath)) {
+  if (!fs.existsSync(basePath)) {
     ew.invalidPath('base');
   } else {
     const base = await sharp(basePath);
@@ -148,10 +157,6 @@ async function testingBasePath(basePath) {
 
 //chars jsonが加工をする上で問題ないか
 function testingJsonPath(jsonPath) {
-  if (jsonPath == '') {
-    ew.emptyPath('json');
-    return false;
-  }
   if (!fs.existsSync(jsonPath) && jsonPath != 'default_widgetsChars.json') {
     ew.invalidPath('json');
     return false;

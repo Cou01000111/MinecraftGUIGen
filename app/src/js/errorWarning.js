@@ -27,11 +27,11 @@ function gameDirNotFound() {
 }
 
 //widgetsBase.png,widgetsChars.pngが未入力な場合に呼び出されるエラー
-function emptyPath(baseOrCharsOrJson) {
-  if (!(baseOrCharsOrJson == 'base' || baseOrCharsOrJson == 'chars' || baseOrCharsOrJson == 'json')) {
+function emptyPath(emptyElement) {
+  if (!(emptyElement == 'base' || emptyElement == 'chars' || emptyElement == 'json') || emptyElement ==='options') {
     throw Error();
   }
-  $('#convertError').append(`${baseOrCharsOrJson}のpathが入力されていません<br>`);
+  $('#convertError').append(`${emptyElement}のpathが入力されていません<br>`);
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
