@@ -100,7 +100,7 @@ function inputCheck(basePath, charsPath, charsJson, keyOption) {
   if (isCharsJsonEmpty) ew.emptyPath('json');
   var isKeyOptionEmpty = keyOption == '';
   if (isKeyOptionEmpty) ew.emptyPath('options');
-  return isBaseEmpty && isChrasPathEmpty && isCharsJsonEmpty && isKeyOptionEmpty;
+  return !(isBaseEmpty || isChrasPathEmpty || isCharsJsonEmpty || isKeyOptionEmpty);
 }
 
 //chars画像が加工をする上で問題がないか
