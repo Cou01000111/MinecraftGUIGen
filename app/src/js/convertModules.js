@@ -21,7 +21,7 @@ const DEFAULT_WIDGETS_CHARA_JSON = require('../defaultChars.json');
 //TODO chars.jsonにないものがkey configにあった場合の処理
 module.exports = async function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
   ew.resetConvertMessage();
-  var test = await testingArgs(basePath, charsPath, charsJson, keyOption);
+  var test = await testingArgs(basePath, charsPath, charsJson, keyOption, outputPath);
   console.log(`args testing:`, test);
   if (test == false) {
     console.log('引数に問題がありました');
@@ -74,8 +74,8 @@ function setSuccessMessage(outputPath) {
 
 //chars画像,base画像,key optionそれぞれ問題がないか
 //問題なし:true
-async function testingArgs(basePath, charsPath, charsJson, keyOption) {
-  if (!inputCheck(basePath, charsPath, charsJson, keyOption)) return false;
+async function testingArgs(basePath, charsPath, charsJson, keyOption, outputPath) {
+  if (!inputCheck(basePath, charsPath, charsJson, keyOption, outputPath)) return false;
   var jsonPathTest = testingJsonPath(charsJson);
   if (!jsonPathTest) return false;
   if (charsJson != 'default_widgetsChars.json') {
@@ -87,11 +87,12 @@ async function testingArgs(basePath, charsPath, charsJson, keyOption) {
   var basePathTest = await testingBasePath(basePath);
   var keyOptionTest = keyOption.split(',').length == HOTBAR_COUNT;
   if (charsPathTest == false && charsJson === 'default_widgetsChars.json') ew.charsJsonPngMismatch();
-  var ans = charsPathTest && basePathTest && jsonPathTest && keyOptionTest;
+  var outputPathTest = testingOutputPath(outputPath);
+  var ans = charsPathTest && basePathTest && jsonPathTest && keyOptionTest && outputPathTest;
   return ans;
 }
 
-function inputCheck(basePath, charsPath, charsJson, keyOption) {
+function inputCheck(basePath, charsPath, charsJson, keyOption, outputPath) {
   var isBaseEmpty = basePath == '';
   if (isBaseEmpty) ew.emptyPath('base');
   var isChrasPathEmpty = charsPath == '';
@@ -100,7 +101,9 @@ function inputCheck(basePath, charsPath, charsJson, keyOption) {
   if (isCharsJsonEmpty) ew.emptyPath('json');
   var isKeyOptionEmpty = keyOption == '';
   if (isKeyOptionEmpty) ew.emptyPath('options');
-  return !(isBaseEmpty || isChrasPathEmpty || isCharsJsonEmpty || isKeyOptionEmpty);
+  var isOutputPathEmpty = outputPath == '';
+  if (isOutputPathEmpty) ew.emptyPath('output');
+  return !(isBaseEmpty || isChrasPathEmpty || isCharsJsonEmpty || isKeyOptionEmpty || isOutputPathEmpty);
 }
 
 //chars画像が加工をする上で問題がないか
@@ -157,13 +160,13 @@ async function testingBasePath(basePath) {
 
 //chars jsonが加工をする上で問題ないか
 function testingJsonPath(jsonPath) {
-  if (!fs.existsSync(jsonPath) && jsonPath != 'default_widgetsChars.json') {
+  //デフォルトのjsonが指定されていた場合は絶対に問題がないため即trueを返す
+  if (jsonPath == 'default_widgetsChars.json') return true;
+  if (!fs.existsSync(jsonPath)) {
     ew.invalidPath('json');
     return false;
   }
   var json;
-  //デフォルトのjsonが指定されていた場合は絶対に問題がないため即trueを返す
-  if (jsonPath == 'default_widgetsChars.json') return true;
   json = fs.readFileSync(jsonPath);
   if (isValidJson(json) == false) {
     ew.illegalJSONPassed();
@@ -173,6 +176,14 @@ function testingJsonPath(jsonPath) {
   var isUnitNormal = unitPropertyTest(jsonObject);
   var isSupportKeyNormal = supportKeyPropertyTest(jsonObject);
   return isUnitNormal && isSupportKeyNormal;
+}
+
+function testingOutputPath(outputPath) {
+  if (!fs.existsSync(outputPath)) {
+    ew.invalidPath('output');
+    return false;
+  }
+  return true;
 }
 
 //jsonObjにunitがあり、それが正しいかどうか

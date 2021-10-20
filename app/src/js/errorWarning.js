@@ -28,18 +28,30 @@ function gameDirNotFound() {
 
 //widgetsBase.png,widgetsChars.pngが未入力な場合に呼び出されるエラー
 function emptyPath(emptyElement) {
-  if (!(emptyElement == 'base' || emptyElement == 'chars' || emptyElement == 'json') || emptyElement ==='options') {
-    throw Error();
+  if (
+    !(
+      emptyElement == 'base' ||
+      emptyElement == 'chars' ||
+      emptyElement == 'json' ||
+      emptyElement === 'options' ||
+      emptyElement === 'output'
+    )
+  ) {
+    throw Error(`Invalid value passed for emptyPath: ${emptyElement}`);
   }
+  console.error(`${emptyElement}が入力されていない`);
   $('#convertError').append(`${emptyElement}のpathが入力されていません<br>`);
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
-function invalidPath(baseOrCharsOrJson) {
-  if (!(baseOrCharsOrJson == 'base' || baseOrCharsOrJson == 'chars' || baseOrCharsOrJson == 'json')) {
-    throw Error();
+function invalidPath(invalidElement) {
+  if (
+    !(invalidElement == 'base' || invalidElement == 'chars' || invalidElement == 'json' || invalidElement == 'output')
+  ) {
+    throw Error(`Invalid value passed for invalidPath: ${invalidElement}`);
   }
-  $('#convertError').append(`${baseOrCharsOrJson}のpathが無効です<br>`);
+  console.error(`${invalidElement}が不正な値です`);
+  $('#convertError').append(`${invalidElement}のpathが無効です<br>`);
 }
 
 //widgetsBase.png,widgetsChars.pngが無効な場合に呼び出されるエラー
