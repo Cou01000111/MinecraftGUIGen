@@ -38,19 +38,20 @@ module.exports = async function convertProcess(basePath, charsPath, charsJson, k
   makeCharBuffer(options, charsSharpObj, charsJson, jsonObject.unit.width, jsonObject.unit.height).then((results) => {
     var base = sharp(basePath);
     //images作成
-    var chars = new Array();
+    var compositeObject = new Array();
     console.log('make char buf results:', results);
     for (let index = 0; index < HOTBAR_COUNT; index++) {
       console.log(results[index]);
+      if (results[index] == '') continue;
       var compositeObj = {
         input: results[index],
         top: 1 * IMAGE_MAGNIFICATION,
         left: 1 + index * HOTBAR_WIDTH * IMAGE_MAGNIFICATION,
       };
-      chars.push(compositeObj);
+      compositeObject.push(compositeObj);
     }
-    console.log('composite object:', chars);
-    base.composite(chars).toFile(outputPath, (err, info) => {
+    console.log('composite object:', compositeObject);
+    base.composite(compositeObject).toFile(outputPath, (err, info) => {
       if (err) {
         $('#convertError').text(
           'ファイル出力失敗（特にエラーメッセージが出ていない場合はバグなのでgithub issueにて報告していただけると助かります）'
@@ -242,16 +243,20 @@ function makeCharBuffer(keyOptionList, charsSharpObj, jsonPath, unitWidth, unitH
   for (const option of keyOptionList.entries()) {
     console.log(option[1]);
     console.log(extractList);
-    var extractObject = {
-      top: extractList.get(option[1]).top * unitHeight * IMAGE_MAGNIFICATION,
-      left: extractList.get(option[1]).left * unitWidth * IMAGE_MAGNIFICATION,
-      width: unitWidth * IMAGE_MAGNIFICATION,
-      height: unitHeight * IMAGE_MAGNIFICATION,
-    };
-    if (!(isNaN(extractObject.top) || isNaN(extractObject.left))) {
-      console.log('output char png:', extractObject);
+    if (!(isNaN(extractList.get(option[1]).top) || isNaN(extractList.get(option[1]).left))) {
+      var extractObject = {
+        top: extractList.get(option[1]).top * unitHeight * IMAGE_MAGNIFICATION,
+        left: extractList.get(option[1]).left * unitWidth * IMAGE_MAGNIFICATION,
+        width: unitWidth * IMAGE_MAGNIFICATION,
+        height: unitHeight * IMAGE_MAGNIFICATION,
+      };
       promises.push(charsSharpObj.extract(extractObject).png().toBuffer());
-    }
+    } else
+      promises.push(
+        new Promise((resolve) => {
+          resolve('');
+        })
+      );
   }
   return Promise.all(promises)
     .then(function (results) {
