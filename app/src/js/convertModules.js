@@ -11,9 +11,9 @@ var { shell } = require('electron');
 const DEFAULT_CHARS_IMG =
   'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAB4UlEQVR4nO1XAW7CQAw79qo9r6/ZN7shaOVGdi653tEyinRiCm7OjpPAyjzPJXnm7595eW3ia7CUWyDe5bQ8RAVA7PwCkFONqCPsPQQ48UvAI+Vf0uWYD27sMxU/6pRpmr7u1bm/P/9eiS5VYxVF7JKDVRrybp7x8OwOhS8ApA9YAUgIY4ALExJOrsW0BWX5N8oiDjCxiwDlWKZAWT7yghohJoBVyCOk8Bk+cgbwYkXIusLwtRnY7QD2G6uQmgHlgIfP5o/gQ72uKmFjHl452eL8Jj8AQ72IeEvSw2eGO7mdfAfYBVgkW+UeAhgfzB1ywBu+t3BAKfYE0Ap1nAEpoHUbYGz0tpH42le9qhw6UPsi69VarFOkNUqA91Oil4BMQauKewjwCA0VkHFA4VscyPDpOgNIKkJoTbJXQOs2sAKGbpvsbyF0he11u0axotFKZ51nzqQfQLwVkOl1xJ5GgCLEHHiJgBqhiANqvbYIQE6Qv/6vI5uBqIAWBzL4XdsAY6O3jcR7ltXiwhWLH3q6CVC9fpgANRsK68zSeAHCehqPiD2FAxFnbEwUYqwANfWRuML+KwHZ+OkEmMsuAacXwHJ5eV8uIEDowwS09l5jv3Zft4eQvgQc1UJDCnQ0gY8X8AstyTSRWjs+KQAAAABJRU5ErkJggg==';
 const HOTBAR_COUNT = 9;
-var UNIT_OF_CHAR_WIDTH = 6;
-var UNIT_OF_CHAR_HEIGHT = 6;
-const HOTBAR_WIDTH = 20;
+// var UNIT_OF_CHAR_WIDTH = 6;
+// var UNIT_OF_CHAR_HEIGHT = 6;
+const HOTBAR_UNIT_WIDTH = 20;
 const BASE_STANDARD_WIDTH = 256;
 const BASE_STANDARD_HEIGHT = 256;
 const DEFAULT_WIDGETS_CHARA_JSON = require('../defaultChars.json');
@@ -46,7 +46,7 @@ module.exports = async function convertProcess(basePath, charsPath, charsJson, k
       var compositeObj = {
         input: results[index],
         top: 1 * IMAGE_MAGNIFICATION,
-        left: 1 + index * HOTBAR_WIDTH * IMAGE_MAGNIFICATION,
+        left: 1 + index * HOTBAR_UNIT_WIDTH * IMAGE_MAGNIFICATION,
       };
       compositeObject.push(compositeObj);
     }
@@ -81,10 +81,8 @@ async function testingArgs(basePath, charsPath, charsJson, keyOption, outputPath
   if (!jsonPathTest) return false;
   if (charsJson != 'default_widgetsChars.json') {
     var json = JSON.parse(fs.readFileSync(charsJson));
-    UNIT_OF_CHAR_WIDTH = json.unit.width;
-    UNIT_OF_CHAR_HEIGHT = json.unit.height;
   }
-  var charsPathTest = await testingCharsPath(charsPath);
+  var charsPathTest = await testingCharsPath(charsPath, json.unit.width, json.unit.height);
   var basePathTest = await testingBasePath(basePath);
   var keyOptionTest = keyOption.split(',').length == HOTBAR_COUNT;
   if (charsPathTest == false && charsJson === 'default_widgetsChars.json') ew.charsJsonPngMismatch();
@@ -109,7 +107,7 @@ function inputCheck(basePath, charsPath, charsJson, keyOption, outputPath) {
 
 //chars画像が加工をする上で問題がないか
 //問題なし:true
-async function testingCharsPath(charsPath) {
+async function testingCharsPath(charsPath, unitWidth, unitHeight) {
   if (!fs.existsSync(charsPath) && charsPath != 'default_widgetsChars.png') {
     ew.invalidPath('chars');
   } else {
@@ -121,11 +119,10 @@ async function testingCharsPath(charsPath) {
     } else chars = await sharp(charsPath);
     const { format: charsFormat, width: charsWidth, height: charsHeight } = await chars.metadata();
     var isPng = charsFormat == 'png';
-    var isWidthUnitTimes = charsWidth % UNIT_OF_CHAR_WIDTH == 0;
-    var isHeightUnitTimes = charsHeight % UNIT_OF_CHAR_HEIGHT == 0;
+    var isWidthUnitTimes = charsWidth % unitWidth == 0;
+    var isHeightUnitTimes = charsHeight % unitHeight == 0;
     if (isPng && isWidthUnitTimes && isHeightUnitTimes) {
-      IMAGE_MAGNIFICATION =
-        IMAGE_MAGNIFICATION < charsWidth / UNIT_OF_CHAR_WIDTH ? IMAGE_MAGNIFICATION : charsWidth / UNIT_OF_CHAR_WIDTH;
+      IMAGE_MAGNIFICATION = IMAGE_MAGNIFICATION < charsWidth / unitWidth ? IMAGE_MAGNIFICATION : charsWidth / unitWidth;
       return true;
     } else {
       var conditions = [isPng, isWidthUnitTimes, isHeightUnitTimes];
