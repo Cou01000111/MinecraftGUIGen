@@ -82,7 +82,7 @@ async function createWindow() {
   }
   mainWindow = new BrowserWindow({
     width: app.isPackaged ? 500 : 800,
-    height: app.isPackaged ? 700 : 900,
+    height: app.isPackaged ? 720 : 900,
     center: true,
     icon: path.join(__dirname, './img/icon.ico'),
     webPreferences: {
