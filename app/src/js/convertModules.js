@@ -21,7 +21,7 @@ const DEFAULT_WIDGETS_CHARA_JSON = require('../defaultChars.json');
 //TODO chars.jsonにないものがkey configにあった場合の処理
 module.exports = async function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
   ew.resetConvertMessage();
-  var test = await testingArgs(basePath, charsPath, charsJson, keyOption, outputPath);
+  var test = await checkArgs(basePath, charsPath, charsJson, keyOption, outputPath);
   console.log(`args testing:`, test);
   if (test == false) {
     console.log('引数に問題がありました');
@@ -75,23 +75,23 @@ function setSuccessMessage(outputPath) {
 
 //chars画像,base画像,key optionそれぞれ問題がないか
 //問題なし:true
-async function testingArgs(basePath, charsPath, charsJson, keyOption, outputPath) {
-  if (!inputCheck(basePath, charsPath, charsJson, keyOption, outputPath)) return false;
-  var jsonPathTest = testingJsonPath(charsJson);
+async function checkArgs(basePath, charsPath, charsJson, keyOption, outputPath) {
+  if (!checkInputtedValue(basePath, charsPath, charsJson, keyOption, outputPath)) return false;
+  const jsonPathTest = checkJsonPath(charsJson);
   if (!jsonPathTest) return false;
   if (charsJson != 'default_widgetsChars.json') {
     var json = JSON.parse(fs.readFileSync(charsJson));
   }
-  var charsPathTest = await testingCharsPath(charsPath, json.unit.width, json.unit.height);
-  var basePathTest = await testingBasePath(basePath);
-  var keyOptionTest = keyOption.split(',').length == HOTBAR_COUNT;
+  const charsPathTest = await checkCharsPath(charsPath, json.unit.width, json.unit.height);
+  const basePathTest = await checkBasePath(basePath);
+  const keyOptionTest = keyOption.split(',').length == HOTBAR_COUNT;
   if (charsPathTest == false && charsJson === 'default_widgetsChars.json') ew.charsJsonPngMismatch();
-  var outputPathTest = testingOutputPath(outputPath);
-  var ans = charsPathTest && basePathTest && jsonPathTest && keyOptionTest && outputPathTest;
+  const outputPathTest = checkOutputPath(outputPath);
+  const ans = charsPathTest && basePathTest && jsonPathTest && keyOptionTest && outputPathTest;
   return ans;
 }
 
-function inputCheck(basePath, charsPath, charsJson, keyOption, outputPath) {
+function checkInputtedValue(basePath, charsPath, charsJson, keyOption, outputPath) {
   var isBaseEmpty = basePath == '';
   if (isBaseEmpty) ew.emptyPath('base');
   var isChrasPathEmpty = charsPath == '';
@@ -107,7 +107,7 @@ function inputCheck(basePath, charsPath, charsJson, keyOption, outputPath) {
 
 //chars画像が加工をする上で問題がないか
 //問題なし:true
-async function testingCharsPath(charsPath, unitWidth, unitHeight) {
+async function checkCharsPath(charsPath, unitWidth, unitHeight) {
   if (!fs.existsSync(charsPath) && charsPath != 'default_widgetsChars.png') {
     ew.invalidPath('chars');
   } else {
@@ -134,7 +134,7 @@ async function testingCharsPath(charsPath, unitWidth, unitHeight) {
 
 //base画像が加工をする上で問題がないか
 //問題なし:true
-async function testingBasePath(basePath) {
+async function checkBasePath(basePath) {
   if (!fs.existsSync(basePath)) {
     ew.invalidPath('base');
   } else {
@@ -157,7 +157,7 @@ async function testingBasePath(basePath) {
 }
 
 //chars jsonが加工をする上で問題ないか
-function testingJsonPath(jsonPath) {
+function checkJsonPath(jsonPath) {
   //デフォルトのjsonが指定されていた場合は絶対に問題がないため即trueを返す
   if (jsonPath == 'default_widgetsChars.json') return true;
   if (!fs.existsSync(jsonPath)) {
@@ -176,7 +176,7 @@ function testingJsonPath(jsonPath) {
   return isUnitNormal && isSupportKeyNormal;
 }
 
-function testingOutputPath(outputPath) {
+function checkOutputPath(outputPath) {
   if (!fs.existsSync(outputPath)) {
     ew.invalidPath('output');
     return false;
