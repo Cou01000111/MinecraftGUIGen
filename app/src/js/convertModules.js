@@ -177,7 +177,7 @@ function checkJsonPath(jsonPath) {
 }
 
 function checkOutputPath(outputPath) {
-  if (!fs.existsSync(outputPath)) {
+  if (!fs.existsSync(path.dirname(outputPath))) {
     ew.invalidPath('output');
     return false;
   }
