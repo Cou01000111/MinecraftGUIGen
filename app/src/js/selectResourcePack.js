@@ -26,7 +26,6 @@ function checkIsConvertibleResourcePack(resourcePackPath) {
     ans = false;
   }
   if (!(fe.isWidgetsbaseExists(resourcePackPath) || fe.isWidgetsExists(resourcePackPath))) {
-    console.log(fe.isWidgetsbaseExists(resourcePackPath), fe.isWidgetsExists(resourcePackPath));
     ew.widgetsDoesNotFound();
     ans = false;
   }
