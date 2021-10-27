@@ -29,8 +29,10 @@ body {
 #selectResourcePack {
   padding-top: 1.3rem;
 }
-img {
+.pack-png {
   image-rendering: pixelated;
+  height: 64px;
+  width: 64px;
 }
 p {
   margin-bottom: 0px;
@@ -38,15 +40,15 @@ p {
 #selectResourcePack {
   height: 5rem;
 }
-.select-btn{
+.select-btn {
   margin-bottom: 1rem;
 }
-a{
+a {
   padding: 0;
 }
-.btn{
-  padding:0px 8px;
+.btn {
+  padding: 0px 8px;
 }
-tr{
+tr {
   border-bottom-color: #f3f3f3;
 }
