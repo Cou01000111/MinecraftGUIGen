@@ -76,11 +76,12 @@ function setSuccessMessage(outputPath) {
 //chars画像,base画像,key optionそれぞれ問題がないか
 //問題なし:true
 async function checkArgs(basePath, charsPath, charsJson, keyOption, outputPath) {
+  var json = DEFAULT_WIDGETS_CHARA_JSON;
   if (!checkInputtedValue(basePath, charsPath, charsJson, keyOption, outputPath)) return false;
   const jsonPathTest = checkJsonPath(charsJson);
   if (!jsonPathTest) return false;
   if (charsJson != 'default_widgetsChars.json') {
-    var json = JSON.parse(fs.readFileSync(charsJson));
+    json = require(charsJson);
   }
   const charsPathTest = await checkCharsPath(charsPath, json.unit.width, json.unit.height);
   const basePathTest = await checkBasePath(basePath);
