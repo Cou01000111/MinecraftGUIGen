@@ -22,9 +22,9 @@ function resourcePackSelectedInProcess(resourcePackPath) {
   setWidgetCharsPath(resourcePackPath);
   setWidgetCharsJsonPath(resourcePackPath);
   // overwrite widgets.png のチェック
-  if (fs.existsSync(gp.getOutputDirPath(resourcePackPath) + 'widgets.png'))
-    sop.setOutputPathOverwrite(resourcePackPath);
-  else sop.setOutputPath(resourcePackPath);
+  console.log(gp.getOutputDirPath(resourcePackPath) + 'widgets.png');
+  if (fs.existsSync(gp.getOutputDirPath(resourcePackPath) + 'widgets.png')) sop.setOutputPath(resourcePackPath);
+  else sop.setOutputPathOverwrite(resourcePackPath);
   // game directory input の設定
   setOptionPath(resourcePackPath);
 }
