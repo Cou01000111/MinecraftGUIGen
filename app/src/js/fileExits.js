@@ -6,21 +6,25 @@ function isWidgetsExists(resourcePackPath) {
   if (!resourcePackPath) console.error('arg error');
   return fs.existsSync(gp.getWidgetsPath(resourcePackPath));
 }
+
 // リソースパックにwidgetsBase.pngがあるか
 function isWidgetsbaseExists(resourcePackPath) {
   if (!resourcePackPath) console.error('arg error');
   return fs.existsSync(gp.getWidgetsBasePath(resourcePackPath));
 }
+
 // リソースパックにwidgetsChars.pngがあるか
 function isWidgetsCharsExists(resourcePackPath) {
   if (!resourcePackPath) console.error('arg error');
   return fs.existsSync(gp.getWidgetsCharsPath(resourcePackPath));
 }
+
 // リソースパックにchars.jsonがあるか
 function isWidgetsCharsJsonExists(resourcePackPath) {
   if (!resourcePackPath) console.error('arg error');
   return fs.existsSync(gp.getWidgetsCharsJsonPath(resourcePackPath));
 }
+
 // resource packかどうか(ディレクトリの中にmcmetaがあるかどうか)
 function isResourcePack(resourcePackPath) {
   if (!resourcePackPath) console.error('arg error');

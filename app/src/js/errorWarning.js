@@ -1,33 +1,35 @@
 const $ = require('jquery');
 // 何かしらのエラーを表示するときはここにある関数を通じて標示する
 function selectedOutOfSupportVersion() {
-  $('#gameOptionError').text('未対応のバージョンのoptionが選ばれました');
+  $('#gameOptionError').append('未対応のバージョンのoptionが選ばれました<br>');
 }
 
 function dirIsNotGameDir() {
-  $('#gameOptionError').text('ゲームディレクトリを指定してください');
+  $('#gameOptionError').append('ゲームディレクトリを指定してください<br>');
 }
 
 function nonGameDirectoryHasBeenSelected() {
-  $('#gameOptionError').text('minecraftのゲームディレクトリか、ゲームディレクトリにあるoptions.txtを指定して下さい');
+  $('#gameOptionError').append(
+    'minecraftのゲームディレクトリか、ゲームディレクトリにあるoptions.txtを指定して下さい<br>'
+  );
 }
 
 function nonResourcePackHasBeenSelected() {
-  $('#errorMessage').text('minecraftのresource packを選択してください');
+  $('#errorMessage').append('minecraftのresource packを選択してください<br>');
 }
 
 function widgetsDoesNotFound() {
-  $('#errorMessage').text('widgets.pngまたはwidgetsBase.pngが存在しないリソースパックは変換できません');
+  $('#errorMessage').append('widgets.pngまたはwidgetsBase.pngが存在しないリソースパックは変換できません<br>');
 }
 
 function gameDirNotFound() {
-  $('#gameOptionError').text(
-    'ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoptions.txtを指定してください'
+  $('#gameOptionError').append(
+    'ゲームディレクトリが見つかりませんでした。minecraftのゲームディレクトリにあるoptions.txtを指定してください<br>'
   );
 }
 
 function duplicatedBasePathAndOutputPath() {
-  $('#gameOptionError').text('今現在widgets.pngからwidgets.pngを出力することはできません');
+  $('#gameOptionError').append('今現在widgets.pngからwidgets.pngを出力することはできません<br>');
 }
 
 //widgetsBase.png,widgetsChars.pngが未入力な場合に呼び出されるエラー
@@ -91,44 +93,44 @@ function selectedRightnessNotImageChars(conditions) {
 
 //chars.jsonが不正な時
 function illegalJSONPassed() {
-  $('#charsJsonError').text('JSONファイルの文法に誤りがあります');
+  $('#charsJsonError').append('JSONファイルの文法に誤りがあります<br>');
 }
 
 function noUnit() {
-  $('#charsJsonError').text('jsonからunitが見つかりません');
+  $('#charsJsonError').append('jsonからunitが見つかりません<br>');
 }
 
 function unitPropertyIsIllegal() {
-  $('#charsJsonError').text('jsonのunitのプロパティに誤りがあります');
+  $('#charsJsonError').append('jsonのunitのプロパティに誤りがあります<br>');
 }
 
 function unitWidthIsInvalid() {
-  $('#charsJsonError').text('jsonのunit.widthの数値が1~20ではありません');
+  $('#charsJsonError').append('jsonのunit<br>.widthの数値が1~20ではありません');
 }
 
 function unitHeightIsInvalid() {
-  $('#charsJsonError').text('jsonのunit.heightの数値が1~20ではありません');
+  $('#charsJsonError').append('jsonのunit<br>.heightの数値が1~20ではありません');
 }
 
 function noSupportKey() {
-  $('#charsJsonError').text('jsonからsupportKeyが見つかりません');
+  $('#charsJsonError').append('jsonからsupportKeyが見つかりません<br>');
 }
 
 function supportKeyIsNotArray() {
-  $('#charsJsonError').text('jsonのsupportKeyが配列ではありません');
+  $('#charsJsonError').append('jsonのsupportKeyが配列ではありません<br>');
 }
 
 function supportKeyValueIsNotString() {
-  $('#charsJsonError').text('jsonのsupportKeyが文字列ではありません（"または\'で囲われていません）');
+  $('#charsJsonError').append('jsonのsupportKeyが文字列ではありません（<br>"または\'で囲われていません）');
 }
 
 function supportKeyLengthIsZero() {
-  $('#charsJsonError').text('jsonのsupportKeyのプロパティに要素がありません');
+  $('#charsJsonError').append('jsonのsupportKeyのプロパティに要素がありません<br>');
 }
 
 function unsupportedKeyIsExists(key) {
-  $('#charsJsonError').text(
-    `jsonのsupportKeyに未対応のkey(${key} etc...)が含まれています(現在1.13以降のkeyのみに対応しています)`
+  $('#charsJsonError').append(
+    `jsonのsupportKeyに未対応のkey(${key} etc...)が含まれています(現在1.13以降のkeyのみに対応しています)<br>`
   );
 }
 
@@ -138,31 +140,17 @@ function charsJsonPngMismatch() {
 }
 
 function charsByNotSupportedKeySelected() {
-  $('#convertWarning').text('このJSONでサポートされていないkeyがoptionにあったため、出力画像では空白になります');
-}
-
-function resetError() {
-  $('#errorMessage').text('');
-  $('#baseError').text('');
-  $('#charsError').text('');
-  $('#charsJsonError').text('');
-  $('#outputError').text('');
-  $('#gameOptionError').text('');
-}
-
-function resetWarning() {
-  $('#warningMessage').text('');
-  $('#baseWarning').text('');
-  $('#charsWarning').text('');
-  $('#charsJsonWarning').text('');
-  $('#outputWarning').text('');
-  $('#gameOptionWarning').text('');
-}
-
-function resetConvertMessage() {
-  $('#convertMessage').text('');
-  $('#convertError').text('');
-  $('#convertWarning').text('');
+  if (
+    !$('#convertWarning')
+      .text()
+      .includes(
+        'このリソースパックのJSONファイルでサポートされていないショートカットキーがoptions.txtにあったため、出力画像では空白になります'
+      )
+  ) {
+    $('#convertWarning').append(
+      'このリソースパックのJSONファイルでサポートされていないショートカットキーがoptions.txtにあったため、出力画像では空白になります<br>'
+    );
+  }
 }
 
 module.exports = {
@@ -179,9 +167,6 @@ module.exports = {
   illegalJSONPassed,
   noUnit,
   unitPropertyIsIllegal,
-  resetError,
-  resetWarning,
-  resetConvertMessage,
   noSupportKey,
   supportKeyLengthIsZero,
   supportKeyIsNotArray,

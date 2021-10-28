@@ -1,4 +1,3 @@
-const ew = require('./errorWarning');
 const sop = require('./setOutputPath');
 const $ = require('jquery');
 const util = require('./util');
@@ -7,30 +6,30 @@ const fs = require('fs');
 const fe = require('./fileExits');
 const gp = require('./getFilePath');
 const { app } = require('electron');
+const reset = require('./resetDialog');
 
 //リソースパックが選択された時に実行する関数
 function resourcePackSelectedInProcess(resourcePackPath) {
-  $('#overwriteWidgets').removeAttr('disabled');
-  resetOverwriteCheck();
-  ew.resetError();
-  ew.resetWarning();
-  resetPackPng();
-  ew.resetConvertMessage();
+  init();
   console.log('加工可能なresource pack が選択されました');
   setPackPng(resourcePackPath);
   setWidgetBasePath(resourcePackPath);
   setWidgetCharsPath(resourcePackPath);
   setWidgetCharsJsonPath(resourcePackPath);
   // overwrite widgets.png のチェック
-  console.log(gp.getOutputDirPath(resourcePackPath) + 'widgets.png');
   if (fs.existsSync(gp.getOutputDirPath(resourcePackPath) + 'widgets.png')) sop.setOutputPath(resourcePackPath);
   else sop.setOutputPathOverwrite(resourcePackPath);
   // game directory input の設定
   setOptionPath(resourcePackPath);
 }
-function resetOverwriteCheck() {
-  //$('#overwriteWidgets').attr('disabled', 'disabled');
+
+function init() {
+  $('#overwriteWidgets').removeAttr('disabled');
+  reset.ew();
+  reset.packPng();
+  reset.convertMessage();
 }
+
 function setPackPng(resourcePackPath) {
   if (fs.existsSync(resourcePackPath + '/pack.png')) {
     $('#packPng').attr('src', resourcePackPath + '/pack.png');
@@ -38,6 +37,7 @@ function setPackPng(resourcePackPath) {
     $('#packPng').attr('src', './img/pack.png');
   }
 }
+
 function setWidgetBasePath(resourcePackPath) {
   // widgetBase exits
   if (fe.isWidgetsExists(resourcePackPath)) {
@@ -53,6 +53,7 @@ function setWidgetBasePath(resourcePackPath) {
     $('#widgetsBasePathInput').val(gp.getWidgetsPath(resourcePackPath));
   }
 }
+
 function setWidgetCharsPath(resourcePackPath) {
   // widgetChars exits
   if (fe.isWidgetsCharsExists(resourcePackPath)) {
@@ -64,6 +65,7 @@ function setWidgetCharsPath(resourcePackPath) {
     $('#widgetsCharsPathInput').val('default_widgetsChars.png');
   }
 }
+
 function setWidgetCharsJsonPath(resourcePackPath) {
   // widgetCharsJson exits
   if (fe.isWidgetsCharsJsonExists(resourcePackPath)) {
@@ -75,16 +77,13 @@ function setWidgetCharsJsonPath(resourcePackPath) {
     $('#widgetsCharsJsonPathInput').val('default_widgetsChars.json');
   }
 }
+
 function setOptionPath(resourcePackPath) {
   var gameDirPath;
   if (resourcePackPath && fs.existsSync(util.getDirName(resourcePackPath, 2)))
     gameDirPath = util.getDirName(resourcePackPath, 2);
   else gameDirPath = app.getPath('appData') + '/.minecraft';
   setOptionData.setOptionData(util.getOptionPathByArg(gameDirPath), resourcePackPath);
-}
-
-function resetPackPng() {
-  $('#packPng').attr('src', './img/pack.png');
 }
 
 module.exports = resourcePackSelectedInProcess;

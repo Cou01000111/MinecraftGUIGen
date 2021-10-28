@@ -8,6 +8,7 @@ const util = require('./util');
 
 module.exports = function setClickEvents() {
   $('#convertWidgets').on('click', async () => {
+    reset.message();
     await convertProcess(
       $('#widgetsBasePathInput').val(),
       $('#widgetsCharsPathInput').val(),

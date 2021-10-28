@@ -1,11 +1,15 @@
 var { app, ipcMain, dialog } = require('electron');
+const IS_DEBUG = true;
 
 module.exports = () => {
   ipcMain.on('open-resourcepack-dialog', (event) => {
     dialog
       .showOpenDialog({
         properties: ['openDirectory'],
-        defaultPath: app.getPath('appData'),
+        defaultPath:
+          !app.isPackaged && IS_DEBUG
+            ? app.getPath('home') + '\\programming\\MinecraftWidgetsGen\\testGameDir\\resourcepacks'
+            : app.getPath('appData'),
       })
       .then((result) => {
         if (result.canceled == false) {

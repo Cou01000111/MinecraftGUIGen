@@ -20,7 +20,7 @@ const DEFAULT_WIDGETS_CHARA_JSON = require('../defaultChars.json');
 
 //TODO chars.jsonにないものがkey configにあった場合の処理
 module.exports = async function convertProcess(basePath, charsPath, charsJson, keyOption, outputPath) {
-  ew.resetConvertMessage();
+  //ew.resetConvertMessage();
   var test = await checkArgs(basePath, charsPath, charsJson, keyOption, outputPath);
   console.log(`args testing:`, test);
   if (test == false) {

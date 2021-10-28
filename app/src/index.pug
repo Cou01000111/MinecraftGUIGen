@@ -13,9 +13,11 @@ html(lang="ja")
     div.row.select-btn
       span.col.s2
         img#packPng.pack-png(src='./img/pack.png')
-      a#selectResourcePack.waves-effect.waves-teal.col.s10.btn Select Resource Pack
-      p#errorMessage.error.message
-      p#warningMessage.warning.message
+      a#selectResourcePack.select-resource-pack.waves-effect.waves-teal.col.s10.btn
+        span.select-resource-pack-text Select Resource Pack
+    .message
+        p#errorMessage.select-resource-pack-message.error.message
+        p#warningMessage.select-resource-pack-message.warning.message
     // widgets base path
     .row
       p.col.s4.col.l3 widgets base path
