@@ -161,7 +161,7 @@ function insteadAppAttachmentJSONUsing() {
 
 function insteadAppAttachmentCharsUsing() {
   $('#charsWarning').text(
-    $('#charsWarning').text() + 'widgetsChars.pngが見つかりませんでした。App付属のwidgetsChars.pngを使用します'
+    $('#charsWarning').text() + 'widgetsChars.pngが見つかりませんでした。App付属の画像を使用します'
   );
 }
 

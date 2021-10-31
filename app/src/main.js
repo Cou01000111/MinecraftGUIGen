@@ -81,8 +81,10 @@ async function createWindow() {
     // Could not initiate 'electron-pug'
   }
   mainWindow = new BrowserWindow({
-    width: app.isPackaged ? 500 : 800,
-    height: app.isPackaged ? 850 : 1000,
+    width: /*!app.isPackaged ? 800 :*/ 700,
+    height: /*!app.isPackaged ? 1000 :*/ 850,
+    minWidth: 500,
+    minHeight: 600,
     center: true,
     icon: path.join(__dirname, './img/icon.ico'),
     webPreferences: {
@@ -103,7 +105,7 @@ async function createWindow() {
     mainWindow = null;
   });
   mainWindow.setMenu(null);
-  mainWindow.setResizable(false);
+  mainWindow.setResizable(true);
 }
 
 app.on('ready', () => {
