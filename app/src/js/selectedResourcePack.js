@@ -7,6 +7,7 @@ const fe = require('./fileExits');
 const gp = require('./getFilePath');
 const { app } = require('electron');
 const reset = require('./resetDialog');
+const ew = require('./errorWarning');
 
 //リソースパックが選択された時に実行する関数
 function resourcePackSelectedInProcess(resourcePackPath) {
@@ -17,7 +18,8 @@ function resourcePackSelectedInProcess(resourcePackPath) {
   setWidgetCharsPath(resourcePackPath);
   setWidgetCharsJsonPath(resourcePackPath);
   // overwrite widgets.png のチェック
-  if (fs.existsSync(gp.getOutputDirPath(resourcePackPath) + 'widgetsBase.png')) sop.setOutputPathOverwrite(resourcePackPath);
+  if (fs.existsSync(gp.getOutputDirPath(resourcePackPath) + 'widgetsBase.png'))
+    sop.setOutputPathOverwrite(resourcePackPath);
   else sop.setOutputPath(resourcePackPath);
   // game directory input の設定
   setOptionPath(resourcePackPath);
@@ -59,9 +61,7 @@ function setWidgetCharsPath(resourcePackPath) {
   if (fe.isWidgetsCharsExists(resourcePackPath)) {
     $('#widgetsCharsPathInput').val(gp.getWidgetsCharsPath(resourcePackPath));
   } else {
-    $('#charsWarning').text(
-      $('#charsWarning').text() + 'widgetsChars.pngが見つかりませんでした。App付属のwidgetsChars.pngを使用します'
-    );
+    ew.insteadAppAttachmentCharsUsing();
     $('#widgetsCharsPathInput').val('default_widgetsChars.png');
   }
 }
@@ -71,9 +71,7 @@ function setWidgetCharsJsonPath(resourcePackPath) {
   if (fe.isWidgetsCharsJsonExists(resourcePackPath)) {
     $('#widgetsCharsJsonPathInput').val(gp.getWidgetsCharsJsonPath(resourcePackPath));
   } else {
-    $('#charsJsonWarning').text(
-      $('#charsJsonWarning').text() + 'chars.jsonが見つかりませんでした。App付属のchars.jsonを使用します'
-    );
+    ew.insteadAppAttachmentJSONUsing();
     $('#widgetsCharsJsonPathInput').val('default_widgetsChars.json');
   }
 }

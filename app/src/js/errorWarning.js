@@ -153,6 +153,18 @@ function charsByNotSupportedKeySelected() {
   }
 }
 
+function insteadAppAttachmentJSONUsing() {
+  $('#charsJsonWarning').text(
+    $('#charsJsonWarning').text() + 'widgetsChars.jsonが見つかりませんでした。App付属のJSONファイルを使用します'
+  );
+}
+
+function insteadAppAttachmentCharsUsing() {
+  $('#charsWarning').text(
+    $('#charsWarning').text() + 'widgetsChars.pngが見つかりませんでした。App付属のwidgetsChars.pngを使用します'
+  );
+}
+
 module.exports = {
   selectedOutOfSupportVersion,
   dirIsNotGameDir,
@@ -177,4 +189,6 @@ module.exports = {
   unsupportedKeyIsExists,
   charsByNotSupportedKeySelected,
   duplicatedBasePathAndOutputPath,
+  insteadAppAttachmentJSONUsing,
+  insteadAppAttachmentCharsUsing,
 };
